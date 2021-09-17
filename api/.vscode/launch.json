@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Start",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "start"],
+            "console":"integratedTerminal"
+          },
+          {
+            "name": "Build",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "build"],
+            "console":"integratedTerminal"
+          },
+          {
+            "name": "Test",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "test"],
+            "console":"integratedTerminal"
+          }
+    ]
+}

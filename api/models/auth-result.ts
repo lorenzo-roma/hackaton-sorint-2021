@@ -1,0 +1,11 @@
+enum AuthResult {
+    SUCCESS,
+    NOT_FOUND,
+    WRONG_PASSWORD,
+    ALREADY_SIGN_UP,
+    ERROR_RETRIEVING_TOKEN,
+    ERROR_VALIDATING_TOKEN,
+    ERROR_DURING_SIGNUP
+}
+
+export default AuthResult;
