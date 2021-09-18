@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "./store";
+import {createSlice} from "@reduxjs/toolkit";
+import {RootState} from "./store";
 
 export enum AuthState {
     LOGGED_OUT,
@@ -31,7 +31,7 @@ const authStore = createSlice({
     },
 });
 
-export const { setToken, clearToken } = authStore.actions;
+export const {setToken, clearToken} = authStore.actions;
 
 export default authStore;
 
@@ -44,4 +44,13 @@ function getCookie(name: string) {
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop()?.split(";").shift();
     return null;
+}
+
+export function prepareAuthentication(headers: Headers, {getState}: {getState: () => unknown}) {
+    const token = (getState() as RootState).auth.token
+    if (token) {
+        headers.set('authorization', `Bearer ${token}`)
+    }
+    return headers;
+
 }

@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import {Validator} from '../utils/Validators';
 
-const useInput = (defaultValue: string, validationHandler: Validator[] = []) => {
-    const [input, setInput] = useState(defaultValue);
+const useInput = <T>(defaultValue: T, validationHandler: Validator<T>[] = []) => {
+    const [input, setInput] = useState<T>(defaultValue);
     const [touched, setTouched] = useState(false);
     validationHandler.map(h => console.log(h.error, h.handler(input)))
     return {

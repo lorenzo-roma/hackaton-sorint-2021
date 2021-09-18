@@ -1,9 +1,9 @@
 import {useSelector} from "react-redux";
 import {useAppSelector} from "../stores/store";
+import SlimTripWizard from "../components/SlimTripWizard.component";
 
 export default function HomePage() {
-    const authStore = useAppSelector(state => state.auth);
     return (<div>
-        This is the home {authStore.token}
+        <SlimTripWizard />
     </div>);
 }
