@@ -8,11 +8,11 @@ const router = express.Router();
 const tripController: TripController = ControllerProvider.getTripController();
 
 router.post(
-    "/create",
+    "/",
     new ResponseAdapterMiddleware(tripController.createTrip).handler
 );
 router.get(
-    "/retrieve",
+    "/",
     new ResponseAdapterMiddleware(tripController.retrieveTrips).handler
 );
 

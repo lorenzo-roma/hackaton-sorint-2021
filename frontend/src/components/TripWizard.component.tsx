@@ -9,6 +9,7 @@ import {useSignupMutation} from "../services/auth.service";
 import {useCreateTripMutation} from "../services/trip.service";
 import LoadingComponent from "./Loading.component";
 import ErrorComponent from "./Error.component";
+import moment from "moment";
 
 export interface TripWizardProps {
     initialFrom?: string;
@@ -19,17 +20,17 @@ const TripWizard = ({initialFrom, initialTo}: TripWizardProps) => {
     const [doCreateTrip, { isLoading, isError }] = useCreateTripMutation();
     const fromInput = useInput(initialFrom || "", [NOT_EMPTY_STRING.withPrintable('From cannot be empty')]);
     const toInput = useInput(initialTo || "", [NOT_EMPTY_STRING.withPrintable('To cannot be empty')]);
-    const initialAvailability = useInput<Date>(new Date(), [
+    const initialAvailability = useInput<Date>(moment(new Date()).add(24, "hours").toDate(), [
         NOT_EMPTY.withPrintable('Date cannot be empty'),
-        GREATER_THAN(new Date()).withPrintable("Date cannot be in the past")
+        GREATER_THAN(moment(new Date()).add(23, "hours").toDate()).withPrintable("Date cannot be in the past")
     ]);
-    const endAvailability = useInput<Date>(new Date(), [
+    const endAvailability = useInput<Date>(moment(new Date()).add(24, "hours").add(30, "m").toDate(), [
         NOT_EMPTY.withPrintable('Date cannot be empty'),
         GREATER_THAN(initialAvailability.value).withPrintable("End availability must be greater than the start")
     ]);
-    const endDateTime = useInput<Date>(new Date(), [
+    const endDateTime = useInput<Date>(moment(endAvailability.value).add(1, "hours").toDate(), [
         NOT_EMPTY.withPrintable('Date cannot be empty'),
-        GREATER_THAN(initialAvailability).withPrintable("Arrival date must be greater than the start")
+        GREATER_THAN(initialAvailability.value).withPrintable("Arrival date must be greater than the initial availability")
     ]);
 
 
@@ -55,7 +56,7 @@ const TripWizard = ({initialFrom, initialTo}: TripWizardProps) => {
             <label>End availability date</label>
             <InputDateTime {...endAvailability} minDate={initialAvailability.value} />
             <label>Arrival Date</label>
-            <InputDateTime {...endDateTime} minDate={new Date()} />
+            <InputDateTime {...endDateTime} minDate={initialAvailability.value} />
             {isError && (
                 <ErrorComponent error="Error during creation" />
             )}
