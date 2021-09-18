@@ -1,13 +1,34 @@
-import fetch, { Headers } from "node-fetch";
+import fetch, {Headers} from "node-fetch";
 import config from "../../config";
 import moment from "moment";
 import Checkpoint from "../../models/checkpoint";
-import { TripInterface } from "../../models/trip";
+import trip, {TripInterface} from "../../models/trip";
 import Position from "../../models/position";
-import { HopType } from "../../models/hop-type";
-import { Tour } from "../../models/tour";
+import {HopType} from "../../models/hop-type";
+import {Tour} from "../../models/tour";
+import PathOptimizerServiceInterface from "./path-optimizer-interface";
+import OptimizerResult from "../../models/optimizer-result";
 
-export default class PathOptimizer {
+export default class PathOptimizer implements PathOptimizerServiceInterface {
+    async findNearestTrips(position: Position, trips: trip[], count: number): Promise<ServiceResponse<OptimizerResult, trip[]>> {
+        const distances = await this.getDistancesToLocations(position, trips.map(trip => {
+            return {
+                lat: trip.fromPosition.lat,
+                lng: trip.fromPosition.lng,
+                name: `${trip.id}`
+            }
+        }));
+        const sortedDistances = distances.sort((a, b) => b.duration - a.duration);
+        return {
+            status: OptimizerResult.SUCCESS,
+            data: sortedDistances.map(distance => trips[Number(distance.to) + 1]).slice(0, count - 1)
+        }
+    }
+
+    getRealisticPath(trips: trip[]): Promise<ServiceResponse<OptimizerResult, Tour>> {
+        throw new Error("Method not implemented.");
+    }
+
     basePath = "https://api.routexl.com";
 
     async callDistanceMatrix(locations: Location[]) {
@@ -169,10 +190,11 @@ export interface DistanceMatrix {
 export interface Location {
     lng: number;
     lat: number;
-    name: string;
+    name?: string;
 }
 
-export interface LocationTour extends TripInterface {}
+export interface LocationTour extends TripInterface {
+}
 
 interface LocationTourRequest {
     lng: number;
