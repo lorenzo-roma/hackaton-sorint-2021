@@ -5,11 +5,12 @@ import Checkpoint from "../../models/checkpoint";
 import { TripInterface } from "../../models/trip";
 import Position from "../../models/position";
 import { HopType } from "../../models/hop-type";
+import { Tour } from "../../models/tour";
 
 export default class PathOptimizer {
-    static basePath = "https://api.routexl.com";
+    basePath = "https://api.routexl.com";
 
-    static async callDistanceMatrix(locations: Location[]) {
+    async callDistanceMatrix(locations: Location[]) {
         const params = new URLSearchParams();
         params.set("locations", JSON.stringify(locations));
         const result = await fetch(`${this.basePath}/distance`, {
@@ -28,11 +29,11 @@ export default class PathOptimizer {
         } as DistanceMatrix;
     }
 
-    static diffToMin(from: Date, to: Date) {
+    diffToMin(from: Date, to: Date) {
         return moment(to).diff(moment(from), "s");
     }
 
-    static async callTour(
+    async callTour(
         trips: LocationTour[],
         startShift: Date,
         startLocation: Position
@@ -117,7 +118,7 @@ export default class PathOptimizer {
         };
     }
 
-    static async getDistancesToLocations(
+    async getDistancesToLocations(
         startingLocation: Location,
         endingLocations: Location[]
     ) {
@@ -152,12 +153,6 @@ export interface TourResponse {
             distance: number;
         };
     };
-}
-
-export interface Tour {
-    count: number;
-    feasible: boolean;
-    checkpoints: Checkpoint[];
 }
 
 export interface DistanceMatrix {

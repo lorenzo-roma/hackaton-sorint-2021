@@ -1,3 +1,5 @@
+import Position from "./position";
+
 export default class Trip implements TripInterface {
     public fromName: string;
     public toName: string;
@@ -12,6 +14,8 @@ export default class Trip implements TripInterface {
     public id: string;
     public shiftId: string;
     public confirmedPickup: Date;
+    public fromPosition: Position;
+    public toPosition: Position;
 
     setFromName(value: string) {
         this.fromName = value;
@@ -58,9 +62,7 @@ export default class Trip implements TripInterface {
     }
 }
 
-
 export interface TripInterface {
-
     fromName: string;
     toName: string;
     fromLat: number;

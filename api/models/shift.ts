@@ -1,9 +1,11 @@
+import Position from "./position";
+
 export default class Shift {
     public id: string;
     public userId: string;
     public start: Date;
     public end: Date;
-    public startingPosition: string;
+    public startingPosition: Position;
     public capacity: number;
 
     setId(value: string) {
@@ -19,7 +21,7 @@ export default class Shift {
     setEnd(value: Date) {
         this.end = value;
     }
-    setStartingPosition(value: string) {
+    setStartingPosition(value: Position) {
         this.startingPosition = value;
     }
     setCapacity(value: number) {

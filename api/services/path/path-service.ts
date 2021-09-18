@@ -10,6 +10,7 @@ import TripServiceInterface from "../trip/trip-service-interface";
 import TripResult from "../../models/trip-result";
 import TripRepository from "../../repository/trip-repository-interface";
 import TripService from "../trip/trip-service";
+import PathOptimizerServiceInterface from "../path-optimizer/path-optimizer-interface";
 
 export default class PathService implements PathServiceInterface {
     constructor(
@@ -30,29 +31,30 @@ export default class PathService implements PathServiceInterface {
             return { status: PathResult.ERROR_RETRIEVING_COMPATIBLE_TRIPS };
         const startingTrip = await this.optimizerService.findNearestTrips(
             shift.startingPosition,
-            tripResponse.data,
+            tripResponse.data!,
             1
         );
-
+        const first: Trip = startingTrip.data![0];
         const finalCheckPoints: Checkpoint[] = [];
-        const nearestTrips: Trip[] =
-            await this.optimizerService.findNearestTrips(
-                startingTrip.startingPosition,
-                tripResponse.data,
-                shift.capacity - 1
-            );
-        const tripsToDo: Trip[] = [startingTrip, ...nearestTrips];
+        const nearestTrips = await this.optimizerService.findNearestTrips(
+            first.fromPosition,
+            tripResponse.data!,
+            shift.capacity - 1
+        );
+        const tripsToDo: Trip[] = [first, ...nearestTrips.data!];
 
         for (let i = 0; i < tripsToDo.length; i++) {
-            const possiblePath = await this.optimizerService.getRealistiPath(
+            const possiblePath = await this.optimizerService.getRealisticPath(
                 tripsToDo
             );
-            if (possiblePath.isFeasable) {
-                finalCheckPoints.push(...possiblePath.checkpoints);
+            if (possiblePath.data!.feasible) {
+                finalCheckPoints.push(...possiblePath.data!.checkpoints);
                 break;
             }
             tripsToDo.pop();
         }
         // loop finche non ci sono più nodi disponibili (o per orario o per numero)
+
+        return { status: PathResult.SUCCESS, data: [] };
     }
 }
