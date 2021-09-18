@@ -7,7 +7,6 @@ import SelectAddress from "../components/SelectAddress.component";
 export default function HomePage() {
     return (
         <div>
-            <SelectAddress />
             <SlimTripWizard />
         </div>
     );
