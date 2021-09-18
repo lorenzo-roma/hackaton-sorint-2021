@@ -1,139 +1,157 @@
-import fetch, {Headers} from 'node-fetch';
+import fetch, { Headers } from "node-fetch";
 import config from "../../config";
 import moment from "moment";
 import Checkpoint from "../../models/checkpoint";
-import {TripInterface} from "../../models/trip";
+import { TripInterface } from "../../models/trip";
 import Position from "../../models/position";
-import {HopType} from "../../models/hop-type";
-
+import { HopType } from "../../models/hop-type";
 
 export default class PathOptimizer {
     static basePath = "https://api.routexl.com";
 
     static async callDistanceMatrix(locations: Location[]) {
         const params = new URLSearchParams();
-        params.set('locations', JSON.stringify(locations));
+        params.set("locations", JSON.stringify(locations));
         const result = await fetch(`${this.basePath}/distance`, {
             headers: new Headers({
-                "Authentication": `Basic ${new Buffer(`${config.routeXL.username}:${config.routeXL.password}`).toString('base64')}`
+                Authentication: `Basic ${new Buffer(
+                    `${config.routeXL.username}:${config.routeXL.password}`
+                ).toString("base64")}`,
             }),
-            method: 'POST',
-            body: params
+            method: "POST",
+            body: params,
         });
         const r = (await result.json()) as DistanceMatrixResponse;
         return {
             count: r.count,
-            distances: Object.values(r.distances)
-        } as DistanceMatrix
+            distances: Object.values(r.distances),
+        } as DistanceMatrix;
     }
 
     static diffToMin(from: Date, to: Date) {
-        return moment(to).diff(moment(from), 's');
+        return moment(to).diff(moment(from), "s");
     }
 
-    static async callTour(trips: LocationTour[], startShift: Date, startLocation: Position): Promise<Tour> {
+    static async callTour(
+        trips: LocationTour[],
+        startShift: Date,
+        startLocation: Position
+    ): Promise<Tour> {
         const params = new URLSearchParams();
         const diffFromStartShift = (to: Date) => this.diffToMin(to, startShift);
         const startEndLocation: LocationTourRequest = {
-            name: 'start',
+            name: "start",
             lat: startLocation.lat,
             lng: startLocation.lng,
-            restrictions: []
-        }
+            restrictions: [],
+        };
         const locations: LocationTourRequest[] = [startEndLocation];
         let index = 0;
         for (const trip of trips) {
             locations.push({
                 lat: trip.fromLat,
                 lng: trip.fromLng,
-                name: 's_' + trip.id,
+                name: "s_" + trip.id,
                 restrictions: [
                     diffFromStartShift(trip.initialAvailability), // ready
                     diffFromStartShift(trip.endAvailability), // due
-                    0,  // Before starting
-                    index + 2 // Before starting
-                ]
+                    0, // Before starting
+                    index + 2, // Before starting
+                ],
             });
             locations.push({
                 lat: trip.toLat,
                 lng: trip.toLng,
-                name: 'e_' + trip.id,
+                name: "e_" + trip.id,
                 restrictions: [
                     1, // ready
                     diffFromStartShift(trip.arrival), // due
-                    index + 1
-                ]
+                    index + 1,
+                ],
             });
             index += 2;
         }
         locations.push(startEndLocation);
-        params.set('locations', JSON.stringify(locations as LocationTourRequest[]));
+        params.set(
+            "locations",
+            JSON.stringify(locations as LocationTourRequest[])
+        );
         const result = await fetch(`${this.basePath}/tour`, {
             headers: new Headers({
-                "Authentication": `Basic ${new Buffer(`${config.routeXL.username}:${config.routeXL.password}`).toString('base64')}`
+                Authentication: `Basic ${new Buffer(
+                    `${config.routeXL.username}:${config.routeXL.password}`
+                ).toString("base64")}`,
             }),
-            method: 'POST',
-            body: params
+            method: "POST",
+            body: params,
         });
         const r = (await result.json()) as TourResponse;
         const points = Object.values(r.route);
         const checkpoints = points.map((point, index) => {
             const toReturn = new Checkpoint();
-            if(point.name === 'start') {
+            if (point.name === "start") {
                 return null;
             }
-            const trip = trips.find(t => point.name === `e_${t.id}` || point.name === `s_${t.id}`)!;
+            const trip = trips.find(
+                (t) => point.name === `e_${t.id}` || point.name === `s_${t.id}`
+            )!;
             const isPickup = point.name === `s_${trip.id}`;
             toReturn.position = {
                 lat: isPickup ? trip.fromLat : trip.toLat,
-                lng: isPickup ? trip.fromLng : trip.toLng
+                lng: isPickup ? trip.fromLng : trip.toLng,
             };
             toReturn.hopType = isPickup ? HopType.PICKUP : HopType.DROPOUT;
             toReturn.userId = trip.userId;
             toReturn.sortIndex = index;
-            toReturn.time = moment(startShift).add(point.arrival, "second").toDate();
+            toReturn.time = moment(startShift)
+                .add(point.arrival, "second")
+                .toDate();
             return toReturn;
-        })
+        });
         return {
             count: r.count,
             feasible: r.feasible,
-            checkpoints: checkpoints.filter(checkpoint => checkpoint !== null) as Checkpoint[]
-        }
+            checkpoints: checkpoints.filter(
+                (checkpoint) => checkpoint !== null
+            ) as Checkpoint[],
+        };
     }
 
-    static async getDistancesToLocations(startingLocation: Location, endingLocations: Location[]) {
-        const result = await this.callDistanceMatrix([startingLocation, ...endingLocations]);
-        return result.distances.filter(distance => distance.from === "1");
+    static async getDistancesToLocations(
+        startingLocation: Location,
+        endingLocations: Location[]
+    ) {
+        const result = await this.callDistanceMatrix([
+            startingLocation,
+            ...endingLocations,
+        ]);
+        return result.distances.filter((distance) => distance.from === "1");
     }
 }
 
 export interface DistanceMatrixResponse {
     count: number;
-    distances:
-        {
-            [index: string]:
-                {
-                    from: string;
-                    to: string;
-                    distance: number;
-                    duration: number;
-                    router: boolean;
-                }
-        }
+    distances: {
+        [index: string]: {
+            from: string;
+            to: string;
+            distance: number;
+            duration: number;
+            router: boolean;
+        };
+    };
 }
 
 export interface TourResponse {
     count: number;
     feasible: boolean;
-    route:
-        {
-            [index: string]:
-                {
-                    name: string;
-                    arrival: number;
-                    distance: number;
-                }
-        }
+    route: {
+        [index: string]: {
+            name: string;
+            arrival: number;
+            distance: number;
+        };
+    };
 }
 
 export interface Tour {
@@ -144,14 +162,13 @@ export interface Tour {
 
 export interface DistanceMatrix {
     count: number;
-    distances:
-        {
-            from: string;
-            to: string;
-            distance: number;
-            duration: number;
-            router: boolean;
-        }[]
+    distances: {
+        from: string;
+        to: string;
+        distance: number;
+        duration: number;
+        router: boolean;
+    }[];
 }
 
 export interface Location {
@@ -160,12 +177,11 @@ export interface Location {
     name: string;
 }
 
-export interface LocationTour extends TripInterface {
-}
+export interface LocationTour extends TripInterface {}
 
 interface LocationTourRequest {
     lng: number;
     lat: number;
     name: string;
-    restrictions: number[]
+    restrictions: number[];
 }
