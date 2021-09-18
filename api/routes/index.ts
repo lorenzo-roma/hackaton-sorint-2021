@@ -6,7 +6,7 @@ import tripRoutes from "./trip";
 const router = express.Router();
 const validateMiddleware = new ValidateAuthMiddleware();
 
-router.use("/auth", validateMiddleware.handler, authRoutes);
+router.use("/auth", authRoutes);
 router.use("/trip", validateMiddleware.handler, tripRoutes);
 
 export default router;
