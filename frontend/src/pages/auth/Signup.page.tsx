@@ -9,7 +9,10 @@ import {useCookies} from "react-cookie";
 import {setToken} from "../../stores/auth.store";
 import {useAppDispatch} from "../../stores/store";
 
-const SignupPage = () => {
+type SignupPageProps = {
+    driver: boolean
+}
+const SignupPage = (props: SignupPageProps) => {
     const dispatch = useAppDispatch();
     const [cookies, setCookie] = useCookies(["token"]);
 

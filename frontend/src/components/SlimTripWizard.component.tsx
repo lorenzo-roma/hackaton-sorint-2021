@@ -10,12 +10,10 @@ import AutoCompleteResponse from "../classes/autocomplete-response.class";
 
 const SlimTripWizard = () => {
     const [redirect, setRedirect] = useState(false);
-    const fromInput = useInput<AutoCompleteResponse>(
-        {} as AutoCompleteResponse
+    const fromInput = useInput<AutoCompleteResponse | undefined>(
+        undefined
     );
-    const toInput = useInput("", [
-        NOT_EMPTY_STRING.withPrintable("To cannot be empty"),
-    ]);
+    const toInput = useInput<AutoCompleteResponse | undefined>(undefined);
 
     const startCreationTrip = () => {
         setRedirect(true);
@@ -40,7 +38,7 @@ const SlimTripWizard = () => {
             <label>From</label>
             <SelectAddress {...fromInput} />
             <label>To</label>
-            <InputText {...toInput} type="text" />
+            <SelectAddress {...toInput} />
             <Button onClick={startCreationTrip}>Start trip</Button>
         </div>
     );

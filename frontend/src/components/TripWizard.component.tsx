@@ -18,16 +18,19 @@ import SelectAddress from "./SelectAddress.component";
 
 export interface TripWizardProps {
     initialFrom?: AutoCompleteResponse;
-    initialTo?: string;
+    initialTo?: AutoCompleteResponse;
+    onAddedTrip: () => void;
 }
 
-const TripWizard = ({ initialFrom, initialTo }: TripWizardProps) => {
+const TripWizard = ({ initialFrom, initialTo, onAddedTrip }: TripWizardProps) => {
     const [doCreateTrip, { isLoading, isError }] = useCreateTripMutation();
-    const fromInput = useInput<AutoCompleteResponse>(
-        initialFrom || ({} as AutoCompleteResponse)
+    const fromInput = useInput<AutoCompleteResponse | undefined>(
+        initialFrom,
+        [NOT_EMPTY]
     );
-    const toInput = useInput<AutoCompleteResponse>(
-        initialFrom || ({} as AutoCompleteResponse)
+    const toInput = useInput<AutoCompleteResponse | undefined>(
+        initialTo,
+        [NOT_EMPTY]
     );
     const initialAvailability = useInput<Date>(
         moment(new Date()).add(24, "hours").toDate(),
@@ -57,17 +60,20 @@ const TripWizard = ({ initialFrom, initialTo }: TripWizardProps) => {
         ]
     );
 
+    const isInputValid = () => !(fromInput.hasErrors || toInput.hasErrors || initialAvailability.hasErrors || endAvailability.hasErrors || endDateTime.hasErrors);
+
     const createTrip = async () => {
+        if(!isInputValid()) return
         const geoCodeFrom = await geocodeByPlaceId(
-            fromInput.value.value.place_id
+            fromInput.value!.value.place_id
         );
-        const geoCodeTo = await geocodeByPlaceId(toInput.value.value.place_id);
+        const geoCodeTo = await geocodeByPlaceId(toInput.value!.value.place_id);
         const fromPoint = await getLatLng(geoCodeFrom[0]);
         const toPoint = await getLatLng(geoCodeTo[0]);
 
         const tripToBeSchedule: ToBeScheduledTripApiInterface = {
-            fromName: fromInput.value.label,
-            toName: toInput.value.label,
+            fromName: fromInput.value!.label,
+            toName: toInput.value!.label,
             fromLat: fromPoint.lat,
             fromLng: fromPoint.lng,
             toLat: toPoint.lat,
@@ -76,7 +82,7 @@ const TripWizard = ({ initialFrom, initialTo }: TripWizardProps) => {
             endAvailability: endAvailability.value,
             arrival: endDateTime.value,
         };
-        doCreateTrip(tripToBeSchedule);
+        doCreateTrip(tripToBeSchedule).unwrap().then(onAddedTrip);
     };
     if (isLoading) return <LoadingComponent />;
     return (

@@ -8,8 +8,10 @@ import { useAppDispatch } from "../../stores/store";
 import { useCookies } from "react-cookie";
 import { setToken } from "../../stores/auth.store";
 import { useLoginMutation } from "../../services/auth.service";
-
-const LoginPage = () => {
+type LoginPageProps = {
+    driver: boolean
+}
+const LoginPage = (props: LoginPageProps) => {
     const [cookies, setCookie] = useCookies(["token"]);
     const dispatch = useAppDispatch();
     const usernameInput = useInput("", [
