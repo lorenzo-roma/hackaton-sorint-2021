@@ -4,9 +4,11 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useAppDispatch, useAppSelector } from "../stores/store";
 import { AuthState, clearToken, selectAuthState } from "../stores/auth.store";
+import {useCookies} from "react-cookie";
 
 const NavbarComponent = () => {
     const authState = useAppSelector(selectAuthState);
+    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const dispatch = useAppDispatch();
 
     const loggedOutSection = function () {
@@ -27,10 +29,14 @@ const NavbarComponent = () => {
     };
 
     const loggedInSection = function () {
+        const clearTokenCookie = () => {
+            dispatch(clearToken({}))
+            removeCookie('token')
+        }
         return (
             <Nav>
                 <Nav.Item>
-                    <Nav.Link onClick={(_) => dispatch(clearToken({}))}>
+                    <Nav.Link onClick={(_) => clearTokenCookie()}>
                         Logout
                     </Nav.Link>
                 </Nav.Item>
