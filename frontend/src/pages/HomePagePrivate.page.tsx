@@ -16,7 +16,7 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
     }, [doTrips])
     if (isLoading)
         return <LoadingComponent/>;
-
+    if(isSuccess) console.log(tripsResponse)
     return (
         <div>
             <TripWizard initialFrom={props.initialFrom} initialTo={props.initialTo} />
