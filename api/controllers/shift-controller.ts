@@ -49,4 +49,15 @@ export default class ShiftController {
         if (response.status != PathResult.SUCCESS) return APIResponse.Error();
         return APIResponse.Success(response.data);
     };
+
+    retrieveShiftDetail = async (
+        req: express.Request
+    ): Promise<APIResponse> => {
+        const shiftId = req.params.shiftId;
+        const checkPointsResponse =
+            await this.shiftService.getCheckpointsDetailByShiftId(shiftId);
+        if (checkPointsResponse.status != ShiftResult.SUCCESS)
+            return APIResponse.Error();
+        return APIResponse.Success(checkPointsResponse.data);
+    };
 }

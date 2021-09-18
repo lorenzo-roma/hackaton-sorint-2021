@@ -23,6 +23,19 @@ export default class CacheRepository
         Checkpoint
     >();
 
+    async getCheckpointsByShiftId(
+        id: string
+    ): Promise<Checkpoint[] | undefined> {
+        const toReturn: Checkpoint[] = [];
+        const checkpoints = this.checkpointsCache.values();
+        let checkpoint: Checkpoint = checkpoints.next().value;
+        while (checkpoint) {
+            if (checkpoint.shiftId == id) toReturn.push(checkpoint);
+            checkpoint = checkpoints.next().value;
+        }
+        return toReturn;
+    }
+
     async findTripById(id: string): Promise<Trip | undefined> {
         return this.tripsCache.get(id);
     }

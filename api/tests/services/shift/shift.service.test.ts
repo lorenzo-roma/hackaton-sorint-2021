@@ -4,19 +4,29 @@ import ShiftRepository from "../../../repository/shift-repository-interface";
 import ShiftService from "../../../services/shift/shift-service";
 import Shift from "../../../models/shift";
 import ShiftResult from "../../../models/shift-result";
+import UserRepository from "../../../repository/user-repository-interface";
+import CheckpointRepository from "../../../repository/checkpoint-repository-interface";
 
 let serviceTested: ShiftService;
-let mockRepository: ShiftRepository;
+let mockShiftRepository: ShiftRepository;
+let mockUserRepository: UserRepository;
+let mockCheckpointRepository: CheckpointRepository;
 
 beforeEach(() => {
-    mockRepository = {} as ShiftRepository;
-    serviceTested = new ShiftService(mockRepository);
+    mockShiftRepository = {} as ShiftRepository;
+    mockUserRepository = {} as UserRepository;
+    mockCheckpointRepository = {} as CheckpointRepository;
+    serviceTested = new ShiftService(
+        mockShiftRepository,
+        mockCheckpointRepository,
+        mockUserRepository
+    );
 });
 
 describe("Create tests", () => {
     test("If insert is succefull, it should return success and inserted", async () => {
         const shift: Shift = getMockShift();
-        mockRepository.insertShift = jest.fn(async () => {
+        mockShiftRepository.insertShift = jest.fn(async () => {
             return shift;
         });
         const response = await serviceTested.create(shift);
@@ -26,7 +36,7 @@ describe("Create tests", () => {
 
     test("If insert fails, it should return error response", async () => {
         const shift: Shift = getMockShift();
-        mockRepository.insertShift = jest.fn(async () => {
+        mockShiftRepository.insertShift = jest.fn(async () => {
             return undefined;
         });
         const response = await serviceTested.create(shift);
@@ -37,7 +47,7 @@ describe("Create tests", () => {
 describe("Find by user id tests", () => {
     test("If query is succefull, it should return success and inserted", async () => {
         const shift: Shift = getMockShift();
-        mockRepository.findShiftByUserId = jest.fn(async () => {
+        mockShiftRepository.findShiftByUserId = jest.fn(async () => {
             return [shift];
         });
         const response = await serviceTested.retrieveByUserId("0");
@@ -46,7 +56,7 @@ describe("Find by user id tests", () => {
     });
 
     test("If query fails, it should return error response", async () => {
-        mockRepository.findShiftByUserId = jest.fn(async () => {
+        mockShiftRepository.findShiftByUserId = jest.fn(async () => {
             return undefined;
         });
         const response = await serviceTested.retrieveByUserId("0");

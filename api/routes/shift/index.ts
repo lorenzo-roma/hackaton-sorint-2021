@@ -15,8 +15,13 @@ router.post(
 );
 
 router.get(
-    "/:shiftId",
+    "path/:shiftId",
     new ResponseAdapterMiddleware(shiftController.calculatePath).handler
+);
+
+router.get(
+    "/:shiftId",
+    new ResponseAdapterMiddleware(shiftController.retrieveShiftDetail).handler
 );
 router.get(
     "/",

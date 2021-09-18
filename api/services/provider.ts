@@ -41,9 +41,17 @@ export default class ServiceProvider {
 
     public static getShiftService(): ShiftServiceInterface {
         if (this.shiftService == null) {
-            const repository: ShiftRepository =
+            const shiftRepository: ShiftRepository =
                 RepositoryProvider.getRepository();
-            this.shiftService = new ShiftService(repository);
+            const checkpointRepository: CheckpointRepository =
+                RepositoryProvider.getRepository();
+            const userRepository: UserRepository =
+                RepositoryProvider.getRepository();
+            this.shiftService = new ShiftService(
+                shiftRepository,
+                checkpointRepository,
+                userRepository
+            );
         }
         return this.shiftService;
     }

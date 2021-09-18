@@ -1,11 +1,36 @@
 import Shift from "../../models/shift";
 import ShiftResult from "../../models/shift-result";
 import ShiftRepository from "../../repository/shift-repository-interface";
+import CheckPointRepository from "../../repository/checkpoint-repository-interface";
 import ShiftServiceInterface from "./shift-service-interface";
-import {ServiceResponse} from "../../models/service-response";
+import { ServiceResponse } from "../../models/service-response";
+import checkpoint, { CheckpointDetail } from "../../models/checkpoint";
+import UserRepository from "../../repository/user-repository-interface";
 
 export default class ShiftService implements ShiftServiceInterface {
-    constructor(private repository: ShiftRepository) {}
+    constructor(
+        private repository: ShiftRepository,
+        private checkpointsRepository: CheckPointRepository,
+        private userRepository: UserRepository
+    ) {}
+
+    async getCheckpointsDetailByShiftId(
+        id: string
+    ): Promise<ServiceResponse<ShiftResult, CheckpointDetail[]>> {
+        const checkpoints =
+            await this.checkpointsRepository.getCheckpointsByShiftId(id);
+        if (!checkpoints)
+            return { status: ShiftResult.ERROR_RETRIEVING_CHECKPOINTS };
+        const details: CheckpointDetail[] = [];
+        for (const checkpoint of checkpoints) {
+            const user = await this.userRepository.findUserById(
+                checkpoint.userId
+            );
+            if (!user) return { status: ShiftResult.USER_NOT_FOUND };
+            details.push(new CheckpointDetail(checkpoint, user));
+        }
+        return { status: ShiftResult.SUCCESS, data: details };
+    }
 
     async create(shift: Shift): Promise<ServiceResponse<ShiftResult, Shift>> {
         const inserted = await this.repository.insertShift(shift);
