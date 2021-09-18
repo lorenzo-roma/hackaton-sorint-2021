@@ -11,6 +11,8 @@ export default interface PathOptimizerServiceInterface {
     ): Promise<ServiceResponse<OptimizerResult, Trip[]>>;
 
     getRealisticPath(
-        trips: Trip[]
+        trips: Trip[],
+        startingPosition: Position,
+        startDate: Date
     ): Promise<ServiceResponse<OptimizerResult, Tour>>;
 }
