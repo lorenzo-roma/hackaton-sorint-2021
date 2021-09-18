@@ -9,7 +9,7 @@ export default class ValidateAuthMiddleware implements Middleware {
     next: express.NextFunction
   ) => {
     const user = req["user"];
-    if (!user) throw new UnauthorizedError();
+    if (!user) next(new UnauthorizedError());
     next();
   };
 }

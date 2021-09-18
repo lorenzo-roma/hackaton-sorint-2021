@@ -23,9 +23,7 @@ describe("Validate auth middleware tests", () => {
   });
 
   test("If user is not present in request, it should throw unauthorized error", async () => {
-    expect(middlewareTested.handler(req, res, nextFn)).rejects.toThrow(
-      new UnauthorizedError()
-    );
-    expect(nextFn).not.toBeCalled();
+    await middlewareTested.handler(req, res, nextFn);
+    expect(nextFn).toBeCalledWith(new UnauthorizedError());
   });
 });
