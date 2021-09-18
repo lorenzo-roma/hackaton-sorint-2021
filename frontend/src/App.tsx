@@ -21,7 +21,7 @@ function App() {
                         {authState === AuthState.LOGGED_IN &&
                         <HomePagePrivate initialFrom={state.initialFrom} initialTo={state.initialTo}/>}
                         {(authState === AuthState.LOGGED_OUT && state.initialFrom && state.initialTo) && <SignupPage />}
-                        {authState === AuthState.LOGGED_OUT && <HomePage/>}
+                        {authState === AuthState.LOGGED_OUT && !state.initialFrom && !state.initialTo && <HomePage/>}
                     </>
                 );
             }}>
