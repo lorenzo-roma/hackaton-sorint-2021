@@ -7,6 +7,7 @@ import Shift from "../models/shift";
 import ShiftResult from "../models/shift-result";
 import PathServiceInterface from "../services/path/path-service-interface";
 import ShiftServiceInterface from "../services/shift/shift-service-interface";
+import Position from "../models/position";
 
 export default class ShiftController {
     constructor(
@@ -19,7 +20,11 @@ export default class ShiftController {
         const shiftToCreate: Shift = new Shift();
         shiftToCreate.setStart(req.body.start);
         shiftToCreate.setEnd(req.body.end);
-        shiftToCreate.setStartingPosition(req.body.startingPosition);
+        shiftToCreate.startingPosition = new Position(
+            req.body.startingPositionLat,
+            req.body.startingPositionLng
+        );
+        shiftToCreate.startingPositionName = req.body.startingPositionName;
         shiftToCreate.setCapacity(req.body.capacity);
         shiftToCreate.setUserId(userId);
         const response: ServiceResponse<ShiftResult, Shift> =

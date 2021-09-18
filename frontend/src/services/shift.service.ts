@@ -1,10 +1,12 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Trip from "../classes/trip.class";
-import {BaseQueryResult} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
+import { BaseQueryResult } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 import ConfirmedTrip from "../classes/ConfirmedTrip.class";
-import ToBeScheduledTrip, {ToBeScheduledTripApiInterface} from "../classes/ToBeScheduledTrip.class";
-import {RootState} from "../stores/store";
-import {prepareAuthentication} from "../stores/auth.store";
+import ToBeScheduledTrip, {
+    ToBeScheduledTripApiInterface,
+} from "../classes/ToBeScheduledTrip.class";
+import { RootState } from "../stores/store";
+import { prepareAuthentication } from "../stores/auth.store";
 import Config from "../config";
 import Checkpoint from "../classes/Checkpoint.class";
 
@@ -35,16 +37,20 @@ interface ShiftDetailResult {
 }
 
 interface ShiftCreateRequest {
-
     start: Date;
     end: Date;
-    startingPosition: string;
+    startingPositionLat: number;
+    startingPositionLng: number;
+    startingPositionName: string;
     capacity: number;
 }
 
 export const apiSlice = createApi({
     reducerPath: "api/trip",
-    baseQuery: fetchBaseQuery({baseUrl: `${Config.baseUrl}/shift`, prepareHeaders: prepareAuthentication,}),
+    baseQuery: fetchBaseQuery({
+        baseUrl: `${Config.baseUrl}/shift`,
+        prepareHeaders: prepareAuthentication,
+    }),
     endpoints: (builder) => ({
         shiftList: builder.mutation<ShiftListResult[], void>({
             query: (request) => ({
@@ -53,28 +59,32 @@ export const apiSlice = createApi({
             }),
             transformResponse: (response: { data: ShiftResult[] }) => {
                 return response.data;
-            }
+            },
         }),
         createShift: builder.mutation<ShiftResult, ShiftCreateRequest>({
             query: (request) => ({
                 url: "/",
                 method: "POST",
-                body: request
+                body: request,
             }),
             transformResponse: (response: { data: ShiftResult }) => {
                 return response.data;
-            }
+            },
         }),
         retrieveShift: builder.mutation<ShiftDetailResult, number>({
             query: (request) => ({
                 url: `/${request}`,
-                method: "GET"
+                method: "GET",
             }),
             transformResponse: (response: { data: ShiftDetailResult }) => {
                 return response.data;
-            }
-        })
+            },
+        }),
     }),
 });
 
-export const {useShiftListMutation, useCreateShiftMutation, useRetrieveShiftMutation} = apiSlice;
+export const {
+    useShiftListMutation,
+    useCreateShiftMutation,
+    useRetrieveShiftMutation,
+} = apiSlice;

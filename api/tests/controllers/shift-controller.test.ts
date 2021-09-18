@@ -41,7 +41,9 @@ describe("Perform create shift tests", () => {
             body: {
                 start: created.start,
                 end: created.end,
-                startingPosition: created.startingPosition,
+                startingPositionLat: created.startingPosition.lat,
+                startingPositionLng: created.startingPosition.lng,
+                startingPositionName: created.startingPositionName,
                 capacity: created.capacity,
             },
         } as express.Request;
@@ -66,7 +68,9 @@ describe("Perform create shift tests", () => {
             body: {
                 start: created.start,
                 end: created.end,
-                startingPosition: created.startingPosition,
+                startingPositionLat: created.startingPosition.lat,
+                startingPositionLng: created.startingPosition.lng,
+                startingPositionName: created.startingPositionName,
                 capacity: created.capacity,
             },
         } as express.Request;

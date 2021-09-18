@@ -6,6 +6,7 @@ export default class Shift {
     public start: Date;
     public end: Date;
     public startingPosition: Position;
+    public startingPositionName: string;
     public capacity: number;
 
     setId(value: string) {

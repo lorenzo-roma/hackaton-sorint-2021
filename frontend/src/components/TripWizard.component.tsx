@@ -1,13 +1,10 @@
-import { useEffect } from "react";
 import useInput from "../hooks/useInput.hook";
 import { GREATER_THAN, NOT_EMPTY, NOT_EMPTY_STRING } from "../utils/Validators";
-import { Button, InputText } from "./system/InputText";
-import DatePicker from "react-datepicker";
+import { Button } from "./system/InputText";
 import InputDateTime from "./system/InputDateTime";
 import ToBeScheduledTrip, {
     ToBeScheduledTripApiInterface,
 } from "../classes/ToBeScheduledTrip.class";
-import { useSignupMutation } from "../services/auth.service";
 import { useCreateTripMutation } from "../services/trip.service";
 import LoadingComponent from "./Loading.component";
 import ErrorComponent from "./Error.component";
@@ -22,16 +19,18 @@ export interface TripWizardProps {
     onAddedTrip: () => void;
 }
 
-const TripWizard = ({ initialFrom, initialTo, onAddedTrip }: TripWizardProps) => {
+const TripWizard = ({
+    initialFrom,
+    initialTo,
+    onAddedTrip,
+}: TripWizardProps) => {
     const [doCreateTrip, { isLoading, isError }] = useCreateTripMutation();
-    const fromInput = useInput<AutoCompleteResponse | undefined>(
-        initialFrom,
-        [NOT_EMPTY]
-    );
-    const toInput = useInput<AutoCompleteResponse | undefined>(
-        initialTo,
-        [NOT_EMPTY]
-    );
+    const fromInput = useInput<AutoCompleteResponse | undefined>(initialFrom, [
+        NOT_EMPTY,
+    ]);
+    const toInput = useInput<AutoCompleteResponse | undefined>(initialTo, [
+        NOT_EMPTY,
+    ]);
     const initialAvailability = useInput<Date>(
         moment(new Date()).add(24, "hours").toDate(),
         [
@@ -60,10 +59,17 @@ const TripWizard = ({ initialFrom, initialTo, onAddedTrip }: TripWizardProps) =>
         ]
     );
 
-    const isInputValid = () => !(fromInput.hasErrors || toInput.hasErrors || initialAvailability.hasErrors || endAvailability.hasErrors || endDateTime.hasErrors);
+    const isInputValid = () =>
+        !(
+            fromInput.hasErrors ||
+            toInput.hasErrors ||
+            initialAvailability.hasErrors ||
+            endAvailability.hasErrors ||
+            endDateTime.hasErrors
+        );
 
     const createTrip = async () => {
-        if(!isInputValid()) return
+        if (!isInputValid()) return;
         const geoCodeFrom = await geocodeByPlaceId(
             fromInput.value!.value.place_id
         );
