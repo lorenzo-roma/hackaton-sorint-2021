@@ -49,3 +49,13 @@ export const LOWER_THAN = (than: any) => new Validator(
     },
     (value: any) => value < than
 );
+
+export const NUMBER = new Validator(
+    {
+        type: 'NUMBER',
+        printable: 'The input must be a number'
+    },
+    (value: any) => {
+            return !isNaN(parseInt(value));
+    }
+);

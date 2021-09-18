@@ -5,8 +5,10 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useAppDispatch, useAppSelector } from "../stores/store";
 import { AuthState, clearToken, selectAuthState } from "../stores/auth.store";
 import {useCookies} from "react-cookie";
-
-const NavbarComponent = () => {
+type NavbarComponentProps = {
+    driver: boolean
+}
+const NavbarComponent = (props: NavbarComponentProps) => {
     const authState = useAppSelector(selectAuthState);
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const dispatch = useAppDispatch();
@@ -15,12 +17,12 @@ const NavbarComponent = () => {
         return (
             <Nav>
                 <Nav.Item>
-                    <LinkContainer to="/login">
+                    <LinkContainer to={props.driver ? "/driver/login" : "/login"}>
                         <Nav.Link>Login</Nav.Link>
                     </LinkContainer>
                 </Nav.Item>
                 <Nav.Item>
-                    <LinkContainer to="/signup">
+                    <LinkContainer to={props.driver ? "/driver/signup" : "/signup"}>
                         <Nav.Link>Signup</Nav.Link>
                     </LinkContainer>
                 </Nav.Item>
@@ -44,14 +46,26 @@ const NavbarComponent = () => {
         );
     };
 
+    function driverSection() {
+        return <Nav>
+            <Nav.Item>
+                <LinkContainer to="/driver">
+                    <Nav.Link>Become a driver</Nav.Link>
+                </LinkContainer>
+            </Nav.Item>
+        </Nav>;
+    }
+
     return (
         <Navbar>
             <Container>
                 <LinkContainer to="/">
                     <Navbar.Brand>Home</Navbar.Brand>
+
                 </LinkContainer>
                 <Navbar.Collapse>
-                    <Nav className="me-auto" />
+                    {driverSection()}
+                    <Nav className="me-auto"/>
                     {authState == AuthState.LOGGED_OUT && loggedOutSection()}
                     {authState == AuthState.LOGGED_IN && loggedInSection()}
                 </Navbar.Collapse>
