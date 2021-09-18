@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+import AutoCompleteResponse from "../classes/autocomplete-response.class";
 
-const SelectAddress = (props: { onChange: (value: any) => void }) => {
+const SelectAddress = (props: { onChange: (value: any) => void, value: AutoCompleteResponse | undefined}) => {
+    const optionalOptions = props.value ? {value: props.value} : {}
     return (
         <div>
             <GooglePlacesAutocomplete
@@ -11,6 +13,7 @@ const SelectAddress = (props: { onChange: (value: any) => void }) => {
                     region: "it",
                 }}
                 selectProps={{
+                    ...optionalOptions,
                     onChange: (value: any) => props.onChange(value),
                 }}
             />

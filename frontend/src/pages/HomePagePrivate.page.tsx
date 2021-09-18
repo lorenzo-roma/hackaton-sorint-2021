@@ -9,8 +9,13 @@ import TripWizard, {
     TripWizardProps,
 } from "../components/TripWizard.component";
 import SelectAddress from "../components/SelectAddress.component";
+import AutoCompleteResponse from "../classes/autocomplete-response.class";
+import moment from "moment";
 
-type HomePagePrivateProps = TripWizardProps;
+type HomePagePrivateProps = {
+    initialFrom?: AutoCompleteResponse;
+    initialTo?: AutoCompleteResponse;
+};
 
 const HomePagePrivate = (props: HomePagePrivateProps) => {
     const [doTrips, { isLoading, isError, data: tripsResponse, isSuccess }] =
@@ -25,6 +30,7 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
             <TripWizard
                 initialFrom={props.initialFrom}
                 initialTo={props.initialTo}
+                onAddedTrip={doTrips}
             />
             {isError && <ErrorComponent error={"Error while loading trips"} />}
             {isSuccess && (
@@ -33,7 +39,7 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
                         <>
                             <h1>Upcoming Trips</h1>
                             {tripsResponse.confirmedTrips.map((trip) => (
-                                <div>
+                                <div key={trip.id}>
                                     {trip.confirmedPickedUp} {trip.from} to{" "}
                                     {trip.to} {trip.arrival}
                                 </div>
@@ -46,11 +52,11 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
                                 <h1>To Be Scheduled Trip</h1>
                                 {tripsResponse.toBeScheduledTrips.map(
                                     (trip) => (
-                                        <div>
-                                            {trip.initialAvailability}-
-                                            {trip.endAvailability}{" "}
+                                        <div key={trip.id}>
+                                            {moment(trip.initialAvailability).format("hh:mm")}-
+                                            {moment(trip.endAvailability).format("hh:mm")}{" "}
                                             {trip.fromName} to {trip.toName}{" "}
-                                            {trip.arrival}
+                                            {moment(trip.arrival).format("hh:mm")}
                                         </div>
                                     )
                                 )}
