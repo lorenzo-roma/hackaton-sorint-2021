@@ -15,8 +15,8 @@ export default class TripController {
         const tripToCreate: Trip = new Trip();
         tripToCreate.setFrom(req.body.from);
         tripToCreate.setTo(req.body.to);
-        tripToCreate.setInitialAvailability(req.body.initial_availability);
-        tripToCreate.setEndAvailability(req.body.end_availability);
+        tripToCreate.setInitialAvailability(req.body.initialAvailability);
+        tripToCreate.setEndAvailability(req.body.endAvailability);
         tripToCreate.setArrival(req.body.arrival);
         tripToCreate.setUserId(userId);
         const response: ServiceResponse<TripResult, Trip> =

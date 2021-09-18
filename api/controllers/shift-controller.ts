@@ -13,7 +13,7 @@ export default class ShiftController {
         const shiftToCreate: Shift = new Shift();
         shiftToCreate.setStart(req.body.start);
         shiftToCreate.setEnd(req.body.end);
-        shiftToCreate.setStartingPosition(req.body.starting_position);
+        shiftToCreate.setStartingPosition(req.body.startingPosition);
         shiftToCreate.setCapacity(req.body.capacity);
         shiftToCreate.setUserId(userId);
         const response: ServiceResponse<ShiftResult, Shift> =

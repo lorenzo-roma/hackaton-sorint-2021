@@ -32,8 +32,8 @@ describe("Perform create trip tests", () => {
             body: {
                 from: created.from,
                 to: created.to,
-                initial_availability: created.initialAvailability,
-                end_availability: created.endAvailability,
+                initialAvailability: created.initialAvailability,
+                endAvailability: created.endAvailability,
                 arrival: created.arrival,
             },
         } as express.Request;
@@ -58,8 +58,8 @@ describe("Perform create trip tests", () => {
             body: {
                 from: created.from,
                 to: created.to,
-                initial_availability: created.initialAvailability,
-                end_availability: created.endAvailability,
+                initialAvailability: created.initialAvailability,
+                endAvailability: created.endAvailability,
                 arrival: created.arrival,
             },
         } as express.Request;
