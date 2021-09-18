@@ -1,10 +1,23 @@
 import User from "./User.class";
 
+export enum HopType {
+    PICKUP,
+    DROPOUT
+}
+
+export interface Position {
+    lng: number;
+    lat: number;
+}
+
 export default interface Checkpoint {
-    id: number;
-    shiftId: number;
-    position: string;
-    sortIndex: string;
+    id: string;
+    shiftId: string;
+    position: Position;
+    sortIndex: number;
+    time: Date;
+    tripId: string;
+    userId: string;
+    hopType: HopType;
     user: User;
-    pickup: boolean;
 }

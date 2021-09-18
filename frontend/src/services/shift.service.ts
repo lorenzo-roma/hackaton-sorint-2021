@@ -81,6 +81,12 @@ export const apiSlice = createApi({
                 return response.data;
             },
         }),
+        calculateShift: builder.mutation<void, number>({
+            query: (request) => ({
+                url: `/path/${request}`,
+                method: "GET",
+            }),
+        }),
     }),
 });
 
@@ -88,4 +94,5 @@ export const {
     useShiftListMutation,
     useCreateShiftMutation,
     useRetrieveShiftMutation,
+    useCalculateShiftMutation
 } = apiSlice;

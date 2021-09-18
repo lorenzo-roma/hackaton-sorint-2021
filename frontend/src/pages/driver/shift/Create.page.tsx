@@ -33,8 +33,8 @@ const CreateShiftPage = () => {
             "End shift date should be greater than the start"
         ),
     ]);
-    const startingPositionInput = useInput<AutoCompleteResponse>(
-        {} as AutoCompleteResponse
+    const startingPositionInput = useInput<AutoCompleteResponse | undefined>(
+        undefined
     );
     const capacityInput = useInput<string>("5", [
         NOT_EMPTY.withPrintable("Capacity should not be empty"),
@@ -59,7 +59,7 @@ const CreateShiftPage = () => {
     async function createShift() {
         if (shiftFormHasError()) return;
         const geoCodeFrom = await geocodeByPlaceId(
-            startingPositionInput.value.value.place_id
+            startingPositionInput.value!.value.place_id
         );
         const point = await getLatLng(geoCodeFrom[0]);
 
@@ -67,7 +67,7 @@ const CreateShiftPage = () => {
             end: endInput.value,
             start: startInput.value,
             capacity: Number(capacityInput.value),
-            startingPositionName: startingPositionInput.value.label,
+            startingPositionName: startingPositionInput.value!.label,
             startingPositionLat: point.lat,
             startingPositionLng: point.lng,
         });
