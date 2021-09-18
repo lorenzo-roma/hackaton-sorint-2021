@@ -1,6 +1,6 @@
 
 
-interface ServiceResponse<T, V = null> {
+export interface ServiceResponse<T, V = null> {
     status: T,
     data?: V
 }

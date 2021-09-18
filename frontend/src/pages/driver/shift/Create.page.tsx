@@ -7,6 +7,8 @@ import {useCreateShiftMutation} from "../../../services/shift.service";
 import LoadingComponent from "../../../components/Loading.component";
 import ErrorComponent from "../../../components/Error.component";
 import {Redirect} from "react-router-dom";
+import SelectAddress from "../../../components/SelectAddress.component";
+import AutoCompleteResponse from "../../../classes/autocomplete-response.class";
 
 const CreateShiftPage = () => {
     const [doCreateShift, {isLoading, isError, isSuccess}] = useCreateShiftMutation();
@@ -14,7 +16,7 @@ const CreateShiftPage = () => {
     const endDefaultDate = moment(startDefaultDate).add(4, "h").toDate()
     const startInput = useInput(startDefaultDate, [GREATER_THAN(moment(new Date()).add(24, "h").toDate()).withPrintable("You cannot plan a shift 24 hours before")]);
     const endInput = useInput(endDefaultDate, [GREATER_THAN(startInput.value).withPrintable("End shift date should be greater than the start")]);
-    const startingPositionInput = useInput("", [NOT_EMPTY_STRING.withPrintable("Starting position should not be empty")]);
+    const startingPositionInput = useInput<AutoCompleteResponse | undefined>(undefined, [NOT_EMPTY.withPrintable("Starting position should not be empty")]);
     const capacityInput = useInput<string>("5", [
         NOT_EMPTY.withPrintable("Capacity should not be empty"),
         NUMBER,
@@ -36,7 +38,7 @@ const CreateShiftPage = () => {
             end: endInput.value,
             start: startInput.value,
             capacity: Number(capacityInput.value),
-            startingPosition: startingPositionInput.value
+            startingPosition: startingPositionInput.value!
         })
     }
 
@@ -49,7 +51,7 @@ const CreateShiftPage = () => {
             <label>Capacity of the vehicle for passengers:</label>
             <InputText type={"number"} {...capacityInput} />
             <label>Starting position of the shift:</label>
-            <InputText type={"text"} {...startingPositionInput} />
+            <SelectAddress {...startingPositionInput} />
             <Button onClick={createShift} >Create shift</Button>
         </div>
     )

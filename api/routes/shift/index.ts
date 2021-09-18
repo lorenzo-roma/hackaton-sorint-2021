@@ -13,14 +13,14 @@ router.post(
     "/",
     new ResponseAdapterMiddleware(shiftController.createShift).handler
 );
-router.get(
-    "/",
-    new ResponseAdapterMiddleware(shiftController.retrieveShifts).handler
-);
 
 router.get(
     "/:shiftId",
     new ResponseAdapterMiddleware(shiftController.calculatePath).handler
+);
+router.get(
+    "/",
+    new ResponseAdapterMiddleware(shiftController.retrieveShifts).handler
 );
 
 export default router;

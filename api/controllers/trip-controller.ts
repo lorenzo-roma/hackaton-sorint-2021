@@ -7,6 +7,7 @@ import TripServiceInterface from "../services/trip/trip-service-interface";
 import Trip from "../models/trip";
 import TripResult from "../models/trip-result";
 import Position from "../models/position";
+import {ServiceResponse} from "../models/service-response";
 
 export default class TripController {
     constructor(private tripService: TripServiceInterface) {}

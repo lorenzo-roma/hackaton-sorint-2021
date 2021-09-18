@@ -2,6 +2,7 @@ import Shift from "../../models/shift";
 import ShiftResult from "../../models/shift-result";
 import ShiftRepository from "../../repository/shift-repository-interface";
 import ShiftServiceInterface from "./shift-service-interface";
+import {ServiceResponse} from "../../models/service-response";
 
 export default class ShiftService implements ShiftServiceInterface {
     constructor(private repository: ShiftRepository) {}

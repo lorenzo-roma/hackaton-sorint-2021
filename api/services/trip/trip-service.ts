@@ -3,6 +3,7 @@ import Trip from "../../models/trip";
 import TripResult from "../../models/trip-result";
 import TripRepository from "../../repository/trip-repository-interface";
 import TripServiceInterface from "./trip-service-interface";
+import {ServiceResponse} from "../../models/service-response";
 
 export default class TripService implements TripServiceInterface {
     constructor(private repository: TripRepository) {}

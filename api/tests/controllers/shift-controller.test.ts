@@ -14,6 +14,7 @@ import PathServiceInterface from "../../services/path/path-service-interface";
 import ShiftServiceInterface from "../../services/shift/shift-service-interface";
 import TripServiceInterface from "../../services/trip/trip-service-interface";
 import { getMockShift, getMockCheckpoint } from "../mocks";
+import {ServiceResponse} from "../../models/service-response";
 
 let controllerTested: ShiftController;
 let mockShiftService: ShiftServiceInterface;
