@@ -39,10 +39,10 @@ export const apiSlice = createApi({
                 method: "GET",
             }),
             transformResponse: (response: { data: TripResult[] }) => {
-                const trips = response.data.map(trip => fromTripResult(trip));
+                const trips = response.data;
                 return {
-                    toBeScheduledTrips: trips.filter(trip => trip instanceof ToBeScheduledTrip) as ToBeScheduledTrip[],
-                    confirmedTrips: trips.filter(trip => trip instanceof ConfirmedTrip) as ConfirmedTrip[],
+                    toBeScheduledTrips: trips.filter(trip => !trip.shiftId) as ToBeScheduledTrip[],
+                    confirmedTrips: trips.filter(trip => trip.shiftId) as ConfirmedTrip[],
                 }
             }
         }),
@@ -52,7 +52,7 @@ export const apiSlice = createApi({
                 method: "GET",
             }),
             transformResponse: (response: { data: TripResult }) => {
-                return fromTripResult(response.data);
+                return response.data as ConfirmedTrip | ToBeScheduledTrip;
             }
         }),
         createTrip: builder.mutation<ToBeScheduledTrip, TripCreateRequest>({
@@ -62,19 +62,10 @@ export const apiSlice = createApi({
                 body: request
             }),
             transformResponse: (response: { data: TripResult }) => {
-                return ToBeScheduledTrip.fromTripResult(response.data);
+                return response.data as ToBeScheduledTrip;
             }
         })
     }),
 });
 
 export const {useTripListMutation, useTripDetailMutation, useCreateTripMutation} = apiSlice;
-
-
-function fromTripResult(tripResult: TripResult) {
-    if(tripResult.shiftId) {
-        return ConfirmedTrip.fromTripResult(tripResult);
-    } else {
-        return ToBeScheduledTrip.fromTripResult(tripResult)
-    }
-}

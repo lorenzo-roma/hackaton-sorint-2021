@@ -30,23 +30,32 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
             {isError && <ErrorComponent error={"Error while loading trips"} />}
             {isSuccess && (
                 <>
-                    <h1>Upcoming Trips</h1>
+                    {tripsResponse && tripsResponse.confirmedTrips.length > 0 && (
+                        <>
+                            <h1>Upcoming Trips</h1>
+                            {tripsResponse.confirmedTrips.map((trip) => (
+                                <div>
+                                    {trip.confirmedPickedUp} {trip.from} to{" "}
+                                    {trip.to} {trip.arrival}
+                                </div>
+                            ))}
+                        </>
+                    )}
                     {tripsResponse &&
-                        tripsResponse.confirmedTrips.map((trip) => (
-                            <div>
-                                {trip.confirmedPickedUp} {trip.from} to{" "}
-                                {trip.to} {trip.arrival}
-                            </div>
-                        ))}
-                    <h1>To Be Scheduled Trip</h1>
-                    {tripsResponse &&
-                        tripsResponse.toBeScheduledTrips.map((trip) => (
-                            <div>
-                                {trip.initialAvailability}-
-                                {trip.endAvailability} {trip.from} to {trip.to}{" "}
-                                {trip.arrival}
-                            </div>
-                        ))}
+                        tripsResponse.toBeScheduledTrips.length > 0 && (
+                            <>
+                                <h1>To Be Scheduled Trip</h1>
+                                {tripsResponse.toBeScheduledTrips.map(
+                                    (trip) => (
+                                        <div>
+                                            {trip.initialAvailability}-
+                                            {trip.endAvailability} {trip.from}{" "}
+                                            to {trip.to} {trip.arrival}
+                                        </div>
+                                    )
+                                )}
+                            </>
+                        )}
                 </>
             )}
         </div>

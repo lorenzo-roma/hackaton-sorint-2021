@@ -1,11 +1,6 @@
-
-export default class Trip {
-
-    constructor(public id: number,
-                public from: string,
-                public to: string,
-                public arrival: Date
-                ) {
-    }
-
+export default interface Trip {
+    id: number,
+    from: string,
+    to: string,
+    arrival: Date
 }
