@@ -14,7 +14,8 @@ import PathServiceInterface from "../../services/path/path-service-interface";
 import ShiftServiceInterface from "../../services/shift/shift-service-interface";
 import TripServiceInterface from "../../services/trip/trip-service-interface";
 import { getMockShift, getMockCheckpoint } from "../mocks";
-import {ServiceResponse} from "../../models/service-response";
+import { ServiceResponse } from "../../models/service-response";
+import { CheckpointDetail } from "../../models/checkpoint";
 
 let controllerTested: ShiftController;
 let mockShiftService: ShiftServiceInterface;
@@ -128,7 +129,7 @@ describe("Perform calculate path tests", () => {
         expect(response.data).toBe(checkpoints);
     });
 
-    test("If path is not calculated, return success response", async () => {
+    test("If path is not calculated, return error response", async () => {
         mockPathService.calculateForShift = jest.fn(async () => {
             return { status: PathResult.ERROR_CALCULATING_PATH };
         });
@@ -136,5 +137,35 @@ describe("Perform calculate path tests", () => {
         mockReq.params = { shiftId: "2" };
         const response = await controllerTested.calculatePath(mockReq);
         expect(response.status).toBe(APIResponseStatus.ERROR);
+    });
+});
+
+describe("Perform retrieve detail tests", () => {
+    test("If details are not retrieved, return error response", async () => {
+        mockShiftService.getCheckpointsDetailByShiftId = jest.fn(async () => {
+            return { status: ShiftResult.ERROR_RETRIEVING_CHECKPOINTS };
+        });
+        const mockReq = {} as express.Request;
+        mockReq.params = { shiftId: "2" };
+        let response = await controllerTested.retrieveShiftDetail(mockReq);
+        expect(response.status).toBe(APIResponseStatus.ERROR);
+
+        mockShiftService.getCheckpointsDetailByShiftId = jest.fn(async () => {
+            return { status: ShiftResult.USER_NOT_FOUND };
+        });
+        response = await controllerTested.retrieveShiftDetail(mockReq);
+        expect(response.status).toBe(APIResponseStatus.ERROR);
+    });
+
+    test("If details are retrieved, return success response", async () => {
+        const details: CheckpointDetail[] = [];
+        mockShiftService.getCheckpointsDetailByShiftId = jest.fn(async () => {
+            return { status: ShiftResult.SUCCESS, data: details };
+        });
+        const mockReq = {} as express.Request;
+        mockReq.params = { shiftId: "2" };
+        let response = await controllerTested.retrieveShiftDetail(mockReq);
+        expect(response.status).toBe(APIResponseStatus.SUCCESS);
+        expect(response.data).toBe(details);
     });
 });

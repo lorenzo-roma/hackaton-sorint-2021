@@ -23,7 +23,7 @@ export default class CacheRepository
         Checkpoint
     >();
 
-    async getCheckpointsByShiftId(
+    async findCheckpointsByShiftId(
         id: string
     ): Promise<Checkpoint[] | undefined> {
         const toReturn: Checkpoint[] = [];

@@ -18,7 +18,7 @@ export default class ShiftService implements ShiftServiceInterface {
         id: string
     ): Promise<ServiceResponse<ShiftResult, CheckpointDetail[]>> {
         const checkpoints =
-            await this.checkpointsRepository.getCheckpointsByShiftId(id);
+            await this.checkpointsRepository.findCheckpointsByShiftId(id);
         if (!checkpoints)
             return { status: ShiftResult.ERROR_RETRIEVING_CHECKPOINTS };
         const details: CheckpointDetail[] = [];
