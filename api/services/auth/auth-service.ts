@@ -19,14 +19,14 @@ export default class AuthService implements AuthServiceInterface {
         return { status: AuthResult.ERROR_DURING_SIGNUP };
     }
 
-    async logIn(user: User): Promise<ServiceResponse<AuthResult>> {
+    async logIn(user: User): Promise<ServiceResponse<AuthResult, User>> {
         const userToAuth = await this.repository.findUserByUsername(
             user.username
         );
         if (userToAuth == null) return { status: AuthResult.NOT_FOUND };
         if (userToAuth.password != user.password)
             return { status: AuthResult.WRONG_PASSWORD };
-        return { status: AuthResult.SUCCESS };
+        return { status: AuthResult.SUCCESS, data: userToAuth };
     }
 
     async getToken(user: User): Promise<ServiceResponse<AuthResult, string>> {
