@@ -50,8 +50,8 @@ export default class PathOptimizer {
         let index = 0;
         for (const trip of trips) {
             locations.push({
-                lat: trip.fromLat,
-                lng: trip.fromLng,
+                lat: trip.fromPosition.lat,
+                lng: trip.fromPosition.lng,
                 name: "s_" + trip.id,
                 restrictions: [
                     diffFromStartShift(trip.initialAvailability), // ready
@@ -61,8 +61,8 @@ export default class PathOptimizer {
                 ],
             });
             locations.push({
-                lat: trip.toLat,
-                lng: trip.toLng,
+                lat: trip.toPosition.lat,
+                lng: trip.toPosition.lng,
                 name: "e_" + trip.id,
                 restrictions: [
                     1, // ready
@@ -98,8 +98,8 @@ export default class PathOptimizer {
             )!;
             const isPickup = point.name === `s_${trip.id}`;
             toReturn.position = {
-                lat: isPickup ? trip.fromLat : trip.toLat,
-                lng: isPickup ? trip.fromLng : trip.toLng,
+                lat: isPickup ? trip.fromPosition.lat : trip.toPosition.lat,
+                lng: isPickup ? trip.fromPosition.lat : trip.toPosition.lat,
             };
             toReturn.hopType = isPickup ? HopType.PICKUP : HopType.DROPOUT;
             toReturn.userId = trip.userId;
