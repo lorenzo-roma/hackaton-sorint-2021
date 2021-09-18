@@ -17,8 +17,8 @@ export default class RepositoryProvider {
     }
 
     static async initTestData() {
-        const firstUser = new User("lorenzo", "pippo", "0");
-        const secondUser = new User("davide", "pluto", "1");
+        const firstUser = new User("lorenzo", "pippo", "lorenzo", "Romagnoni", "+39 3402192392", false, "0");
+        const secondUser = new User("davide", "pluto", "Davide", "Campagnola", "+39 3402192392", false, "1");
         const firstTrip = new Trip();
         firstTrip.fromName = "Canegrate, MI";
         firstTrip.toName = "Milano, MI";

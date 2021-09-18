@@ -17,7 +17,7 @@ beforeEach(() => {
 describe("Perform login tests", () => {
     test("If auth succeds, and token is retrieved should return success response and token", async () => {
         const token = "token";
-        const user: User = new User("test", "password");
+        const user: User = new User("test", "password","lorenzo", "romagnoni", "+39 3402192392", false);
 
         mockService.logIn = jest.fn(async (): Promise<
             ServiceResponse<AuthResult, User>
@@ -55,7 +55,7 @@ describe("Perform login tests", () => {
             return { status: AuthResult.ERROR_RETRIEVING_TOKEN };
         });
 
-        const user: User = new User("test", "password");
+        const user: User = new User("test", "password","lorenzo", "romagnoni", "+39 3402192392", false);
         const mockReq = {
             body: {
                 username: user.username,
@@ -67,7 +67,7 @@ describe("Perform login tests", () => {
     });
 
     test("If auth does not succed, should return error response", async () => {
-        const user: User = new User("test", "password");
+        const user: User = new User("test", "password","lorenzo", "romagnoni", "+39 3402192392", false, );
         const mockReq = {
             body: {
                 username: user.username,
@@ -110,7 +110,7 @@ describe("Perform signup tests", () => {
             return { status: AuthResult.SUCCESS, data: token };
         });
 
-        const user: User = new User("test", "password");
+        const user: User = new User("test", "password","lorenzo", "romagnoni", "+39 3402192392", false, );
         const mockReq = {
             body: {
                 username: user.username,
@@ -135,7 +135,7 @@ describe("Perform signup tests", () => {
             return { status: AuthResult.ERROR_RETRIEVING_TOKEN };
         });
 
-        const user: User = new User("test", "password");
+        const user: User = new User("test", "password","lorenzo", "romagnoni", "+39 3402192392", false, );
         const mockReq = {
             body: {
                 username: user.username,
@@ -147,7 +147,7 @@ describe("Perform signup tests", () => {
     });
 
     test("If signup does not succed, should return error response", async () => {
-        const user: User = new User("test", "password");
+        const user: User = new User("test", "password","lorenzo", "romagnoni", "+39 3402192392", false, );
         const mockReq = {
             body: {
                 username: user.username,

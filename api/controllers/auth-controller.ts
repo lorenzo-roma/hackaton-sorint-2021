@@ -4,6 +4,7 @@ import AuthResult from "../models/auth-result";
 import User from "../models/user";
 import { APIResponse } from "../models/api-response";
 import {ServiceResponse} from "../models/service-response";
+import Credential from "../models/credential";
 
 export default class AuthController {
     constructor(private authService: AuthServiceInterface) {}
@@ -11,7 +12,7 @@ export default class AuthController {
     performLogin = async (req: express.Request): Promise<APIResponse> => {
         const username = req.body.username;
         const password = req.body.password;
-        const user: User = { username, password };
+        const user: Credential = { username, password };
         const response = await this.authService.logIn(user);
         if (response.status != AuthResult.SUCCESS) return APIResponse.Error();
         const tokenResult: ServiceResponse<AuthResult, string> =
@@ -24,7 +25,11 @@ export default class AuthController {
     performSignup = async (req: express.Request): Promise<APIResponse> => {
         const username = req.body.username;
         const password = req.body.password;
-        const user: User = { username, password };
+        const name = req.body.name;
+        const surname = req.body.surname;
+        const phoneNumber = req.body.phoneNumber;
+        const driver = req.body.driver;
+        const user: User = { username, password, name, surname, phoneNumber, driver };
         const response: ServiceResponse<AuthResult, User> =
             await this.authService.signUp(user);
         if (response.status != AuthResult.SUCCESS) return APIResponse.Error();

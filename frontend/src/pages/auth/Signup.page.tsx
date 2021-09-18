@@ -4,7 +4,7 @@ import LoadingComponent from "../../components/Loading.component";
 import {Button, InputText} from "../../components/system/InputText";
 import useInput from "../../hooks/useInput.hook";
 import {useSignupMutation} from "../../services/auth.service";
-import {NOT_EMPTY_STRING} from "../../utils/Validators";
+import {NOT_EMPTY_STRING, PHONE_NUMBER} from "../../utils/Validators";
 import {useCookies} from "react-cookie";
 import {setToken} from "../../stores/auth.store";
 import {useAppDispatch} from "../../stores/store";
@@ -22,14 +22,31 @@ const SignupPage = (props: SignupPageProps) => {
     const passwordInput = useInput("", [
         NOT_EMPTY_STRING.withPrintable("Insert a password"),
     ]);
+    const nameInput = useInput("", [
+        NOT_EMPTY_STRING.withPrintable("Insert a name"),
+    ]);
+    const surnameInput = useInput("", [
+        NOT_EMPTY_STRING.withPrintable("Insert a surname"),
+    ]);
+    const phoneNumberInput = useInput("", [
+        NOT_EMPTY_STRING.withPrintable("Insert a phone number with prefix"),
+        PHONE_NUMBER.withPrintable("Insert a phone number with prefix"),
+    ]);
 
     const [doSignup, {isLoading, isError}] = useSignupMutation();
 
+    const isFormValid = () => !(usernameInput.hasErrors || passwordInput.hasErrors || phoneNumberInput.hasErrors || surnameInput.hasErrors || nameInput.hasErrors)
+
     const onSignupClicked = async () => {
+        if(!isFormValid()) return;
         try {
             const result = await doSignup({
                 username: usernameInput.value,
                 password: passwordInput.value,
+                name: nameInput.value,
+                surname: surnameInput.value,
+                phoneNumber: phoneNumberInput.value,
+                driver: props.driver
             }).unwrap();
             const token: string = result.data.token;
             setCookie("token", token, {path: "/"});
@@ -44,15 +61,37 @@ const SignupPage = (props: SignupPageProps) => {
             <Card>
                 <Card.Body>
                     <FormGroup>
+                        <label>Username</label>
                         <InputText
                             type="text"
                             placeholder="Username"
                             {...usernameInput}
                         />
+                        <label>Password</label>
                         <InputText
                             type="password"
                             placeholder="Password"
                             {...passwordInput}
+                        />
+                        <label>Name</label>
+                        <InputText
+                            type="text"
+                            placeholder="Name"
+                            {...nameInput}
+                        />
+                        <label>Surname</label>
+
+                        <InputText
+                            type="text"
+                            placeholder="Surname"
+                            {...surnameInput}
+                        />
+                        <label>Phone Number</label>
+
+                        <InputText
+                            type="tel"
+                            placeholder="Phone Number"
+                            {...phoneNumberInput}
                         />
                         {isLoading && <LoadingComponent/>}
                         {isError && (

@@ -1,4 +1,3 @@
-jest.mock("node-fetch");
 import AuthService from "../../services/auth/auth-service";
 import AuthServiceInterface from "../../services/auth/auth-service-interface";
 import PathOptimizer from "../../services/path-optimizer/path-optimizer";

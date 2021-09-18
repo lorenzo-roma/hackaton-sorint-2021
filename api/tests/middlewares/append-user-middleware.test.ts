@@ -28,7 +28,7 @@ describe("Check user middleware tests", () => {
 
   test("If auth header is present, and token is valid, user object should be appended to request", async () => {
     req.headers["authorization"] = "Bearer token";
-    const user: User = new User("test", "passowrd", "1");
+    const user: User = new User("test", "passowrd", "lorenzo", "romagnoni", "+39 3402192392", false, "1");
     mockService.verifyToken = jest.fn(async () => {
       return { status: AuthResult.SUCCESS, data: user };
     });
@@ -39,7 +39,7 @@ describe("Check user middleware tests", () => {
 
   test("If auth header is present, and token is not valid, user object should be undefined", async () => {
     req.headers["authorization"] = "Bearer token";
-    const user: User = new User("test", "passowrd", "1");
+    const user: User = new User("test", "passowrd", "lorenzo", "romagnoni", "+39 3402192392", false, "1");
     mockService.verifyToken = jest.fn(async () => {
       return { status: AuthResult.ERROR_VALIDATING_TOKEN };
     });

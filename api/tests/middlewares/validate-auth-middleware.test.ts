@@ -17,7 +17,7 @@ beforeEach(() => {
 
 describe("Validate auth middleware tests", () => {
   test("If user is present in request, it should call next", async () => {
-    req.user = new User("test", "password", "1");
+    req.user = new User("test", "password", "lorenzo", "Romagnoni", "+39 3402192392", false,"1");
     await middlewareTested.handler(req, res, nextFn);
     expect(nextFn).toBeCalled();
   });

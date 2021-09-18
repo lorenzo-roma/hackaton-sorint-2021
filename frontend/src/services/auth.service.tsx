@@ -5,6 +5,14 @@ interface Credentials {
     username: string;
     password: string;
 }
+interface SignupRequest {
+    username: string;
+    name: string;
+    surname: string;
+    phoneNumber: string;
+    password: string;
+    driver: boolean;
+}
 
 interface AuthResult {
     status: string;
@@ -18,7 +26,7 @@ export const apiSlice = createApi({
     reducerPath: "api/auth",
     baseQuery: fetchBaseQuery({ baseUrl: `${Config.baseUrl}/auth` }),
     endpoints: (builder) => ({
-        signup: builder.mutation<AuthResult, Credentials>({
+        signup: builder.mutation<AuthResult, SignupRequest>({
             query: (credentials) => ({
                 url: "/signup",
                 method: "POST",

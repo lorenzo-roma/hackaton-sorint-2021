@@ -6,8 +6,7 @@ import TripRepository from "./trip-repository-interface";
 import UserRepository from "./user-repository-interface";
 
 export default class CacheRepository
-    implements UserRepository, TripRepository, ShiftRepository
-{
+    implements UserRepository, TripRepository, ShiftRepository {
     private usersCache: Map<string, User> = new Map<string, User>();
     private tripsCache: Map<string, Trip> = new Map<string, Trip>();
     private shiftCache: Map<string, Shift> = new Map<string, Shift>();
@@ -85,7 +84,7 @@ export default class CacheRepository
         const nameAlreadyTaken = await this.findUserByUsername(user.username);
         if (nameAlreadyTaken) return;
         const newId: string = this.usersCache.size + "";
-        const newUser: User = new User(user.username, user.password, newId);
+        const newUser: User = new User(user.username, user.password, user.name, user.surname, user.phoneNumber, user.driver, newId);
         this.usersCache.set(newId, newUser);
         return newUser;
     }
