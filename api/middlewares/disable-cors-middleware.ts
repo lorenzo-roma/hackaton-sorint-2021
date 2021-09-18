@@ -11,6 +11,7 @@ export default class DisableCorsMiddleware implements Middleware {
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Methods", "*");
     res.setHeader("Access-Control-Allow-Headers", "*");
-    next();
+    if(req.method === 'OPTIONS') return res.send(200);
+    return next();
   };
 }
