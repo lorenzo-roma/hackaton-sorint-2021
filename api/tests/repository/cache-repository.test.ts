@@ -171,8 +171,8 @@ describe("Find trip tests", () => {
 });
 
 describe("Find trips between tests", () => {
-    test("If no trip is available, it should return empty array", () => {
-        const result = repositoryTested.findTripsBetween(
+    test("If no trip is available, it should return empty array", async () => {
+        const result = await repositoryTested.findTripsBetween(
             new Date(),
             new Date()
         );
@@ -188,7 +188,7 @@ describe("Find trips between tests", () => {
         secondTrip.endAvailability = new Date("2021/12/01 10:00:00");
         secondTrip.arrival = new Date("2021/12/01 11:00:00");
         await repositoryTested.insertTrip(secondTrip);
-        const result = repositoryTested.findTripsBetween(
+        const result = await repositoryTested.findTripsBetween(
             new Date(),
             new Date()
         );
@@ -204,7 +204,7 @@ describe("Find trips between tests", () => {
         secondTrip.endAvailability = new Date("2021/03/01 10:00:00");
         secondTrip.arrival = new Date("2021/03/01 11:00:00");
         await repositoryTested.insertTrip(secondTrip);
-        const result = repositoryTested.findTripsBetween(
+        const result = await repositoryTested.findTripsBetween(
             new Date("2021/01/01 10:00:00"),
             new Date("2021/12/30 10:00:00")
         );
@@ -220,7 +220,7 @@ describe("Find trips between tests", () => {
         secondTrip.endAvailability = new Date("2021/03/01 10:00:00");
         secondTrip.arrival = new Date("2021/03/01 11:00:00");
         await repositoryTested.insertTrip(secondTrip);
-        const result = repositoryTested.findTripsBetween(
+        const result = await repositoryTested.findTripsBetween(
             new Date("2021/02/01 09:00:00"),
             new Date("2021/02/28 10:00:00")
         );

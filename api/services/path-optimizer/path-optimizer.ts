@@ -59,7 +59,7 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
                 ).toString("base64")}`,
             }),
             method: "POST",
-            body: params,
+            body: JSON.stringify(params),
         });
         const r = (await result.json()) as DistanceMatrixResponse;
         return {
@@ -123,7 +123,7 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
                 ).toString("base64")}`,
             }),
             method: "POST",
-            body: params,
+            body: JSON.stringify(params),
         });
         const r = (await result.json()) as TourResponse;
         const points = Object.values(r.route);
