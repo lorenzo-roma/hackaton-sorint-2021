@@ -1,9 +1,10 @@
+import Checkpoint from "../../models/checkpoint";
 import Shift from "../../models/shift";
 import Trip from "../../models/trip";
 import User from "../../models/user";
 import CacheRepository from "../../repository/cache-repository";
 import Repository from "../../repository/user-repository-interface";
-import { getMockShift, getMockTrip } from "../mocks";
+import { getMockCheckpoint, getMockShift, getMockTrip } from "../mocks";
 
 let repositoryTested: CacheRepository;
 
@@ -74,6 +75,21 @@ describe("Insert trip tests", () => {
         expect(inserted!.id).toBe("0");
         const newTrip: Trip = getMockTrip();
         const newInserted = await repositoryTested.insertTrip(newTrip);
+        expect(newInserted).toBeTruthy();
+        expect(newInserted!.id).toBe("1");
+    });
+});
+
+describe("Insert checkpoint tests", () => {
+    test("Insertion of new checkpoint should return inserted checkpoint with new id", async () => {
+        const checkpoint: Checkpoint = getMockCheckpoint();
+        const inserted = await repositoryTested.insertCheckpoint(checkpoint);
+        expect(inserted).toBeTruthy();
+        expect(inserted!.id).toBe("0");
+        const newCheckpoint: Checkpoint = getMockCheckpoint();
+        const newInserted = await repositoryTested.insertCheckpoint(
+            newCheckpoint
+        );
         expect(newInserted).toBeTruthy();
         expect(newInserted!.id).toBe("1");
     });

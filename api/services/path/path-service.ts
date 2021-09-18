@@ -7,11 +7,13 @@ import TripServiceInterface from "../trip/trip-service-interface";
 import TripResult from "../../models/trip-result";
 import PathOptimizerServiceInterface from "../path-optimizer/path-optimizer-interface";
 import Position from "../../models/position";
-import {ServiceResponse} from "../../models/service-response";
+import { ServiceResponse } from "../../models/service-response";
+import CheckPointRepositoryInterface from "../../repository/checkpoint-repository-interface";
 
 export default class PathService implements PathServiceInterface {
     constructor(
         private shiftRepository: ShiftRepositoryInterface,
+        private checkpointRepository: CheckPointRepositoryInterface,
         private tripService: TripServiceInterface,
         private optimizerService: PathOptimizerServiceInterface
     ) {}
@@ -72,6 +74,15 @@ export default class PathService implements PathServiceInterface {
             );
         }
 
+        for (const checkpoint of finalCheckPoints) {
+            checkpoint.shiftId = id;
+            const trip = tripResponse.data!.find(
+                (t: Trip) => t.id == checkpoint.tripId
+            );
+            await this.tripService.assingTripToShift(trip!.id, shift);
+            await this.tripService.assignTripToCheckpoint(trip!.id, checkpoint);
+            await this.checkpointRepository.insertCheckpoint(checkpoint);
+        }
         return { status: PathResult.SUCCESS, data: finalCheckPoints };
     }
 }

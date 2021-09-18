@@ -5,6 +5,7 @@ import TripServiceInterface from "./trip/trip-service-interface";
 import TripService from "./trip/trip-service";
 import UserRepository from "../repository/user-repository-interface";
 import TripRepository from "../repository/trip-repository-interface";
+import CheckpointRepository from "../repository/checkpoint-repository-interface";
 import ShiftServiceInterface from "./shift/shift-service-interface";
 import ShiftRepository from "../repository/shift-repository-interface";
 import ShiftService from "./shift/shift-service";
@@ -58,10 +59,13 @@ export default class ServiceProvider {
         if (this.pathService == null) {
             const shiftRepository: ShiftRepository =
                 RepositoryProvider.getRepository();
+            const checkpointRepository: CheckpointRepository =
+                RepositoryProvider.getRepository();
             const tripService = this.getTripService();
             const optimizerService = this.getOptimizerService();
             this.pathService = new PathService(
                 shiftRepository,
+                checkpointRepository,
                 tripService,
                 optimizerService
             );
