@@ -2,6 +2,7 @@ import {configureStore} from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {apiSlice as authApiSlice} from "../services/auth.service";
 import {apiSlice as tripApiSlice} from "../services/trip.service";
+import {apiSlice as userApiSlice} from "../services/user.service";
 import authStore from "./auth.store";
 
 const store = configureStore({
@@ -9,10 +10,12 @@ const store = configureStore({
         auth: authStore.reducer,
         [authApiSlice.reducerPath]: authApiSlice.reducer,
         [tripApiSlice.reducerPath]: tripApiSlice.reducer,
+        [userApiSlice.reducerPath]: userApiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => {
         const defaultMiddleware = getDefaultMiddleware().concat(authApiSlice.middleware);
-        defaultMiddleware.concat(tripApiSlice.middleware)
+        defaultMiddleware.concat(tripApiSlice.middleware);
+        defaultMiddleware.concat(userApiSlice.middleware);
         return defaultMiddleware;
     }
 });

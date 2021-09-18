@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Config from "../config";
+import {RootState} from "../stores/store";
 
 interface Credentials {
     username: string;
@@ -20,11 +21,10 @@ interface AuthResult {
         token: string;
     };
 }
-
-console.log(Config.baseUrl);
+const baseUrl = `${Config.baseUrl}/auth` ;
 export const apiSlice = createApi({
     reducerPath: "api/auth",
-    baseQuery: fetchBaseQuery({ baseUrl: `${Config.baseUrl}/auth` }),
+    baseQuery: fetchBaseQuery({ baseUrl} ),
     endpoints: (builder) => ({
         signup: builder.mutation<AuthResult, SignupRequest>({
             query: (credentials) => ({
@@ -39,7 +39,7 @@ export const apiSlice = createApi({
                 method: "POST",
                 body: credentials,
             }),
-        }),
+        })
     }),
 });
 

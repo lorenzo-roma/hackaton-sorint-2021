@@ -39,4 +39,7 @@ export default class AuthController {
             return APIResponse.Error();
         return APIResponse.Success({ token: tokenResult.data });
     };
+    performMe = async (req: express.Request): Promise<APIResponse> => {
+        return APIResponse.Success(req.user);
+    };
 }
