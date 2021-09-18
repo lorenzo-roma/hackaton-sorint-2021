@@ -6,7 +6,8 @@ import ShiftController from "../../controllers/shift-controller";
 
 const router = express.Router();
 
-const shiftController: ShiftController = ControllerProvider.getShiftController();
+const shiftController: ShiftController =
+    ControllerProvider.getShiftController();
 
 router.post(
     "/",
@@ -15,6 +16,11 @@ router.post(
 router.get(
     "/",
     new ResponseAdapterMiddleware(shiftController.retrieveShifts).handler
+);
+
+router.get(
+    "/:shiftId",
+    new ResponseAdapterMiddleware(shiftController.calculatePath).handler
 );
 
 export default router;
