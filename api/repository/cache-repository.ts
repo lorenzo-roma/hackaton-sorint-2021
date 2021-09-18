@@ -1,11 +1,34 @@
+import Shift from "../models/shift";
 import Trip from "../models/trip";
 import User from "../models/user";
+import ShiftRepository from "./shift-repository";
 import TripRepository from "./trip-repository-interface";
 import UserRepository from "./user-repository-interface";
 
-export default class CacheRepository implements UserRepository, TripRepository {
+export default class CacheRepository
+    implements UserRepository, TripRepository, ShiftRepository
+{
     private usersCache: Map<string, User> = new Map<string, User>();
     private tripsCache: Map<string, Trip> = new Map<string, Trip>();
+    private shiftCache: Map<string, Shift> = new Map<string, Shift>();
+
+    async findShiftByUserId(id: string): Promise<Shift[]> {
+        const toReturn: Shift[] = [];
+        const shifts = this.shiftCache.values();
+        let shift: Shift = shifts.next().value;
+        while (shift) {
+            if (shift.userId == id) toReturn.push(shift);
+            shift = shifts.next().value;
+        }
+        return toReturn;
+    }
+
+    async insertShift(shift: Shift): Promise<Shift | undefined> {
+        const newId: string = this.shiftCache.size + "";
+        shift.setId(newId);
+        this.shiftCache.set(newId, shift);
+        return shift;
+    }
 
     async findTripByUserId(id: string): Promise<Trip[]> {
         const toReturn: Trip[] = [];

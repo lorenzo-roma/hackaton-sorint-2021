@@ -6,6 +6,8 @@ import TripService from "./trip/trip-service";
 import UserRepository from "../repository/user-repository-interface";
 import TripRepository from "../repository/trip-repository-interface";
 import ShiftServiceInterface from "./shift/shift-service-interface";
+import ShiftRepository from "../repository/shift-repository";
+import ShiftService from "./shift/shift-service";
 export default class ServiceProvider {
     private static authService: AuthServiceInterface;
     private static tripService: TripServiceInterface;
@@ -32,10 +34,9 @@ export default class ServiceProvider {
 
     public static getShiftService(): ShiftServiceInterface {
         if (this.shiftService == null) {
-            const repository: TripRepository =
+            const repository: ShiftRepository =
                 RepositoryProvider.getRepository();
-
-            this.tripService = new TripService(repository);
+            this.shiftService = new ShiftService(repository);
         }
         return this.shiftService;
     }

@@ -1,8 +1,9 @@
+import Shift from "../../models/shift";
 import Trip from "../../models/trip";
 import User from "../../models/user";
 import CacheRepository from "../../repository/cache-repository";
 import Repository from "../../repository/user-repository-interface";
-import { getMockTrip } from "../mocks";
+import { getMockShift, getMockTrip } from "../mocks";
 
 let repositoryTested: CacheRepository;
 
@@ -113,6 +114,58 @@ describe("Find trip tests", () => {
         repositoryTested.insertTrip(second);
         repositoryTested.insertTrip(shouldNotBePresent);
         const result = await repositoryTested.findTripByUserId(userIdToFind);
+        expect(result).toStrictEqual([]);
+    });
+});
+
+describe("Insert shift tests", () => {
+    test("Insertion of new shift should return inserted shift with new id", async () => {
+        const shift: Shift = getMockShift();
+        const inserted = await repositoryTested.insertShift(shift);
+        expect(inserted).toBeTruthy();
+        expect(inserted!.id).toBe("0");
+        const newShift: Shift = getMockShift();
+        const newInserted = await repositoryTested.insertShift(newShift);
+        expect(newInserted).toBeTruthy();
+        expect(newInserted!.id).toBe("1");
+    });
+});
+
+describe("Find trip tests", () => {
+    test("Find by user id when is empty should return empty array", async () => {
+        const result = await repositoryTested.findShiftByUserId("0");
+        expect(result).toStrictEqual([]);
+    });
+
+    test("Find by user id when has elements should return elements with same user id", async () => {
+        const first: Shift = getMockShift();
+        const second: Shift = getMockShift();
+        const shouldNotBePresent: Shift = getMockShift();
+        const userIdToFind = "0";
+        first.setUserId(userIdToFind);
+        second.setUserId(userIdToFind);
+        shouldNotBePresent.setUserId("1");
+        repositoryTested.insertShift(first);
+        repositoryTested.insertShift(second);
+        repositoryTested.insertShift(shouldNotBePresent);
+        const result = await repositoryTested.findShiftByUserId(userIdToFind);
+        expect(result[0]).toBe(first);
+        expect(result[1]).toBe(second);
+        expect(result.length).toBe(2);
+    });
+
+    test("Find by user id when user id is not present should return empty array", async () => {
+        const first: Shift = getMockShift();
+        const second: Shift = getMockShift();
+        const shouldNotBePresent: Shift = getMockShift();
+        const userIdToFind = "0";
+        first.setUserId("2");
+        second.setUserId("3");
+        shouldNotBePresent.setUserId("1");
+        repositoryTested.insertShift(first);
+        repositoryTested.insertShift(second);
+        repositoryTested.insertShift(shouldNotBePresent);
+        const result = await repositoryTested.findShiftByUserId(userIdToFind);
         expect(result).toStrictEqual([]);
     });
 });
