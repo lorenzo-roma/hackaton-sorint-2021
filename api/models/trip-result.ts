@@ -2,6 +2,8 @@ enum TripResult {
     SUCCESS,
     ERROR_DURING_CREATION,
     ERROR_RETRIEVING_TRIPS,
+    ERROR_DURING_UPDATING_TRIP,
+    TRIP_NOT_FOUND,
 }
 
 export default TripResult;

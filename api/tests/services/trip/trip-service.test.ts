@@ -1,6 +1,6 @@
 import TripService from "../../../services/trip/trip-service";
 import TripRepository from "../../../repository/trip-repository-interface";
-import { getMockShift, getMockTrip } from "../../mocks";
+import { getMockCheckpoint, getMockShift, getMockTrip } from "../../mocks";
 import Trip from "../../../models/trip";
 import TripResult from "../../../models/trip-result";
 import Shift from "../../../models/shift";
@@ -86,5 +86,83 @@ describe("Find trips compatible with shift tests", () => {
         const response = await serviceTested.findTripCompatibleWithShift(shift);
         expect(response.status).toBe(TripResult.SUCCESS);
         expect(response.data).toStrictEqual([trips[1]]);
+    });
+});
+
+describe("Assign trip to shift tests", () => {
+    test("If trip is not found, return not found status", async () => {
+        const tripId = "0";
+        const shift = getMockShift();
+        mockRepository.findTripById = jest.fn(async () => undefined);
+        const result = await serviceTested.assingTripToShift(tripId, shift);
+        expect(result.status).toBe(TripResult.TRIP_NOT_FOUND);
+    });
+
+    test("If trip is found, return updated trip", async () => {
+        const tripId = "0";
+        const shift = getMockShift();
+        const trip = getMockTrip();
+        mockRepository.findTripById = jest.fn(async () => trip);
+        const mockFn = jest.fn(async (id: string, t: Trip) => trip);
+        mockRepository.updateTrip = mockFn;
+        const result = await serviceTested.assingTripToShift(tripId, shift);
+        const toUpdate = mockFn.mock.calls[0][1];
+        expect(toUpdate.shiftId).toBe(shift.id);
+        expect(result.status).toBe(TripResult.SUCCESS);
+        expect(result.data).toBe(trip);
+    });
+
+    test("If trip is found, but update does not succeds, return error result", async () => {
+        const tripId = "0";
+        const shift = getMockShift();
+        const trip = getMockTrip();
+        mockRepository.findTripById = jest.fn(async () => trip);
+        mockRepository.updateTrip = jest.fn(async () => undefined);
+        const result = await serviceTested.assingTripToShift(tripId, shift);
+        expect(result.status).toBe(TripResult.ERROR_DURING_UPDATING_TRIP);
+    });
+});
+
+describe("Assign trip to checkpoint tests", () => {
+    test("If trip is not found, return not found status", async () => {
+        const tripId = "0";
+        const checkpoint = getMockCheckpoint();
+        mockRepository.findTripById = jest.fn(async () => undefined);
+        const result = await serviceTested.assignTripToCheckpoint(
+            tripId,
+            checkpoint
+        );
+        expect(result.status).toBe(TripResult.TRIP_NOT_FOUND);
+    });
+
+    test("If trip is found, return updated trip", async () => {
+        const tripId = "0";
+        const checkpoint = getMockCheckpoint();
+        const trip = getMockTrip();
+        mockRepository.findTripById = jest.fn(async () => trip);
+        const mockFn = jest.fn(async (id: string, t: Trip) => trip);
+        mockRepository.updateTrip = mockFn;
+        const result = await serviceTested.assignTripToCheckpoint(
+            tripId,
+            checkpoint
+        );
+        const toUpdate = mockFn.mock.calls[0][1];
+        expect(toUpdate.arrival).toBe(checkpoint.time);
+        expect(result.status).toBe(TripResult.SUCCESS);
+        expect(result.data).toBe(trip);
+    });
+
+    test("If trip is found, but update does not succeds, return error result", async () => {
+        const tripId = "0";
+        const checkpoint = getMockCheckpoint();
+        const trip = getMockTrip();
+        mockRepository.findTripById = jest.fn(async () => trip);
+        const mockFn = jest.fn(async () => undefined);
+        mockRepository.updateTrip = mockFn;
+        const result = await serviceTested.assignTripToCheckpoint(
+            tripId,
+            checkpoint
+        );
+        expect(result.status).toBe(TripResult.ERROR_DURING_UPDATING_TRIP);
     });
 });

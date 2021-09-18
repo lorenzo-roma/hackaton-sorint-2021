@@ -1,16 +1,45 @@
+import Checkpoint from "../models/checkpoint";
+import checkpoint from "../models/checkpoint";
 import Shift from "../models/shift";
 import Trip from "../models/trip";
 import User from "../models/user";
+import CheckpointRepository from "./checkpoint-repository-interface";
 import ShiftRepository from "./shift-repository-interface";
 import TripRepository from "./trip-repository-interface";
 import UserRepository from "./user-repository-interface";
 
 export default class CacheRepository
-    implements UserRepository, TripRepository, ShiftRepository
+    implements
+        UserRepository,
+        TripRepository,
+        ShiftRepository,
+        CheckpointRepository
 {
     private usersCache: Map<string, User> = new Map<string, User>();
     private tripsCache: Map<string, Trip> = new Map<string, Trip>();
     private shiftCache: Map<string, Shift> = new Map<string, Shift>();
+    private checkpointsCache: Map<string, Checkpoint> = new Map<
+        string,
+        Checkpoint
+    >();
+
+    async findTripById(id: string): Promise<Trip | undefined> {
+        return this.tripsCache.get(id);
+    }
+
+    async updateTrip(id: string, trip: Trip): Promise<Trip | undefined> {
+        this.tripsCache.set(id, trip);
+        return this.tripsCache.get(id);
+    }
+
+    async insertCheckpoint(
+        checkpoint: checkpoint
+    ): Promise<checkpoint | undefined> {
+        const newId: string = this.checkpointsCache.size + "";
+        checkpoint.id = newId;
+        this.checkpointsCache.set(newId, checkpoint);
+        return checkpoint;
+    }
 
     async findTripsBetween(
         start: Date,

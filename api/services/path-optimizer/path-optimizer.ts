@@ -7,7 +7,7 @@ import { HopType } from "../../models/hop-type";
 import { Tour } from "../../models/tour";
 import PathOptimizerServiceInterface from "./path-optimizer-interface";
 import OptimizerResult from "../../models/optimizer-result";
-import {ServiceResponse} from "../../models/service-response";
+import { ServiceResponse } from "../../models/service-response";
 import axios from "axios";
 
 export default class PathOptimizer implements PathOptimizerServiceInterface {
@@ -17,7 +17,7 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
         count: number
     ): Promise<ServiceResponse<OptimizerResult, trip[]>> {
         const distances = await this.getDistancesToLocations(
-            {...position, name:"Start"},
+            { ...position, name: "Start" },
             trips.map((trip) => {
                 return {
                     lat: trip.fromPosition.lat,
@@ -143,6 +143,7 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
             };
             toReturn.hopType = isPickup ? HopType.PICKUP : HopType.DROPOUT;
             toReturn.userId = trip.userId;
+            toReturn.tripId = trip.id;
             toReturn.sortIndex = index;
             toReturn.time = moment(startShift)
                 .add(point.arrival, "second")
