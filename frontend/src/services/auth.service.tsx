@@ -13,9 +13,10 @@ interface AuthResult {
     };
 }
 
+console.log(Config.baseUrl);
 export const apiSlice = createApi({
     reducerPath: "api/auth",
-    baseQuery: fetchBaseQuery({ baseUrl: Config.baseUrl + "auth" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/auth" }),
     endpoints: (builder) => ({
         signup: builder.mutation<AuthResult, Credentials>({
             query: (credentials) => ({

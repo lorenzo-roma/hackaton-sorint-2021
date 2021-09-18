@@ -3,7 +3,7 @@ import { Button, InputText } from "../../components/system/InputText";
 import ErrorComponent from "../../components/Error.component";
 import LoadingComponent from "../../components/Loading.component";
 import useInput from "../../hooks/useInput.hook";
-import { NOT_EMPTY } from "../../utils/Validators";
+import { NOT_EMPTY_STRING } from "../../utils/Validators";
 import { useAppDispatch } from "../../stores/store";
 import { useCookies } from "react-cookie";
 import { setToken } from "../../stores/auth.store";
@@ -13,10 +13,10 @@ const LoginPage = () => {
     const [cookies, setCookie] = useCookies(["token"]);
     const dispatch = useAppDispatch();
     const usernameInput = useInput("", [
-        NOT_EMPTY.withPrintable("Insert an username"),
+        NOT_EMPTY_STRING.withPrintable("Insert an username"),
     ]);
     const passwordInput = useInput("", [
-        NOT_EMPTY.withPrintable("Insert a password"),
+        NOT_EMPTY_STRING.withPrintable("Insert a password"),
     ]);
 
     const [doLogin, { isLoading, isError }] = useLoginMutation();
