@@ -114,7 +114,15 @@ export default class CacheRepository
         const nameAlreadyTaken = await this.findUserByUsername(user.username);
         if (nameAlreadyTaken) return;
         const newId: string = this.usersCache.size + "";
-        const newUser: User = new User(user.username, user.password, newId);
+        const newUser: User = new User(
+            user.username,
+            user.password,
+            user.name,
+            user.surname,
+            user.phoneNumber,
+            user.driver,
+            newId
+        );
         this.usersCache.set(newId, newUser);
         return newUser;
     }

@@ -4,7 +4,7 @@ import {Button as BootstrapButton} from 'react-bootstrap';
 import {ValidatorError} from '../../utils/Validators';
 
 type InputTextType = {
-    type: 'text' | 'password' | "number";
+    type: 'text' | 'password' | "number" | "tel";
     onChange: ChangeEventHandler;
     onBlur: FocusEventHandler;
     placeholder?: string;
