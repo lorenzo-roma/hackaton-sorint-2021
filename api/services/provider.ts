@@ -6,7 +6,7 @@ import TripService from "./trip/trip-service";
 import UserRepository from "../repository/user-repository-interface";
 import TripRepository from "../repository/trip-repository-interface";
 import ShiftServiceInterface from "./shift/shift-service-interface";
-import ShiftRepository from "../repository/shift-repository";
+import ShiftRepository from "../repository/shift-repository-interface";
 import ShiftService from "./shift/shift-service";
 import PathServiceInterface from "./path/path-service-interface";
 import PathService from "./path/path-service";
@@ -46,7 +46,15 @@ export default class ServiceProvider {
 
     public static getPathService(): PathServiceInterface {
         if (this.pathService == null) {
-            this.pathService = new PathService();
+            const shiftRepository: ShiftRepository =
+                RepositoryProvider.getRepository();
+            const tripService = this.getTripService();
+            const optimizerService = this.getOptimizerService();
+            this.pathService = new PathService(
+                shiftRepository,
+                tripService,
+                optimizerService
+            );
         }
         return this.pathService;
     }

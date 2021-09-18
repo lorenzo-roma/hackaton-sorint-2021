@@ -81,7 +81,7 @@ describe("Insert trip tests", () => {
 
 describe("Find trip tests", () => {
     test("Find by user id when is empty should return empty array", async () => {
-        const result = await repositoryTested.findTripByUserId("0");
+        const result = await repositoryTested.findTripsByUserId("0");
         expect(result).toStrictEqual([]);
     });
 
@@ -96,7 +96,7 @@ describe("Find trip tests", () => {
         repositoryTested.insertTrip(first);
         repositoryTested.insertTrip(second);
         repositoryTested.insertTrip(shouldNotBePresent);
-        const result = await repositoryTested.findTripByUserId(userIdToFind);
+        const result = await repositoryTested.findTripsByUserId(userIdToFind);
         expect(result[0]).toBe(first);
         expect(result[1]).toBe(second);
         expect(result.length).toBe(2);
@@ -113,7 +113,7 @@ describe("Find trip tests", () => {
         repositoryTested.insertTrip(first);
         repositoryTested.insertTrip(second);
         repositoryTested.insertTrip(shouldNotBePresent);
-        const result = await repositoryTested.findTripByUserId(userIdToFind);
+        const result = await repositoryTested.findTripsByUserId(userIdToFind);
         expect(result).toStrictEqual([]);
     });
 });
@@ -167,5 +167,63 @@ describe("Find trip tests", () => {
         repositoryTested.insertShift(shouldNotBePresent);
         const result = await repositoryTested.findShiftByUserId(userIdToFind);
         expect(result).toStrictEqual([]);
+    });
+});
+
+describe("Find trips between tests", () => {
+    test("If no trip is available, it should return empty array", () => {
+        const result = repositoryTested.findTripsBetween(
+            new Date(),
+            new Date()
+        );
+        expect(result).toStrictEqual([]);
+    });
+
+    test("If all trips are out of bound, it should return empty array", async () => {
+        const firstTrip: Trip = getMockTrip();
+        firstTrip.setEndAvailability(new Date("2021/01/01 10:00:00"));
+        firstTrip.setArrival(new Date("2021/01/01 11:00:00"));
+        await repositoryTested.insertTrip(firstTrip);
+        const secondTrip: Trip = getMockTrip();
+        secondTrip.setEndAvailability(new Date("2021/12/01 10:00:00"));
+        secondTrip.setArrival(new Date("2021/12/01 11:00:00"));
+        await repositoryTested.insertTrip(secondTrip);
+        const result = repositoryTested.findTripsBetween(
+            new Date(),
+            new Date()
+        );
+        expect(result).toStrictEqual([]);
+    });
+
+    test("If all trips are inside of bound, it should return all trips", async () => {
+        const firstTrip: Trip = getMockTrip();
+        firstTrip.setEndAvailability(new Date("2021/02/01 10:00:00"));
+        firstTrip.setArrival(new Date("2021/02/01 11:00:00"));
+        await repositoryTested.insertTrip(firstTrip);
+        const secondTrip: Trip = getMockTrip();
+        secondTrip.setEndAvailability(new Date("2021/03/01 10:00:00"));
+        secondTrip.setArrival(new Date("2021/03/01 11:00:00"));
+        await repositoryTested.insertTrip(secondTrip);
+        const result = repositoryTested.findTripsBetween(
+            new Date("2021/01/01 10:00:00"),
+            new Date("2021/12/30 10:00:00")
+        );
+        expect(result).toStrictEqual([firstTrip, secondTrip]);
+    });
+
+    test("If some trips are inside of bound, it should return only them", async () => {
+        const firstTrip: Trip = getMockTrip();
+        firstTrip.setEndAvailability(new Date("2021/02/01 10:00:00"));
+        firstTrip.setArrival(new Date("2021/02/01 11:00:00"));
+        await repositoryTested.insertTrip(firstTrip);
+        const secondTrip: Trip = getMockTrip();
+        secondTrip.setEndAvailability(new Date("2021/03/01 10:00:00"));
+        secondTrip.setArrival(new Date("2021/03/01 11:00:00"));
+        await repositoryTested.insertTrip(secondTrip);
+        const result = repositoryTested.findTripsBetween(
+            new Date("2021/02/01 09:00:00"),
+            new Date("2021/02/28 10:00:00")
+        );
+        expect(result).toStrictEqual([firstTrip]);
     });
 });

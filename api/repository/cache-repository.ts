@@ -1,7 +1,7 @@
 import Shift from "../models/shift";
 import Trip from "../models/trip";
 import User from "../models/user";
-import ShiftRepository from "./shift-repository";
+import ShiftRepository from "./shift-repository-interface";
 import TripRepository from "./trip-repository-interface";
 import UserRepository from "./user-repository-interface";
 
@@ -11,6 +11,26 @@ export default class CacheRepository
     private usersCache: Map<string, User> = new Map<string, User>();
     private tripsCache: Map<string, Trip> = new Map<string, Trip>();
     private shiftCache: Map<string, Shift> = new Map<string, Shift>();
+
+    async findTripsBetween(
+        start: Date,
+        end: Date
+    ): Promise<Trip[] | undefined> {
+        const toReturn: Trip[] = [];
+        const trips = this.tripsCache.values();
+        let trip: Trip = trips.next().value;
+        while (trip) {
+            if (trip.endAvailability > start && trip.arrival < end) {
+                toReturn.push(trip);
+            }
+            trip = trips.next().value;
+        }
+        return toReturn;
+    }
+
+    async findShiftById(id: string): Promise<Shift | undefined> {
+        return this.shiftCache.get(id);
+    }
 
     async findShiftByUserId(id: string): Promise<Shift[]> {
         const toReturn: Shift[] = [];
@@ -30,7 +50,7 @@ export default class CacheRepository
         return shift;
     }
 
-    async findTripByUserId(id: string): Promise<Trip[]> {
+    async findTripsByUserId(id: string): Promise<Trip[]> {
         const toReturn: Trip[] = [];
         const trips = this.tripsCache.values();
         let trip: Trip = trips.next().value;

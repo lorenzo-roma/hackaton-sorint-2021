@@ -1,6 +1,6 @@
 import { getMockShift } from "../../mocks";
 import TripResult from "../../../models/trip-result";
-import ShiftRepository from "../../../repository/shift-repository";
+import ShiftRepository from "../../../repository/shift-repository-interface";
 import ShiftService from "../../../services/shift/shift-service";
 import Shift from "../../../models/shift";
 import ShiftResult from "../../../models/shift-result";
