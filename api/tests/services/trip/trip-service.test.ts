@@ -64,7 +64,7 @@ describe("Find trips compatible with shift tests", () => {
         mockRepository.findTripsBetween = jest.fn(async () => trips);
         const response = await serviceTested.findTripCompatibleWithShift(shift);
         expect(response.status).toBe(TripResult.SUCCESS);
-        expect(response.data).toBe(trips);
+        expect(response.data).toStrictEqual(trips);
     });
 
     test("If trips are available, but are already taken by other shifts, it should not return them and success response", async () => {
@@ -75,7 +75,7 @@ describe("Find trips compatible with shift tests", () => {
         mockRepository.findTripsBetween = jest.fn(async () => trips);
         const response = await serviceTested.findTripCompatibleWithShift(shift);
         expect(response.status).toBe(TripResult.SUCCESS);
-        expect(response.data).toBe([]);
+        expect(response.data).toStrictEqual([]);
     });
 
     test("If trips are available, but some already taken by other shifts, it should return those not taken and success response", async () => {
@@ -85,6 +85,6 @@ describe("Find trips compatible with shift tests", () => {
         mockRepository.findTripsBetween = jest.fn(async () => trips);
         const response = await serviceTested.findTripCompatibleWithShift(shift);
         expect(response.status).toBe(TripResult.SUCCESS);
-        expect(response.data).toBe([trips[1]]);
+        expect(response.data).toStrictEqual([trips[1]]);
     });
 });

@@ -19,7 +19,7 @@ export default class TripService implements TripServiceInterface {
         if (!trips) return { status: TripResult.ERROR_RETRIEVING_TRIPS };
         const availableTrips: Trip[] = trips.filter((t) => t.shiftId == null);
         //TODO remove unreachable trips
-        return { status: TripResult.SUCCESS, data: trips };
+        return { status: TripResult.SUCCESS, data: availableTrips };
     }
 
     async create(trip: Trip): Promise<ServiceResponse<TripResult, Trip>> {
