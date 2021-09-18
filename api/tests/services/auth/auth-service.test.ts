@@ -2,23 +2,21 @@ import AuthResult from "../../../models/auth-result";
 import User from "../../../models/user";
 import AuthService from "../../../services/auth/auth-service";
 import jwt from "jwt-simple";
-import Repository from "../../../repository/repository-interface";
-
+import Repository from "../../../repository/user-repository-interface";
 
 let serviceTested: AuthService;
 let mockRepository: Repository;
 
-beforeEach(()=>{
+beforeEach(() => {
     mockRepository = {} as Repository;
     serviceTested = new AuthService(mockRepository);
 });
 
-describe("Signup tests", ()=>{
-
-    test("If user is not already present, it should be successful", async ()=>{
+describe("Signup tests", () => {
+    test("If user is not already present, it should be successful", async () => {
         const newUser: User = new User("test", "password");
-        mockRepository.findUserByUsername = jest.fn(async()=>undefined);
-        mockRepository.insertUser = jest.fn(async ()=>newUser);
+        mockRepository.findUserByUsername = jest.fn(async () => undefined);
+        mockRepository.insertUser = jest.fn(async () => newUser);
         const result = await serviceTested.signUp(newUser);
         expect(result.status).toBe(AuthResult.SUCCESS);
         expect(result.data).toBeInstanceOf(User);
@@ -27,80 +25,78 @@ describe("Signup tests", ()=>{
         expect(returnedUser.password).toBe(newUser.password);
     });
 
-    test("If user with same name is already present, already present result should be returned", async ()=>{
+    test("If user with same name is already present, already present result should be returned", async () => {
         const newUser: User = new User("test", "password");
-        mockRepository.findUserByUsername = jest.fn(async()=>newUser);
+        mockRepository.findUserByUsername = jest.fn(async () => newUser);
         const result = await serviceTested.signUp(newUser);
         expect(result.status).toBe(AuthResult.ALREADY_SIGN_UP);
     });
 
-    test("If user is not inserted, error during sign up should be returned", async ()=>{
+    test("If user is not inserted, error during sign up should be returned", async () => {
         const newUser: User = new User("test", "password");
-        mockRepository.findUserByUsername = jest.fn(async()=>undefined);       
-        mockRepository.insertUser = jest.fn(async ()=>undefined);
+        mockRepository.findUserByUsername = jest.fn(async () => undefined);
+        mockRepository.insertUser = jest.fn(async () => undefined);
         const result = await serviceTested.signUp(newUser);
         expect(result.status).toBe(AuthResult.ERROR_DURING_SIGNUP);
     });
-
 });
 
-describe("Login tests", ()=>{
-
-    test( "If user is not registered, return not found", async () => {
+describe("Login tests", () => {
+    test("If user is not registered, return not found", async () => {
         const user: User = new User("test", "password");
-        mockRepository.findUserByUsername = jest.fn(async()=>undefined);       
+        mockRepository.findUserByUsername = jest.fn(async () => undefined);
         const result = await serviceTested.logIn(user);
         expect(result.status).toBe(AuthResult.NOT_FOUND);
     });
 
     test("If users send wrong password, return wrong password", async () => {
         const user: User = new User("test", "password");
-        mockRepository.findUserByUsername = jest.fn(async()=>new User("test", "wrong"));       
+        mockRepository.findUserByUsername = jest.fn(
+            async () => new User("test", "wrong")
+        );
         const result = await serviceTested.logIn(user);
         expect(result.status).toBe(AuthResult.WRONG_PASSWORD);
     });
 
     test("If users send correct credential, return success", async () => {
         const user: User = new User("test", "password");
-        mockRepository.findUserByUsername = jest.fn(async()=>user);       
+        mockRepository.findUserByUsername = jest.fn(async () => user);
         const result = await serviceTested.logIn(user);
         expect(result.status).toBe(AuthResult.SUCCESS);
     });
-
-
 });
 
-describe("Token tests", ()=>{
-
-    test("Token retrieve without errors should return success", async ()=>{
+describe("Token tests", () => {
+    test("Token retrieve without errors should return success", async () => {
         const user: User = new User("test", "password");
         const result = await serviceTested.getToken(user);
         expect(result.status).toBe(AuthResult.SUCCESS);
         expect(result.data!).toBeTruthy();
     });
 
-    test("Token retrieve with errors should return token retrieve errors status", async ()=>{
+    test("Token retrieve with errors should return token retrieve errors status", async () => {
         const user: User = new User("test", "password");
-        jwt.encode = jest.fn(()=>{throw new Error()});
+        jwt.encode = jest.fn(() => {
+            throw new Error();
+        });
         const result = await serviceTested.getToken(user);
         expect(result.status).toBe(AuthResult.ERROR_RETRIEVING_TOKEN);
     });
 
-    test("Token validation without errors should return success", async ()=>{
+    test("Token validation without errors should return success", async () => {
         const user: User = new User("test", "password");
-        jwt.decode = jest.fn(()=> user );
+        jwt.decode = jest.fn(() => user);
         const result = await serviceTested.verifyToken("token");
         expect(result.status).toBe(AuthResult.SUCCESS);
         expect(result.data).toBe(user);
     });
 
-    test("Token validation with errors should return error verifying token", async ()=>{
+    test("Token validation with errors should return error verifying token", async () => {
         const user: User = new User("test", "password");
-        jwt.decode = jest.fn(()=> {throw new Error()} );
+        jwt.decode = jest.fn(() => {
+            throw new Error();
+        });
         const result = await serviceTested.verifyToken("token");
         expect(result.status).toBe(AuthResult.ERROR_VALIDATING_TOKEN);
     });
-
-
-
-})
+});
