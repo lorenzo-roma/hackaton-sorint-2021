@@ -1,7 +1,7 @@
 import useInput from "../hooks/useInput.hook";
 import {NOT_EMPTY_STRING} from "../utils/Validators";
 import {Button, InputText} from "./system/InputText";
-import InputDate from "./system/InputDate";
+import InputDateTime from "./system/InputDateTime";
 import ErrorComponent from "./Error.component";
 import {useState} from "react";
 import {Redirect} from "react-router-dom";

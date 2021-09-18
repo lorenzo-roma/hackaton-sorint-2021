@@ -9,19 +9,24 @@ type DatePickerProps = {
     onBlur: FocusEventHandler;
     value: Date;
     hasErrors: boolean;
+    placeholder?: string;
     touched: boolean;
+    minDate?: Date;
     errors: ValidatorError[];
 }
-export const InputDate = ({onBlur, onChange, value, hasErrors, touched,errors}: DatePickerProps) => (
-    <div>
-        <DatePicker onBlur={onBlur} onChange={onChange} selected={value} className={(touched && hasErrors) ? 'is-invalid' : ''}/>
-        {errors && <div className="invalid-feedback">
-            {errors.length > 0 ? errors[0].printable : ''}
-        </div> }
-    </div>
-);
+export const InputDateTime = ({onBlur, onChange, value, hasErrors, touched,errors, minDate, placeholder}: DatePickerProps) => {
+    return (
+        <div>
+            <DatePicker minDate={minDate} placeholderText={placeholder}
+                        dateFormat="Pp" showTimeSelect={true} onBlur={onBlur} onChange={onChange} selected={value} className={(touched && hasErrors) ? 'is-invalid' : ''}/>
+            {errors && <div className="invalid-feedback">
+                {errors.length > 0 ? errors[0].printable : ''}
+            </div> }
+        </div>
+    );
+}
 
-export default InputDate;
+export default InputDateTime;
 
 type ButtonType = {
     onClick: () => void;

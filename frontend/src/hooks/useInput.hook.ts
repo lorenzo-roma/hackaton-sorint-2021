@@ -6,7 +6,7 @@ const useInput = <T>(defaultValue: T, validationHandler: Validator<T>[] = []) =>
     const [touched, setTouched] = useState(false);
     validationHandler.map(h => console.log(h.error, h.handler(input)))
     return {
-        onChange: (event: any) => setInput(event.target.value),
+        onChange: (event: any) => setInput(event?.target?.value || event),
         onBlur: (event: any) => setTouched(true),
         value: input,
         touched: touched,

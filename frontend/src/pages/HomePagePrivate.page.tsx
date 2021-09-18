@@ -10,11 +10,10 @@ import TripWizard, {TripWizardProps} from "../components/TripWizard.component";
 type HomePagePrivateProps = TripWizardProps;
 
 const HomePagePrivate = (props: HomePagePrivateProps) => {
-    const authStore = useAppSelector(state => state.auth)
     const [doTrips, {isLoading, isError, data: tripsResponse, isSuccess}] = useTripListMutation();
     useEffect(() => {
         doTrips();
-    })
+    }, [doTrips])
     if (isLoading)
         return <LoadingComponent/>;
 

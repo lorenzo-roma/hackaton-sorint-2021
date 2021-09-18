@@ -34,3 +34,18 @@ export const MIN_LENGTH = (minLength: number) => new Validator(
     },
     (value: string | any[]) => value.length >= minLength
 );
+
+export const GREATER_THAN = (than: any) => new Validator(
+    {
+        type: 'GREATER_THAN',
+        printable: 'The input is empty'
+    },
+    (value: any) => value > than
+);
+export const LOWER_THAN = (than: any) => new Validator(
+    {
+        type: 'LOWER_THAN',
+        printable: 'The input is empty'
+    },
+    (value: any) => value < than
+);

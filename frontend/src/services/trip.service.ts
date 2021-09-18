@@ -5,6 +5,7 @@ import ConfirmedTrip from "../classes/ConfirmedTrip.class";
 import ToBeScheduledTrip, {ToBeScheduledTripInterface} from "../classes/ToBeScheduledTrip.class";
 import {RootState} from "../stores/store";
 import {prepareAuthentication} from "../stores/auth.store";
+import Config from "../config";
 
 interface RetrieveDetail {
     id: number;
@@ -30,7 +31,7 @@ type TripCreateRequest = ToBeScheduledTripInterface;
 
 export const apiSlice = createApi({
     reducerPath: "api/trip",
-    baseQuery: fetchBaseQuery({baseUrl: "http://localhost:5000/trip", prepareHeaders: prepareAuthentication,}),
+    baseQuery: fetchBaseQuery({baseUrl: `${Config.baseUrl}/trip`, prepareHeaders: prepareAuthentication,}),
     endpoints: (builder) => ({
         tripList: builder.mutation<TripListResult, void>({
             query: (request) => ({
