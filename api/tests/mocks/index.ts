@@ -1,3 +1,4 @@
+import Checkpoint from "../../models/checkpoint";
 import Shift from "../../models/shift";
 import Trip from "../../models/trip";
 
@@ -26,4 +27,9 @@ const getMockShift = (): Shift => {
     return shift;
 };
 
-export { getMockTrip, getMockShift };
+const getMockCheckpoint = (): Checkpoint => {
+    const checkpoint = new Checkpoint();
+    return checkpoint;
+};
+
+export { getMockTrip, getMockShift, getMockCheckpoint };

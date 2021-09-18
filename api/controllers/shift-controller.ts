@@ -1,12 +1,18 @@
 import express from "express";
 
 import { APIResponse } from "../models/api-response";
+import PathResult from "../models/path-result";
+import CheckPoint from "../models/checkpoint";
 import Shift from "../models/shift";
 import ShiftResult from "../models/shift-result";
+import PathServiceInterface from "../services/path/path-service-interface";
 import ShiftServiceInterface from "../services/shift/shift-service-interface";
 
 export default class ShiftController {
-    constructor(private shiftService: ShiftServiceInterface) {}
+    constructor(
+        private shiftService: ShiftServiceInterface,
+        private pathService: PathServiceInterface
+    ) {}
 
     createShift = async (req: express.Request): Promise<APIResponse> => {
         const userId = req.user!.id!;
@@ -27,6 +33,14 @@ export default class ShiftController {
         const response: ServiceResponse<ShiftResult, Shift[]> =
             await this.shiftService.retrieveByUserId(userId);
         if (response.status != ShiftResult.SUCCESS) return APIResponse.Error();
+        return APIResponse.Success(response.data);
+    };
+
+    calculatePath = async (req: express.Request): Promise<APIResponse> => {
+        const shiftId = req.params.shiftId;
+        const response: ServiceResponse<PathResult, CheckPoint[]> =
+            await this.pathService.calculateForShift(shiftId);
+        if (response.status != PathResult.SUCCESS) return APIResponse.Error();
         return APIResponse.Success(response.data);
     };
 }

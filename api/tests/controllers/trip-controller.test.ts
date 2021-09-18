@@ -76,3 +76,37 @@ describe("Perform create trip tests", () => {
         expect(response.status).toBe(APIResponseStatus.ERROR);
     });
 });
+
+describe("Perform retrieve trips tests", () => {
+    test("If retrieve is successful, it should return success response", async () => {
+        const trips = [getMockTrip()];
+        mockService.retrieveByUserId = jest.fn(async (): Promise<
+            ServiceResponse<TripResult, Trip[]>
+        > => {
+            return { status: TripResult.SUCCESS, data: trips };
+        });
+        const mockReq = {
+            user: {
+                id: "",
+            },
+        } as express.Request;
+        const response = await controllerTested.retrieveTrips(mockReq);
+        expect(response.status).toBe(APIResponseStatus.SUCCESS);
+        expect(response.data).toStrictEqual(trips);
+    });
+
+    test("If retrieve is not successful, it should retrive error response", async () => {
+        mockService.retrieveByUserId = jest.fn(async (): Promise<
+            ServiceResponse<TripResult, Trip[]>
+        > => {
+            return { status: TripResult.ERROR_RETRIEVING_TRIPS };
+        });
+        const mockReq = {
+            user: {
+                id: "",
+            },
+        } as express.Request;
+        const response = await controllerTested.retrieveTrips(mockReq);
+        expect(response.status).toBe(APIResponseStatus.ERROR);
+    });
+});

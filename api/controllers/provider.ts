@@ -1,4 +1,5 @@
 import AuthServiceInterface from "../services/auth/auth-service-interface";
+import PathServiceInterface from "../services/path/path-service-interface";
 import ServiceProvider from "../services/provider";
 import ShiftServiceInterface from "../services/shift/shift-service-interface";
 import TripServiceInterface from "../services/trip/trip-service-interface";
@@ -31,9 +32,14 @@ export default class ControllerProvider {
 
     public static getShiftController(): ShiftController {
         if (this.shiftController == null) {
-            const service: ShiftServiceInterface =
+            const shiftService: ShiftServiceInterface =
                 ServiceProvider.getShiftService();
-            this.shiftController = new ShiftController(service);
+            const pathService: PathServiceInterface =
+                ServiceProvider.getPathService();
+            this.shiftController = new ShiftController(
+                shiftService,
+                pathService
+            );
         }
         return this.shiftController;
     }

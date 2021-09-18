@@ -8,10 +8,13 @@ import TripRepository from "../repository/trip-repository-interface";
 import ShiftServiceInterface from "./shift/shift-service-interface";
 import ShiftRepository from "../repository/shift-repository";
 import ShiftService from "./shift/shift-service";
+import PathServiceInterface from "./path/path-service-interface";
+import PathService from "./path/path-service";
 export default class ServiceProvider {
     private static authService: AuthServiceInterface;
     private static tripService: TripServiceInterface;
     private static shiftService: ShiftServiceInterface;
+    private static pathService: PathServiceInterface;
 
     public static getAuthService(): AuthServiceInterface {
         if (this.authService == null) {
@@ -39,5 +42,12 @@ export default class ServiceProvider {
             this.shiftService = new ShiftService(repository);
         }
         return this.shiftService;
+    }
+
+    public static getPathService(): PathServiceInterface {
+        if (this.pathService == null) {
+            this.pathService = new PathService();
+        }
+        return this.pathService;
     }
 }

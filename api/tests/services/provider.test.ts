@@ -1,6 +1,8 @@
 import Shift from "../../models/shift";
 import AuthService from "../../services/auth/auth-service";
 import AuthServiceInterface from "../../services/auth/auth-service-interface";
+import PathService from "../../services/path/path-service";
+import PathServiceInterface from "../../services/path/path-service-interface";
 import ServiceProvider from "../../services/provider";
 import ShiftService from "../../services/shift/shift-service";
 import ShiftServiceInterface from "../../services/shift/shift-service-interface";
@@ -51,5 +53,20 @@ describe("Provide service instances", () => {
         const secondShiftService: ShiftServiceInterface =
             ServiceProvider.getShiftService();
         expect(secondShiftService).toBe(shiftService);
+    });
+
+    test("Provide valid path service", () => {
+        const pathService: PathServiceInterface =
+            ServiceProvider.getPathService();
+        expect(pathService).toBeTruthy();
+        expect(pathService).toBeInstanceOf(PathService);
+    });
+
+    test("Provide always the same instance of path service", () => {
+        const pathService: PathServiceInterface =
+            ServiceProvider.getPathService();
+        const secondPathService: PathServiceInterface =
+            ServiceProvider.getPathService();
+        expect(secondPathService).toBe(pathService);
     });
 });
