@@ -147,7 +147,7 @@ describe("Assign trip to checkpoint tests", () => {
             checkpoint
         );
         const toUpdate = mockFn.mock.calls[0][1];
-        expect(toUpdate.arrival).toBe(checkpoint.time);
+        expect(toUpdate.confirmedPickup).toBe(checkpoint.time);
         expect(result.status).toBe(TripResult.SUCCESS);
         expect(result.data).toBe(trip);
     });
