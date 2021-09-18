@@ -10,6 +10,6 @@ export default class ConfirmedTrip extends Trip {
 
 
     static fromTripResult(tripResult: TripResult) {
-        return new ConfirmedTrip(tripResult.id, tripResult.from, tripResult.to, tripResult.arrival!, tripResult.confirmed_pickup!)
+        return new ConfirmedTrip(tripResult.id, tripResult.from, tripResult.to, tripResult.arrival!, tripResult.confirmedPickup!)
     }
 }

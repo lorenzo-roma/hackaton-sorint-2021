@@ -2,7 +2,7 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import Trip from "../classes/trip.class";
 import {BaseQueryResult} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 import ConfirmedTrip from "../classes/ConfirmedTrip.class";
-import ToBeScheduledTrip, {ToBeScheduledTripInterface} from "../classes/ToBeScheduledTrip.class";
+import ToBeScheduledTrip, {ToBeScheduledTripApiInterface} from "../classes/ToBeScheduledTrip.class";
 import {RootState} from "../stores/store";
 import {prepareAuthentication} from "../stores/auth.store";
 import Config from "../config";
@@ -15,11 +15,11 @@ export interface TripResult {
     id: number;
     from: string;
     to: string;
-    initial_availability?: Date;
-    end_availability?: Date;
-    confirmed_pickup?: Date;
+    initialAvailability?: Date;
+    endAvailability?: Date;
+    confirmedPickup?: Date;
     arrival: Date;
-    shift_id?: number;
+    shiftId?: number;
 }
 
 export interface TripListResult {
@@ -27,7 +27,7 @@ export interface TripListResult {
     confirmedTrips: ConfirmedTrip[];
 }
 
-type TripCreateRequest = ToBeScheduledTripInterface;
+type TripCreateRequest = ToBeScheduledTripApiInterface;
 
 export const apiSlice = createApi({
     reducerPath: "api/trip",
@@ -58,7 +58,8 @@ export const apiSlice = createApi({
         createTrip: builder.mutation<ToBeScheduledTrip, TripCreateRequest>({
             query: (request) => ({
                 url: '/',
-                method: 'GET'
+                method: 'POST',
+                body: request
             }),
             transformResponse: (response: { data: TripResult }) => {
                 return ToBeScheduledTrip.fromTripResult(response.data);
@@ -71,7 +72,7 @@ export const {useTripListMutation, useTripDetailMutation, useCreateTripMutation}
 
 
 function fromTripResult(tripResult: TripResult) {
-    if(tripResult.shift_id) {
+    if(tripResult.shiftId) {
         return ConfirmedTrip.fromTripResult(tripResult);
     } else {
         return ToBeScheduledTrip.fromTripResult(tripResult)

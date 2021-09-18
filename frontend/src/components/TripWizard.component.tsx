@@ -4,7 +4,7 @@ import {GREATER_THAN, NOT_EMPTY, NOT_EMPTY_STRING} from "../utils/Validators";
 import {Button, InputText} from "./system/InputText";
 import DatePicker from "react-datepicker";
 import InputDateTime from "./system/InputDateTime";
-import ToBeScheduledTrip, {ToBeScheduledTripInterface} from "../classes/ToBeScheduledTrip.class";
+import ToBeScheduledTrip, {ToBeScheduledTripApiInterface} from "../classes/ToBeScheduledTrip.class";
 import {useSignupMutation} from "../services/auth.service";
 import {useCreateTripMutation} from "../services/trip.service";
 import LoadingComponent from "./Loading.component";
@@ -35,13 +35,14 @@ const TripWizard = ({initialFrom, initialTo}: TripWizardProps) => {
 
 
     const createTrip = () => {
-        const tripToBeSchedule: ToBeScheduledTripInterface = {
+        const tripToBeSchedule: ToBeScheduledTripApiInterface = {
             from: fromInput.value,
             to: toInput.value,
             initialAvailability: initialAvailability.value,
             endAvailability: endAvailability.value,
             arrival: endDateTime.value,
         };
+        console.log("tripToBeSchedule",tripToBeSchedule,)
         doCreateTrip(tripToBeSchedule);
     };
     if(isLoading) return <LoadingComponent />;
