@@ -6,6 +6,7 @@ import { APIResponse } from "../models/api-response";
 import TripServiceInterface from "../services/trip/trip-service-interface";
 import Trip from "../models/trip";
 import TripResult from "../models/trip-result";
+import Position from "../models/position";
 
 export default class TripController {
     constructor(private tripService: TripServiceInterface) {}
@@ -13,16 +14,17 @@ export default class TripController {
     createTrip = async (req: express.Request): Promise<APIResponse> => {
         const userId = req.user!.id!;
         const tripToCreate: Trip = new Trip();
-        tripToCreate.setFromName(req.body.fromName);
-        tripToCreate.setToName(req.body.toName);
-        tripToCreate.setFromLat(req.body.fromLat);
-        tripToCreate.setToLat(req.body.toLat);
-        tripToCreate.setFromLng(req.body.fromLng);
-        tripToCreate.setToLng(req.body.toLng);
-        tripToCreate.setInitialAvailability(req.body.initialAvailability);
-        tripToCreate.setEndAvailability(req.body.endAvailability);
-        tripToCreate.setArrival(req.body.arrival);
-        tripToCreate.setUserId(userId);
+        tripToCreate.fromName = req.body.fromName;
+        tripToCreate.toName = req.body.toName;
+        tripToCreate.fromPosition = new Position(
+            req.body.fromLat,
+            req.body.fromLng
+        );
+        tripToCreate.toPosition = new Position(req.body.toLat, req.body.toLng);
+        tripToCreate.initialAvailability = req.body.initialAvailability;
+        tripToCreate.endAvailability = req.body.endAvailability;
+        tripToCreate.arrival = req.body.arrival;
+        tripToCreate.userId = userId;
         const response: ServiceResponse<TripResult, Trip> =
             await this.tripService.create(tripToCreate);
         if (response.status != TripResult.SUCCESS) return APIResponse.Error();

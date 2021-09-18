@@ -63,7 +63,7 @@ export default class CacheRepository
 
     async insertTrip(trip: Trip): Promise<Trip | undefined> {
         const newId: string = this.tripsCache.size + "";
-        trip.setId(newId);
+        trip.id = newId;
         this.tripsCache.set(newId, trip);
         return trip;
     }

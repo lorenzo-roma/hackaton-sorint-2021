@@ -90,9 +90,9 @@ describe("Find trip tests", () => {
         const second: Trip = getMockTrip();
         const shouldNotBePresent: Trip = getMockTrip();
         const userIdToFind = "0";
-        first.setUserId(userIdToFind);
-        second.setUserId(userIdToFind);
-        shouldNotBePresent.setUserId("1");
+        first.userId = userIdToFind;
+        second.userId = userIdToFind;
+        shouldNotBePresent.userId = "1";
         repositoryTested.insertTrip(first);
         repositoryTested.insertTrip(second);
         repositoryTested.insertTrip(shouldNotBePresent);
@@ -107,9 +107,9 @@ describe("Find trip tests", () => {
         const second: Trip = getMockTrip();
         const shouldNotBePresent: Trip = getMockTrip();
         const userIdToFind = "0";
-        first.setUserId("2");
-        second.setUserId("3");
-        shouldNotBePresent.setUserId("1");
+        first.userId = "2";
+        second.userId = "3";
+        shouldNotBePresent.userId = "1";
         repositoryTested.insertTrip(first);
         repositoryTested.insertTrip(second);
         repositoryTested.insertTrip(shouldNotBePresent);
@@ -181,12 +181,12 @@ describe("Find trips between tests", () => {
 
     test("If all trips are out of bound, it should return empty array", async () => {
         const firstTrip: Trip = getMockTrip();
-        firstTrip.setEndAvailability(new Date("2021/01/01 10:00:00"));
-        firstTrip.setArrival(new Date("2021/01/01 11:00:00"));
+        firstTrip.endAvailability = new Date("2021/01/01 10:00:00");
+        firstTrip.arrival = new Date("2021/01/01 11:00:00");
         await repositoryTested.insertTrip(firstTrip);
         const secondTrip: Trip = getMockTrip();
-        secondTrip.setEndAvailability(new Date("2021/12/01 10:00:00"));
-        secondTrip.setArrival(new Date("2021/12/01 11:00:00"));
+        secondTrip.endAvailability = new Date("2021/12/01 10:00:00");
+        secondTrip.arrival = new Date("2021/12/01 11:00:00");
         await repositoryTested.insertTrip(secondTrip);
         const result = repositoryTested.findTripsBetween(
             new Date(),
@@ -197,12 +197,12 @@ describe("Find trips between tests", () => {
 
     test("If all trips are inside of bound, it should return all trips", async () => {
         const firstTrip: Trip = getMockTrip();
-        firstTrip.setEndAvailability(new Date("2021/02/01 10:00:00"));
-        firstTrip.setArrival(new Date("2021/02/01 11:00:00"));
+        firstTrip.endAvailability = new Date("2021/02/01 10:00:00");
+        firstTrip.arrival = new Date("2021/02/01 11:00:00");
         await repositoryTested.insertTrip(firstTrip);
         const secondTrip: Trip = getMockTrip();
-        secondTrip.setEndAvailability(new Date("2021/03/01 10:00:00"));
-        secondTrip.setArrival(new Date("2021/03/01 11:00:00"));
+        secondTrip.endAvailability = new Date("2021/03/01 10:00:00");
+        secondTrip.arrival = new Date("2021/03/01 11:00:00");
         await repositoryTested.insertTrip(secondTrip);
         const result = repositoryTested.findTripsBetween(
             new Date("2021/01/01 10:00:00"),
@@ -213,12 +213,12 @@ describe("Find trips between tests", () => {
 
     test("If some trips are inside of bound, it should return only them", async () => {
         const firstTrip: Trip = getMockTrip();
-        firstTrip.setEndAvailability(new Date("2021/02/01 10:00:00"));
-        firstTrip.setArrival(new Date("2021/02/01 11:00:00"));
+        firstTrip.endAvailability = new Date("2021/02/01 10:00:00");
+        firstTrip.arrival = new Date("2021/02/01 11:00:00");
         await repositoryTested.insertTrip(firstTrip);
         const secondTrip: Trip = getMockTrip();
-        secondTrip.setEndAvailability(new Date("2021/03/01 10:00:00"));
-        secondTrip.setArrival(new Date("2021/03/01 11:00:00"));
+        secondTrip.endAvailability = new Date("2021/03/01 10:00:00");
+        secondTrip.arrival = new Date("2021/03/01 11:00:00");
         await repositoryTested.insertTrip(secondTrip);
         const result = repositoryTested.findTripsBetween(
             new Date("2021/02/01 09:00:00"),

@@ -10,11 +10,14 @@ import ShiftRepository from "../repository/shift-repository-interface";
 import ShiftService from "./shift/shift-service";
 import PathServiceInterface from "./path/path-service-interface";
 import PathService from "./path/path-service";
+import PathOptimizerServiceInterface from "./path-optimizer/path-optimizer-interface";
+import PathOptimizer from "./path-optimizer/path-optimizer";
 export default class ServiceProvider {
     private static authService: AuthServiceInterface;
     private static tripService: TripServiceInterface;
     private static shiftService: ShiftServiceInterface;
     private static pathService: PathServiceInterface;
+    private static optimizerService: PathOptimizerServiceInterface;
 
     public static getAuthService(): AuthServiceInterface {
         if (this.authService == null) {
@@ -42,6 +45,13 @@ export default class ServiceProvider {
             this.shiftService = new ShiftService(repository);
         }
         return this.shiftService;
+    }
+
+    public static getOptimizerService(): PathOptimizerServiceInterface {
+        if (this.optimizerService == null) {
+            this.optimizerService = new PathOptimizer();
+        }
+        return this.optimizerService;
     }
 
     public static getPathService(): PathServiceInterface {

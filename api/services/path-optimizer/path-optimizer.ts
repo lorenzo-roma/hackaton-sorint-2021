@@ -6,8 +6,9 @@ import { TripInterface } from "../../models/trip";
 import Position from "../../models/position";
 import { HopType } from "../../models/hop-type";
 import { Tour } from "../../models/tour";
+import PathOptimizerServiceInterface from "./path-optimizer-interface";
 
-export default class PathOptimizer {
+export default class PathOptimizer implements PathOptimizerServiceInterface {
     basePath = "https://api.routexl.com";
 
     async callDistanceMatrix(locations: Location[]) {
