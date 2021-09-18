@@ -13,8 +13,12 @@ export default class TripController {
     createTrip = async (req: express.Request): Promise<APIResponse> => {
         const userId = req.user!.id!;
         const tripToCreate: Trip = new Trip();
-        tripToCreate.setFrom(req.body.from);
-        tripToCreate.setTo(req.body.to);
+        tripToCreate.setFromName(req.body.fromName);
+        tripToCreate.setToName(req.body.toName);
+        tripToCreate.setFromLat(req.body.fromLat);
+        tripToCreate.setToLat(req.body.toLat);
+        tripToCreate.setFromLng(req.body.fromLng);
+        tripToCreate.setToLng(req.body.toLng);
         tripToCreate.setInitialAvailability(req.body.initialAvailability);
         tripToCreate.setEndAvailability(req.body.endAvailability);
         tripToCreate.setArrival(req.body.arrival);

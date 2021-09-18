@@ -1,6 +1,10 @@
 export default class Trip {
-    public from: string;
-    public to: string;
+    public fromName: string;
+    public toName: string;
+    public fromLat: number;
+    public fromLng: number;
+    public toLat: number;
+    public toLng: number;
     public initialAvailability: Date;
     public endAvailability: Date;
     public arrival: Date;
@@ -9,11 +13,23 @@ export default class Trip {
     public shiftId: string;
     public confirmedPickup: Date;
 
-    setFrom(value: string) {
-        this.from = value;
+    setFromName(value: string) {
+        this.fromName = value;
     }
-    setTo(value: string) {
-        this.to = value;
+    setToName(value: string) {
+        this.toName = value;
+    }
+    setFromLat(value: number) {
+        this.fromLat = value;
+    }
+    setToLat(value: number) {
+        this.toLat = value;
+    }
+    setFromLng(value: number) {
+        this.fromLng = value;
+    }
+    setToLng(value: number) {
+        this.toLng = value;
     }
     setInitialAvailability(value: Date) {
         this.initialAvailability = value;

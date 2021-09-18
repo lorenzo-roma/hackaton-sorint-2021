@@ -20,18 +20,22 @@ describe("Perform create trip tests", () => {
     test("If trip is created, return success and trip created", async () => {
         const created: Trip = getMockTrip();
 
-        mockService.create = jest.fn(
-            async (): Promise<ServiceResponse<TripResult, Trip>> => {
-                return { status: TripResult.SUCCESS, data: created };
-            }
-        );
+        mockService.create = jest.fn(async (): Promise<
+            ServiceResponse<TripResult, Trip>
+        > => {
+            return { status: TripResult.SUCCESS, data: created };
+        });
         const mockReq = {
             user: {
                 id: "",
             },
             body: {
-                from: created.from,
-                to: created.to,
+                fromName: created.fromName,
+                toName: created.toName,
+                fromLat: created.fromLat,
+                fromLng: created.fromLng,
+                toLat: created.toLat,
+                toLng: created.toLng,
                 initialAvailability: created.initialAvailability,
                 endAvailability: created.endAvailability,
                 arrival: created.arrival,
@@ -46,18 +50,22 @@ describe("Perform create trip tests", () => {
     test("If trip is not created, return error", async () => {
         const created: Trip = getMockTrip();
 
-        mockService.create = jest.fn(
-            async (): Promise<ServiceResponse<TripResult, Trip>> => {
-                return { status: TripResult.ERROR_DURING_CREATION };
-            }
-        );
+        mockService.create = jest.fn(async (): Promise<
+            ServiceResponse<TripResult, Trip>
+        > => {
+            return { status: TripResult.ERROR_DURING_CREATION };
+        });
         const mockReq = {
             user: {
                 id: "",
             },
             body: {
-                from: created.from,
-                to: created.to,
+                fromName: created.fromName,
+                toName: created.toName,
+                fromLat: created.fromLat,
+                fromLng: created.fromLng,
+                toLat: created.toLat,
+                toLng: created.toLng,
                 initialAvailability: created.initialAvailability,
                 endAvailability: created.endAvailability,
                 arrival: created.arrival,
