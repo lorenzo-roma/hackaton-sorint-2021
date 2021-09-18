@@ -22,7 +22,6 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
     if (isSuccess) console.log(tripsResponse);
     return (
         <div>
-            <SelectAddress />
             <TripWizard
                 initialFrom={props.initialFrom}
                 initialTo={props.initialTo}
