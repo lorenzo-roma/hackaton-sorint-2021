@@ -1,4 +1,6 @@
-import fetch from 'node-fetch';
+import fetch, {Headers} from 'node-fetch';
+import config from "../../config";
+
 
 export default class PathOptimizer {
     static basePath = "https://api.routexl.com";
@@ -7,6 +9,9 @@ export default class PathOptimizer {
         const params = new URLSearchParams();
         params.set('locations', JSON.stringify(locations));
         const result = await fetch(`${this.basePath}/distance`, {
+            headers: new Headers({
+                "Authentication": `Basic ${new Buffer(`${config.routeXL.username}:${config.routeXL.password}`).toString('base64')}`
+            }),
             method: 'POST',
             body: params
         });
