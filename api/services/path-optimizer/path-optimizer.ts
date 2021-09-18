@@ -31,17 +31,19 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
         return {
             status: OptimizerResult.SUCCESS,
             data: sortedDistances
-                .map((distance) => trips[Number(distance.to) + 1])
+                .map((distance) => trips[Number(distance.to) - 1])
                 .slice(0, count - 1),
         };
     }
 
-    async getRealisticPath(trips: trip[],
-                           startingPosition: Position,
-                           startDate: Date): Promise<ServiceResponse<OptimizerResult, Tour>> {
+    async getRealisticPath(
+        trips: trip[],
+        startingPosition: Position,
+        startDate: Date
+    ): Promise<ServiceResponse<OptimizerResult, Tour>> {
         return {
             status: OptimizerResult.SUCCESS,
-            data: await this.callTour(trips, startDate, startingPosition)
+            data: await this.callTour(trips, startDate, startingPosition),
         };
     }
 
@@ -93,8 +95,8 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
                 restrictions: [
                     diffFromStartShift(trip.initialAvailability), // ready
                     diffFromStartShift(trip.endAvailability), // due
-                    0, // Before starting
                     index + 2, // Before starting
+                    0, // after
                 ],
             });
             locations.push({

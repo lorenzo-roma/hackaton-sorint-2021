@@ -2,15 +2,11 @@ import Checkpoint from "../../models/checkpoint";
 import PathResult from "../../models/path-result";
 import PathServiceInterface from "./path-service-interface";
 import ShiftRepositoryInterface from "../../repository/shift-repository-interface";
-import TripRepositoryInterface from "../../repository/trip-repository-interface";
-
-import Shift from "../../models/shift";
 import Trip from "../../models/trip";
 import TripServiceInterface from "../trip/trip-service-interface";
 import TripResult from "../../models/trip-result";
-import TripRepository from "../../repository/trip-repository-interface";
-import TripService from "../trip/trip-service";
 import PathOptimizerServiceInterface from "../path-optimizer/path-optimizer-interface";
+import Position from "../../models/position";
 
 export default class PathService implements PathServiceInterface {
     constructor(
@@ -24,37 +20,57 @@ export default class PathService implements PathServiceInterface {
     ): Promise<ServiceResponse<PathResult, Checkpoint[]>> {
         const shift = await this.shiftRepository.findShiftById(id);
         if (!shift) return { status: PathResult.SHIFT_NOT_FOUND };
-        const tripResponse = await this.tripService.findTripCompatibleWithShift(
+        let tripResponse = await this.tripService.findTripCompatibleWithShift(
             shift
         );
         if (tripResponse.status != TripResult.SUCCESS)
             return { status: PathResult.ERROR_RETRIEVING_COMPATIBLE_TRIPS };
-        const startingTrip = await this.optimizerService.findNearestTrips(
-            shift.startingPosition,
-            tripResponse.data!,
-            1
-        );
-        const first: Trip = startingTrip.data![0];
+
+        let possibleTrips = [...tripResponse.data!];
+
         const finalCheckPoints: Checkpoint[] = [];
-        const nearestTrips = await this.optimizerService.findNearestTrips(
-            first.fromPosition,
-            tripResponse.data!,
-            shift.capacity - 1
-        );
-        const tripsToDo: Trip[] = [first, ...nearestTrips.data!];
+        let currentPosition: Position = shift.startingPosition;
+        let currentTime: Date = shift.start;
 
-        for (let i = 0; i < tripsToDo.length; i++) {
-            const possiblePath = await this.optimizerService.getRealisticPath(
-                tripsToDo
+        while (possibleTrips.length > 0 && currentTime < shift.end) {
+            let nearestTrips = await this.optimizerService.findNearestTrips(
+                currentPosition,
+                possibleTrips,
+                shift.capacity
             );
-            if (possiblePath.data!.feasible) {
-                finalCheckPoints.push(...possiblePath.data!.checkpoints);
-                break;
+            let tripsToTry: Trip[] = [...nearestTrips.data!];
+            while (tripsToTry.length > 0) {
+                const possiblePath =
+                    await this.optimizerService.getRealisticPath(
+                        tripsToTry,
+                        currentPosition,
+                        currentTime
+                    );
+                if (possiblePath.data!.feasible) {
+                    finalCheckPoints.push(...possiblePath.data!.checkpoints);
+                    possibleTrips = possibleTrips.filter(
+                        (t) => !tripsToTry.includes(t)
+                    );
+                    tripsToTry = [];
+                    break;
+                }
+                if (tripsToTry.length == 1) {
+                    possibleTrips = possibleTrips.filter(
+                        (t) => t != tripsToTry[0]
+                    );
+                }
+                tripsToTry.pop();
             }
-            tripsToDo.pop();
-        }
-        // loop finche non ci sono più nodi disponibili (o per orario o per numero)
+            if (finalCheckPoints.length == 0) continue;
+            currentTime = finalCheckPoints[finalCheckPoints.length - 1].time;
+            currentPosition =
+                finalCheckPoints[finalCheckPoints.length - 1].position;
 
-        return { status: PathResult.SUCCESS, data: [] };
+            possibleTrips = possibleTrips.filter(
+                (t) => t.endAvailability < currentTime
+            );
+        }
+
+        return { status: PathResult.SUCCESS, data: finalCheckPoints };
     }
 }
