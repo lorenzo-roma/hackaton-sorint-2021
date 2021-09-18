@@ -36,10 +36,13 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
         };
     }
 
-    getRealisticPath(
-        trips: trip[]
-    ): Promise<ServiceResponse<OptimizerResult, Tour>> {
-        throw new Error("Method not implemented.");
+    async getRealisticPath(trips: trip[],
+                           startingPosition: Position,
+                           startDate: Date): Promise<ServiceResponse<OptimizerResult, Tour>> {
+        return {
+            status: OptimizerResult.SUCCESS,
+            data: await this.callTour(trips, startDate, startingPosition)
+        };
     }
 
     basePath = "https://api.routexl.com";
