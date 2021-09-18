@@ -2,6 +2,8 @@ import Trip from "./trip.class";
 import { TripResult } from "../services/trip.service";
 
 export default interface ToBeScheduledTrip extends Trip {
+    fromName: string;
+    toName: string;
     initialAvailability: Date;
     endAvailability: Date;
 }

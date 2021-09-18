@@ -61,9 +61,7 @@ const TripWizard = ({ initialFrom, initialTo }: TripWizardProps) => {
         const geoCodeFrom = await geocodeByPlaceId(
             fromInput.value.value.place_id
         );
-        const geoCodeTo = await geocodeByPlaceId(
-            fromInput.value.value.place_id
-        );
+        const geoCodeTo = await geocodeByPlaceId(toInput.value.value.place_id);
         const fromPoint = await getLatLng(geoCodeFrom[0]);
         const toPoint = await getLatLng(geoCodeTo[0]);
 
@@ -86,7 +84,7 @@ const TripWizard = ({ initialFrom, initialTo }: TripWizardProps) => {
             <label>From</label>
             <SelectAddress {...fromInput} />
             <label>To</label>
-            <SelectAddress {...fromInput} />
+            <SelectAddress {...toInput} />
             <label>Start availability date</label>
             <InputDateTime {...initialAvailability} minDate={new Date()} />
             <label>End availability date</label>

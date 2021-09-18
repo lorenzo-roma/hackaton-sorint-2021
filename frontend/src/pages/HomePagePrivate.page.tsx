@@ -48,8 +48,9 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
                                     (trip) => (
                                         <div>
                                             {trip.initialAvailability}-
-                                            {trip.endAvailability} {trip.from}{" "}
-                                            to {trip.to} {trip.arrival}
+                                            {trip.endAvailability}{" "}
+                                            {trip.fromName} to {trip.toName}{" "}
+                                            {trip.arrival}
                                         </div>
                                     )
                                 )}
