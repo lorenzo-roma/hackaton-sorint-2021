@@ -7,7 +7,7 @@
     "start": "node dist/app.js",
     "start:dev": "ts-node app.ts",
     "build": "tsc -build",
-    "test": "npm run build && jest ./dist"
+    "test": "npm run build && jest ./dist --silent"
   },
   "author": "",
   "license": "ISC",
