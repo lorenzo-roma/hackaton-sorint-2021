@@ -4,6 +4,7 @@ import AuthServiceInterface from "./auth-service-interface";
 import jwt from "jwt-simple";
 import config from "../../config";
 import AuthResult from "../../models/auth-result";
+import {ServiceResponse} from "../../models/service-response";
 
 export default class AuthService implements AuthServiceInterface {
     constructor(private repository: UserRepository) {}

@@ -7,6 +7,7 @@ import TripServiceInterface from "../trip/trip-service-interface";
 import TripResult from "../../models/trip-result";
 import PathOptimizerServiceInterface from "../path-optimizer/path-optimizer-interface";
 import Position from "../../models/position";
+import {ServiceResponse} from "../../models/service-response";
 
 export default class PathService implements PathServiceInterface {
     constructor(

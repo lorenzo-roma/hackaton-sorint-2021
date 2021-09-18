@@ -4,6 +4,7 @@ import { APIResponseStatus } from "../../models/api-response";
 import AuthResult from "../../models/auth-result";
 import User from "../../models/user";
 import AuthServiceInterface from "../../services/auth/auth-service-interface";
+import {ServiceResponse} from "../../models/service-response";
 
 let controllerTested: AuthController;
 let mockService: AuthServiceInterface;

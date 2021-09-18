@@ -3,6 +3,7 @@ import express from "express";
 import AuthResult from "../models/auth-result";
 import User from "../models/user";
 import { APIResponse } from "../models/api-response";
+import {ServiceResponse} from "../models/service-response";
 
 export default class AuthController {
     constructor(private authService: AuthServiceInterface) {}

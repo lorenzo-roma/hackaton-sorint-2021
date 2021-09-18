@@ -20,5 +20,6 @@ export default class ErrorHandlerMiddleware implements Middleware {
     res.statusCode = 500;
     res.json(response);
     console.log(`Error: ${e.message}`);
+    console.error(e);
   };
 }

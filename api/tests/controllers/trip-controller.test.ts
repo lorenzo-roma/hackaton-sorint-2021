@@ -7,6 +7,7 @@ import TripResult from "../../models/trip-result";
 import User from "../../models/user";
 import TripServiceInterface from "../../services/trip/trip-service-interface";
 import { getMockTrip } from "../mocks";
+import {ServiceResponse} from "../../models/service-response";
 
 let controllerTested: TripController;
 let mockService: TripServiceInterface;

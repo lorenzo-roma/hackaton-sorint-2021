@@ -8,6 +8,7 @@ import ShiftResult from "../models/shift-result";
 import PathServiceInterface from "../services/path/path-service-interface";
 import ShiftServiceInterface from "../services/shift/shift-service-interface";
 import Position from "../models/position";
+import { ServiceResponse } from "../models/service-response";
 
 export default class ShiftController {
     constructor(

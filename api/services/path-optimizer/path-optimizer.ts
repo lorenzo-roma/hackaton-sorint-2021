@@ -1,4 +1,3 @@
-import fetch, { Headers } from "node-fetch";
 import config from "../../config";
 import moment from "moment";
 import Checkpoint from "../../models/checkpoint";
@@ -8,6 +7,8 @@ import { HopType } from "../../models/hop-type";
 import { Tour } from "../../models/tour";
 import PathOptimizerServiceInterface from "./path-optimizer-interface";
 import OptimizerResult from "../../models/optimizer-result";
+import {ServiceResponse} from "../../models/service-response";
+import axios from "axios";
 
 export default class PathOptimizer implements PathOptimizerServiceInterface {
     async findNearestTrips(
@@ -16,7 +17,7 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
         count: number
     ): Promise<ServiceResponse<OptimizerResult, trip[]>> {
         const distances = await this.getDistancesToLocations(
-            position,
+            {...position, name:"Start"},
             trips.map((trip) => {
                 return {
                     lat: trip.fromPosition.lat,
@@ -26,7 +27,7 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
             })
         );
         const sortedDistances = distances.sort(
-            (a, b) => b.duration - a.duration
+            (a, b) => a.duration - b.duration
         );
         return {
             status: OptimizerResult.SUCCESS,
@@ -52,16 +53,16 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
     async callDistanceMatrix(locations: Location[]) {
         const params = new URLSearchParams();
         params.set("locations", JSON.stringify(locations));
-        const result = await fetch(`${this.basePath}/distance`, {
-            headers: new Headers({
-                Authentication: `Basic ${new Buffer(
+        const result = await axios(`${this.basePath}/distances`, {
+            headers: {
+                Authorization: `Basic ${new Buffer(
                     `${config.routeXL.username}:${config.routeXL.password}`
                 ).toString("base64")}`,
-            }),
+            },
             method: "POST",
-            body: JSON.stringify(params),
+            data: params,
         });
-        const r = (await result.json()) as DistanceMatrixResponse;
+        const r = result.data as DistanceMatrixResponse;
         return {
             count: r.count,
             distances: Object.values(r.distances),
@@ -116,16 +117,16 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
             "locations",
             JSON.stringify(locations as LocationTourRequest[])
         );
-        const result = await fetch(`${this.basePath}/tour`, {
-            headers: new Headers({
-                Authentication: `Basic ${new Buffer(
+        const result = await axios(`${this.basePath}/tour`, {
+            headers: {
+                Authorization: `Basic ${new Buffer(
                     `${config.routeXL.username}:${config.routeXL.password}`
                 ).toString("base64")}`,
-            }),
+            },
             method: "POST",
-            body: JSON.stringify(params),
+            data: params,
         });
-        const r = (await result.json()) as TourResponse;
+        const r = result.data as TourResponse;
         const points = Object.values(r.route);
         const checkpoints = points.map((point, index) => {
             const toReturn = new Checkpoint();
@@ -165,7 +166,7 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
             startingLocation,
             ...endingLocations,
         ]);
-        return result.distances.filter((distance) => distance.from === "1");
+        return result.distances.filter((distance) => distance.from === 0);
     }
 }
 
@@ -173,8 +174,8 @@ export interface DistanceMatrixResponse {
     count: number;
     distances: {
         [index: string]: {
-            from: string;
-            to: string;
+            from: number;
+            to: number;
             distance: number;
             duration: number;
             router: boolean;
@@ -197,8 +198,8 @@ export interface TourResponse {
 export interface DistanceMatrix {
     count: number;
     distances: {
-        from: string;
-        to: string;
+        from: number;
+        to: number;
         distance: number;
         duration: number;
         router: boolean;
