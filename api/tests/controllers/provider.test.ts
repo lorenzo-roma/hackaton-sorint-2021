@@ -1,6 +1,8 @@
 import AuthController from "../../controllers/auth-controller";
 import ControllerProvider from "../../controllers/provider";
+import ShiftController from "../../controllers/shift-controller";
 import TripController from "../../controllers/trip-controller";
+import Shift from "../../models/shift";
 
 describe("Provide controllers instances", () => {
     test("Provide valid auth controller", () => {
@@ -30,6 +32,21 @@ describe("Provide controllers instances", () => {
             ControllerProvider.getTripController();
         const secondController: TripController =
             ControllerProvider.getTripController();
+        expect(controller).toBe(secondController);
+    });
+
+    test("Provide valid shift controller", () => {
+        const controller: ShiftController =
+            ControllerProvider.getShiftController();
+        expect(controller).toBeTruthy();
+        expect(controller).toBeInstanceOf(ShiftController);
+    });
+
+    test("Provide always the same instance of shift controller", () => {
+        const controller: ShiftController =
+            ControllerProvider.getShiftController();
+        const secondController: ShiftController =
+            ControllerProvider.getShiftController();
         expect(controller).toBe(secondController);
     });
 });

@@ -1,3 +1,4 @@
+import Shift from "../../models/shift";
 import Trip from "../../models/trip";
 
 const getMockTrip = (): Trip => {
@@ -11,4 +12,14 @@ const getMockTrip = (): Trip => {
     return trip;
 };
 
-export { getMockTrip };
+const getMockShift = (): Shift => {
+    const shift = new Shift();
+    shift.setUserId("");
+    shift.setStart(new Date());
+    shift.setEnd(new Date());
+    shift.setStartingPosition("");
+    shift.setCapacity(4);
+    return shift;
+};
+
+export { getMockTrip, getMockShift };

@@ -5,9 +5,11 @@ import TripServiceInterface from "./trip/trip-service-interface";
 import TripService from "./trip/trip-service";
 import UserRepository from "../repository/user-repository-interface";
 import TripRepository from "../repository/trip-repository-interface";
+import ShiftServiceInterface from "./shift/shift-service-interface";
 export default class ServiceProvider {
     private static authService: AuthServiceInterface;
     private static tripService: TripServiceInterface;
+    private static shiftService: ShiftServiceInterface;
 
     public static getAuthService(): AuthServiceInterface {
         if (this.authService == null) {
@@ -26,5 +28,15 @@ export default class ServiceProvider {
             this.tripService = new TripService(repository);
         }
         return this.tripService;
+    }
+
+    public static getShiftService(): ShiftServiceInterface {
+        if (this.shiftService == null) {
+            const repository: TripRepository =
+                RepositoryProvider.getRepository();
+
+            this.tripService = new TripService(repository);
+        }
+        return this.shiftService;
     }
 }
