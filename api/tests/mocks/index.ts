@@ -2,6 +2,7 @@ import Checkpoint from "../../models/checkpoint";
 import Position from "../../models/position";
 import Shift from "../../models/shift";
 import Trip from "../../models/trip";
+import User from "../../models/user";
 
 const getMockTrip = (): Trip => {
     const trip = new Trip();
@@ -31,4 +32,16 @@ const getMockCheckpoint = (): Checkpoint => {
     return checkpoint;
 };
 
-export { getMockTrip, getMockShift, getMockCheckpoint };
+const getMockUser = (): User => {
+    const user = new User(
+        "username",
+        "passwotd",
+        "name",
+        "surname",
+        "3333",
+        false
+    );
+    return user;
+};
+
+export { getMockTrip, getMockShift, getMockCheckpoint, getMockUser };
