@@ -9,6 +9,7 @@ import PathOptimizerServiceInterface from "../path-optimizer/path-optimizer-inte
 import Position from "../../models/position";
 import { ServiceResponse } from "../../models/service-response";
 import CheckPointRepositoryInterface from "../../repository/checkpoint-repository-interface";
+import { HopType } from "../../models/hop-type";
 
 export default class PathService implements PathServiceInterface {
     constructor(
@@ -79,6 +80,10 @@ export default class PathService implements PathServiceInterface {
             const trip = tripResponse.data!.find(
                 (t: Trip) => t.id == checkpoint.tripId
             );
+            checkpoint.positionName =
+                checkpoint.hopType == HopType.PICKUP
+                    ? trip!.fromName
+                    : trip!.toName;
             await this.tripService.assingTripToShift(trip!.id, shift);
             await this.tripService.assignTripToCheckpoint(trip!.id, checkpoint);
             await this.checkpointRepository.insertCheckpoint(checkpoint);
