@@ -1,3 +1,9 @@
-.black {
-    color: #000000bb;
+:root {
+    --primary: #84dccf;
+    --accent: #fe386c;
+    --light-primary: #effbf9;
+    --light-accent: #fbeefb;
+    --light: #ffffff;
+
+    --accent-hover: rgb(219, 9, 65), 99%, 61%;
 }

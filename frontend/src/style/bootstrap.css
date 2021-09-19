@@ -9,6 +9,7 @@
 
 .btn {
     border-radius: 0.5em;
+    height: 2.5em;
 }
 
 .nav-link {
@@ -18,6 +19,10 @@
 
 .navbar > .container {
     align-items: baseline;
+}
+
+.navbar {
+    background-color: #fff;
 }
 
 .alert {

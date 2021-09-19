@@ -9,6 +9,7 @@ import NavbarComponent from "./components/Navbar.component";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "./style/style.css";
+import "./style/colors.css";
 import "./style/fonts.css";
 import "./style/bootstrap.css";
 import LoginPage from "./pages/auth/Login.page";
