@@ -7,6 +7,7 @@ export default class Checkpoint {
     public shiftId: string;
     public position: Position;
     public sortIndex: number;
+    public positionName: string;
     public time: Date;
     public tripId: string;
     public userId: string;
@@ -18,6 +19,7 @@ export class CheckpointDetail {
     public shiftId: string;
     public position: Position;
     public sortIndex: number;
+    public positionName: string;
     public time: Date;
     public tripId: string;
     public user: User;
@@ -32,5 +34,6 @@ export class CheckpointDetail {
         this.tripId = checkpoint.tripId;
         this.user = user;
         this.hopType = checkpoint.hopType;
+        this.positionName = checkpoint.positionName;
     }
 }
