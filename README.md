@@ -107,6 +107,13 @@ npm i
 npm run build && npm run start
 ```
 
+Per eseguire i test
+
+```sh
+cd api
+npm t
+```
+
 ### WebApp React
 
 Clonare il repo
