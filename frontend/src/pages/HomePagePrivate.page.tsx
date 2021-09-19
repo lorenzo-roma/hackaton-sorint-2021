@@ -11,9 +11,9 @@ import TripWizard, {
 import SelectAddress from "../components/SelectAddress.component";
 import AutoCompleteResponse from "../classes/autocomplete-response.class";
 import moment from "moment";
-import {Col, Container, Row} from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import DateFormat from "../utils/DateFormat";
-import {HopType} from "../classes/Checkpoint.class";
+import { HopType } from "../classes/Checkpoint.class";
 import PhoneIcon from "../components/PhoneIcon";
 import DirectionsIcon from "../components/DirectionsIcon";
 import ArrowIcon from "../components/ArrowIcon";
@@ -38,60 +38,138 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
                 initialTo={props.initialTo}
                 onAddedTrip={doTrips}
             />
-            <br/>
+            <br />
             {isError && <ErrorComponent error={"Error while loading trips"} />}
             {isSuccess && (
                 <>
-                    {tripsResponse&& tripsResponse.confirmedTrips.length > 0 && (
+                    {tripsResponse && tripsResponse.confirmedTrips.length > 0 && (
                         <>
                             <h1 className="header2">Upcoming Trips</h1>
-                            <p className="body1">Here are your scheduled trips</p>
+                            <p className="body1">
+                                Here are your scheduled trips
+                            </p>
                             {tripsResponse.confirmedTrips.map((trip) => (
                                 <div key={trip.id}>
-                                    <hr/>
-                                    <Row key={trip.id} className="align-items-center">
+                                    <hr />
+                                    <Row
+                                        key={trip.id}
+                                        className="align-items-center"
+                                    >
                                         <Col xs="auto" className="text-center">
-                                            <div className="header3"> {moment(trip.confirmedPickedUp).format('HH:mm')}</div>
-                                            <div className="caption">{DateFormat.toShortDay(trip.confirmedPickedUp)} {DateFormat.toShortMonth(trip.confirmedPickedUp)}</div>
+                                            <div className="header3">
+                                                {" "}
+                                                {moment(
+                                                    trip.confirmedPickedUp
+                                                ).format("HH:mm")}
+                                            </div>
+                                            <div className="caption">
+                                                {DateFormat.toShortDay(
+                                                    trip.confirmedPickedUp
+                                                )}{" "}
+                                                {DateFormat.toShortMonth(
+                                                    trip.confirmedPickedUp
+                                                )}
+                                            </div>
                                         </Col>
-                                        <Col className="body1 text-center">{trip.fromName}</Col>
+                                        <Col className="body1 text-center">
+                                            {trip.fromName}
+                                        </Col>
                                         <Col className="text-center">
-                                            <ArrowIcon/>
+                                            <ArrowIcon />
                                         </Col>
-                                        <Col className="body1 text-center">{trip.toName}</Col>
+                                        <Col className="body1 text-center">
+                                            {trip.toName}
+                                        </Col>
                                         <Col xs="auto" className="text-center">
-                                            <div className="header3"> {moment(trip.arrival).format('HH:mm')}</div>
-                                            <div className="caption">{DateFormat.toShortDay(trip.arrival)} {DateFormat.toShortMonth(trip.arrival)}</div>
+                                            <div className="header3">
+                                                {" "}
+                                                {moment(trip.arrival).format(
+                                                    "HH:mm"
+                                                )}
+                                            </div>
+                                            <div className="caption">
+                                                {DateFormat.toShortDay(
+                                                    trip.arrival
+                                                )}{" "}
+                                                {DateFormat.toShortMonth(
+                                                    trip.arrival
+                                                )}
+                                            </div>
                                         </Col>
                                     </Row>
                                 </div>
                             ))}
                         </>
-                    ) }
+                    )}
 
                     {tripsResponse &&
                         tripsResponse.toBeScheduledTrips.length > 0 && (
                             <>
-
-                                <h1 className="header2">To Be Scheduled Trip</h1>
-                                <p className="body1">Here are your trips that needs to be schedule</p>
+                                <h1 className="header2">
+                                    To Be Scheduled Trip
+                                </h1>
+                                <p className="body1">
+                                    Here are your trips that need to be
+                                    scheduled
+                                </p>
                                 {tripsResponse.toBeScheduledTrips.map(
                                     (trip) => (
                                         <div key={trip.id}>
-                                            <hr/>
-                                            <Row key={trip.id} className="align-items-center">
-                                                <Col xs="auto" className="text-center">
-                                                    <div className="header3"> {moment(trip.initialAvailability).format('HH:mm')} - {moment(trip.endAvailability).format('HH:mm')}</div>
-                                                    <div className="caption">{DateFormat.toShortDay(trip.initialAvailability)} {DateFormat.toShortMonth(trip.initialAvailability)}</div>
+                                            <hr />
+                                            <Row
+                                                key={trip.id}
+                                                className="align-items-center"
+                                            >
+                                                <Col
+                                                    xs="auto"
+                                                    className="text-center"
+                                                >
+                                                    <div className="header3">
+                                                        {" "}
+                                                        {moment(
+                                                            trip.initialAvailability
+                                                        ).format("HH:mm")}{" "}
+                                                        -{" "}
+                                                        {moment(
+                                                            trip.endAvailability
+                                                        ).format("HH:mm")}
+                                                    </div>
+                                                    <div className="caption">
+                                                        {DateFormat.toShortDay(
+                                                            trip.initialAvailability
+                                                        )}{" "}
+                                                        {DateFormat.toShortMonth(
+                                                            trip.initialAvailability
+                                                        )}
+                                                    </div>
                                                 </Col>
-                                                <Col className="body1 text-center">{trip.fromName}</Col>
+                                                <Col className="body1 text-center">
+                                                    {trip.fromName}
+                                                </Col>
                                                 <Col className="text-center">
-                                                    <ArrowIcon/>
+                                                    <ArrowIcon />
                                                 </Col>
-                                                <Col className="body1 text-center">{trip.toName}</Col>
-                                                <Col xs="auto" className="text-center">
-                                                    <div className="header3"> {moment(trip.arrival).format('HH:mm')}</div>
-                                                    <div className="caption">{DateFormat.toShortDay(trip.arrival)} {DateFormat.toShortMonth(trip.arrival)}</div>
+                                                <Col className="body1 text-center">
+                                                    {trip.toName}
+                                                </Col>
+                                                <Col
+                                                    xs="auto"
+                                                    className="text-center"
+                                                >
+                                                    <div className="header3">
+                                                        {" "}
+                                                        {moment(
+                                                            trip.arrival
+                                                        ).format("HH:mm")}
+                                                    </div>
+                                                    <div className="caption">
+                                                        {DateFormat.toShortDay(
+                                                            trip.arrival
+                                                        )}{" "}
+                                                        {DateFormat.toShortMonth(
+                                                            trip.arrival
+                                                        )}
+                                                    </div>
                                                 </Col>
                                             </Row>
                                         </div>
