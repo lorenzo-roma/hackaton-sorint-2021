@@ -15,7 +15,8 @@ interface ShiftListResult {
     id: number;
     start: Date;
     end: Date;
-    startingPosition: string;
+    startingPosition: Position;
+    startingPositionName: string;
     capacity: number;
     userId: number;
 }
@@ -23,7 +24,8 @@ interface ShiftResult {
     id: number;
     start: Date;
     end: Date;
-    startingPosition: string;
+    startingPosition: Position;
+    startingPositionName: string;
     capacity: number;
     userId: number;
 }

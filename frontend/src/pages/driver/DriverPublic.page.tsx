@@ -1,14 +1,24 @@
 import {Button} from "../../components/system/InputText";
 import {useState} from "react";
 import {Redirect} from "react-router-dom";
+import {Col, Container, Row} from "react-bootstrap";
 
 const DriverPublicPage = () => {
     const [redirect, setRedirect] = useState(false);
-    if(redirect) return <Redirect to="/driver/signup" />
-    return (<div>
-        <h1>Why you should become a driver?</h1>
-        <p>Because being a driver is really cool and you also make money!</p>
-        <Button onClick={() => setRedirect(true)}>Start with us!</Button>
-    </div>);
+    if (redirect) return <Redirect to="/driver/signup"/>
+    return (<Container className=" h-100 w-100">
+        <Row className="vh-100">
+            <Col xs="12" md="6">
+                <div style={{marginTop: '30vh'}}>
+                    <h1 className="header1">Create a Business</h1>
+                    <p className="body1">You only need a van and schedule some shifts</p>
+                    <Button onClick={() => setRedirect(true)}>JOIN US</Button>
+                </div>
+            </Col>
+            <Col xs="12" md="6" className="bg-primary align-self-center" style={{height: '60vh'}}>
+
+            </Col>
+        </Row>
+    </Container>);
 }
 export default DriverPublicPage;
