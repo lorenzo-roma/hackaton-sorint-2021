@@ -38,7 +38,7 @@ const TripWizard = ({
             NOT_EMPTY.withPrintable("Date cannot be empty"),
             GREATER_THAN(
                 moment(new Date()).add(23, "hours").toDate()
-            ).withPrintable("Date cannot be in the past"),
+            ).withPrintable("Date cannot be 24 hours before"),
         ]
     );
     const endAvailability = useInput<Date>(
@@ -105,12 +105,14 @@ const TripWizard = ({
                     <label>Availability</label>
                     <Row className="align-items-center">
                         <Col>
-                            <InputDateTime {...initialAvailability} minDate={new Date()}/>
+                            <InputDateTime {...initialAvailability} selectsStart={true} minDate={moment(new Date()).add(23, 'hours').toDate()}/>
                         </Col>
                         <Col xs="auto">-</Col>
                         <Col>
                             <InputDateTime
                                 {...endAvailability}
+                                selectsEnd={true}
+                                startDate={initialAvailability.value}
                                 minDate={initialAvailability.value}
                             />
                         </Col>
