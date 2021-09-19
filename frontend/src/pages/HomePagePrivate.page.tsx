@@ -58,15 +58,15 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
                                             <div className="header3">
                                                 {" "}
                                                 {moment(
-                                                    trip.confirmedPickedUp
+                                                    trip.confirmedPickup
                                                 ).format("HH:mm")}
                                             </div>
                                             <div className="caption">
                                                 {DateFormat.toShortDay(
-                                                    trip.confirmedPickedUp
+                                                    trip.confirmedPickup
                                                 )}{" "}
                                                 {DateFormat.toShortMonth(
-                                                    trip.confirmedPickedUp
+                                                    trip.confirmedPickup
                                                 )}
                                             </div>
                                         </Col>

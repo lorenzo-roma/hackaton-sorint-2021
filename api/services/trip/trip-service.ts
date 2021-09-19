@@ -3,8 +3,9 @@ import Trip from "../../models/trip";
 import TripResult from "../../models/trip-result";
 import TripRepository from "../../repository/trip-repository-interface";
 import TripServiceInterface from "./trip-service-interface";
-import { ServiceResponse } from "../../models/service-response";
+import {ServiceResponse} from "../../models/service-response";
 import checkpoint from "../../models/checkpoint";
+import {HopType} from "../../models/hop-type";
 
 export default class TripService implements TripServiceInterface {
     constructor(private repository: TripRepository) {}
@@ -15,7 +16,7 @@ export default class TripService implements TripServiceInterface {
     ): Promise<ServiceResponse<TripResult, Trip>> {
         const trip = await this.repository.findTripById(id);
         if (!trip) return { status: TripResult.TRIP_NOT_FOUND };
-        trip.confirmedPickup = checkpoint.time;
+        if(checkpoint.hopType === HopType.PICKUP) trip.confirmedPickup = checkpoint.time;
         const updated = await this.repository.updateTrip(id, trip);
         if (updated) return { status: TripResult.SUCCESS, data: updated };
         return { status: TripResult.ERROR_DURING_UPDATING_TRIP };
