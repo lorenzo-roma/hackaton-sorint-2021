@@ -40,12 +40,25 @@ body {
     border-color: var(--primary) !important;
 }
 
+.info-card {
+    width: 30vw;
+    height: 20vw;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    padding: 24px;
+    background: var(--light);
+}
 .custom-card {
     background-color: var(--light);
     padding: 1.2rem;
     box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.13);
 }
-.link-unstyled, .link-unstyled:visited, .link-unstyled:hover, .link-unstyled:active, .link-unstyled:focus, .link-unstyled:active:hover {
+.link-unstyled,
+.link-unstyled:visited,
+.link-unstyled:hover,
+.link-unstyled:active,
+.link-unstyled:focus,
+.link-unstyled:active:hover {
     font-style: inherit;
     color: inherit;
     background-color: transparent;
@@ -63,7 +76,7 @@ body {
     vertical-align: inherit;
 }
 
-.border-row{
-    border-top: 1px rgba(0,0,0,.6) solid;
+.border-row {
+    border-top: 1px rgba(0, 0, 0, 0.6) solid;
     padding: 0.5rem 0.2rem;
 }
