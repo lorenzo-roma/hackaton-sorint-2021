@@ -14,6 +14,14 @@ export default class ShiftService implements ShiftServiceInterface {
         private userRepository: UserRepository
     ) {}
 
+    async retrieveById(
+        id: string
+    ): Promise<ServiceResponse<ShiftResult, Shift>> {
+        const shift = await this.repository.findShiftById(id);
+        if (!shift) return { status: ShiftResult.ERROR_RETRIEVING_SHIFTS };
+        return { status: ShiftResult.SUCCESS, data: shift };
+    }
+
     async getCheckpointsDetailByShiftId(
         id: string
     ): Promise<ServiceResponse<ShiftResult, CheckpointDetail[]>> {

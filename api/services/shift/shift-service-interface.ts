@@ -9,6 +9,8 @@ export default interface ShiftServiceInterface {
         id: string
     ): Promise<ServiceResponse<ShiftResult, Shift[]>>;
 
+    retrieveById(id: string): Promise<ServiceResponse<ShiftResult, Shift>>;
+
     getCheckpointsDetailByShiftId(
         id: string
     ): Promise<ServiceResponse<ShiftResult, CheckpointDetail[]>>;

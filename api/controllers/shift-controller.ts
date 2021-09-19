@@ -58,6 +58,11 @@ export default class ShiftController {
             await this.shiftService.getCheckpointsDetailByShiftId(shiftId);
         if (checkPointsResponse.status != ShiftResult.SUCCESS)
             return APIResponse.Error();
-        return APIResponse.Success(checkPointsResponse.data);
+        const shift = await this.shiftService.retrieveById(shiftId);
+        if (shift.status != ShiftResult.SUCCESS) return APIResponse.Error();
+        return APIResponse.Success({
+            checkpoints: checkPointsResponse.data,
+            ...shift.data,
+        });
     };
 }
