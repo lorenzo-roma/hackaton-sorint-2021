@@ -6,7 +6,7 @@ const Footer = () => {
         <HorizontalBar>
             <div
                 className="d-flex flex-column footer"
-                style={{ padding: "32px 10vw" }}
+                style={{ padding: "32px 10vw", marginTop: "64px" }}
             >
                 <div className="header2">Hop.io</div>
 
