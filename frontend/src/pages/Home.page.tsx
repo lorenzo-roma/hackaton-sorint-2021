@@ -5,12 +5,14 @@ import InfoCard from "../components/InfoCard";
 import FeatureSection from "../components/FeatureSection";
 import ComfortIcon from "../components/ComfortIcon";
 import PeopleSafeIcon from "../components/PeopleSafeIcon";
+import BackgroundImage from "../components/BackgroundImage";
 
 import { Card } from "react-bootstrap";
 
 export default function HomePage() {
     return (
         <>
+            <BackgroundImage />
             <div className="row" style={{ height: "80vh" }}>
                 <div className="h-100 col-6 header1 ">
                     <div className="w-75 h-100 d-flex flex-column justify-content-center mx-auto">
