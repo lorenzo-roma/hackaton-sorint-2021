@@ -33,7 +33,7 @@ const SlimTripWizard = () => {
 
     return (
         <div>
-            <div className="header2">Where to go?</div>
+            <div className="header1">Where to go?</div>
             <div className="body1">
                 Select where to start and the destination
             </div>
