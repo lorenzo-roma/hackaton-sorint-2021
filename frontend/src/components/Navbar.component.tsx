@@ -1,11 +1,12 @@
-import { Component } from "react";
-import { Link } from "react-router-dom";
-import { Container, Nav, Navbar } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import { useAppDispatch, useAppSelector } from "../stores/store";
-import { AuthState, clearToken, selectAuthState } from "../stores/auth.store";
-import { useCookies } from "react-cookie";
+import {Component} from "react";
+import {Link} from "react-router-dom";
+import {Container, Nav, Navbar} from "react-bootstrap";
+import {LinkContainer} from "react-router-bootstrap";
+import {useAppDispatch, useAppSelector} from "../stores/store";
+import {AuthState, clearToken, selectAuthState} from "../stores/auth.store";
+import {useCookies} from "react-cookie";
 import {Button} from "./system/InputText";
+
 type NavbarComponentProps = {
     driver: boolean;
 };
@@ -35,18 +36,38 @@ const NavbarComponent = (props: NavbarComponentProps) => {
         );
     };
 
-    const loggedInSection = function () {
+    const loggedInDriverSection = function () {
+        return (
+            <Nav>
+                <Nav.Item>
+                    <LinkContainer
+                        to={"/driver"}
+                    >
+                        <Button className="btn btn-primary mx-2">MY SHIFTS</Button>
+                    </LinkContainer>
+                </Nav.Item>
+                {logoutButton()}
+            </Nav>
+        );
+    };
+
+    function logoutButton() {
         const clearTokenCookie = () => {
             dispatch(clearToken({}));
             removeCookie("token");
         };
+        return <Nav.Item>
+            <Button className="btn btn-transparent mx-2" onClick={() => clearTokenCookie()}>
+                LOGOUT
+            </Button>
+        </Nav.Item>;
+    }
+
+    const loggedInUserSection = function () {
         return (
             <Nav>
-                <Nav.Item>
-                    <Nav.Link onClick={(_) => clearTokenCookie()}>
-                        Logout
-                    </Nav.Link>
-                </Nav.Item>
+                {scheduleTrips()}
+                {logoutButton()}
             </Nav>
         );
     };
@@ -63,17 +84,59 @@ const NavbarComponent = (props: NavbarComponentProps) => {
         );
     }
 
+    function goToUserSection() {
+        return (
+            <Nav className="mg-xl-l">
+                <Nav.Item>
+                    <LinkContainer to="/">
+                        <Nav.Link>Schedule a trip</Nav.Link>
+                    </LinkContainer>
+                </Nav.Item>
+            </Nav>
+        );
+    }
+
+    function myTrips() {
+        return (
+            <Nav className="mg-xl-l">
+                <Nav.Item>
+                    <LinkContainer to="/">
+                        <Nav.Link>My Trips</Nav.Link>
+                    </LinkContainer>
+                </Nav.Item>
+            </Nav>
+        );
+    }
+
+    function scheduleTrips() {
+        return (
+            <Nav className="mg-xl-l">
+                <Nav.Item>
+                    <LinkContainer
+                        to={"/driver"}
+                    >
+                        <Button className="btn btn-primary mx-2">SCHEDULE TRIP</Button>
+                    </LinkContainer>
+                </Nav.Item>
+            </Nav>
+        );
+    }
+
     return (
         <Navbar>
             <Container>
                 <LinkContainer to="/">
-                    <Navbar.Brand className=""><span className="header1">Hop.io</span>{props.driver && <sub className="caption">Driver</sub> }</Navbar.Brand>
+                    <Navbar.Brand className=""><span className="header1">Hop.io</span>{props.driver &&
+                    <sub className="caption">Driver</sub>}</Navbar.Brand>
                 </LinkContainer>
-                <Navbar.Collapse className="button-font ">
-                    {!props.driver && driverSection()}
-                    <Nav className="me-auto" />
+                <Navbar.Collapse className="button-font d-flex align-items-center">
+                    {!props.driver && authState == AuthState.LOGGED_OUT && driverSection()}
+                    {!props.driver && authState == AuthState.LOGGED_IN && myTrips()}
+                    {props.driver && goToUserSection()}
+                    <Nav className="me-auto"/>
                     {authState == AuthState.LOGGED_OUT && loggedOutSection()}
-                    {authState == AuthState.LOGGED_IN && loggedInSection()}
+                    {authState == AuthState.LOGGED_IN && props.driver && loggedInDriverSection()}
+                    {authState == AuthState.LOGGED_IN && !props.driver && loggedInUserSection()}
                 </Navbar.Collapse>
             </Container>
         </Navbar>
