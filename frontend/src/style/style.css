@@ -80,3 +80,7 @@ body {
     border-top: 1px rgba(0, 0, 0, 0.6) solid;
     padding: 0.5rem 0.2rem;
 }
+
+.footer {
+    color: var(--light);
+}

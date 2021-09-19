@@ -9,8 +9,8 @@ const Feature = (props: Props) => {
         <div
             className="d-flex flex-column justify-content-around"
             style={{
-                width: "30vw",
-                height: "20vw",
+                width: "300px",
+                height: "200px",
                 padding: "32px",
                 background: "var(--light)",
             }}

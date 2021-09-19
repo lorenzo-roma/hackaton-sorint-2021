@@ -11,7 +11,8 @@ const FeatureSection = () => {
             style={{
                 height: "80vh",
                 width: "100vw",
-                padding: "10vw 3vw",
+                padding: "96px",
+                marginBottom: "64px",
                 textAlign: "center",
             }}
         >

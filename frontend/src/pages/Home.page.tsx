@@ -1,6 +1,6 @@
 import SlimTripWizard from "../components/SlimTripWizard.component";
 import HorizontalBar from "../components/HorizontalBar";
-import InfoSection from "../components/FirstInfoSection";
+import Footer from "../components/Footer";
 import InfoCard from "../components/InfoCard";
 import FeatureSection from "../components/FeatureSection";
 import ComfortIcon from "../components/ComfortIcon";
@@ -52,6 +52,7 @@ export default function HomePage() {
                 />
             </div>
             <FeatureSection />
+            <Footer />
         </>
     );
 }
