@@ -62,3 +62,8 @@ body {
     padding: inherit;
     vertical-align: inherit;
 }
+
+.border-row{
+    border-top: 1px rgba(0,0,0,.6) solid;
+    padding: 0.5rem 0.2rem;
+}

@@ -7,6 +7,10 @@ import Checkpoint, {HopType} from "../../../classes/Checkpoint.class";
 import {Button} from "../../../components/system/InputText";
 import {DirectionsRenderer, GoogleMap, useJsApiLoader} from "@react-google-maps/api";
 import GoogleMapOption from "../../../config/MapOptions";
+import {Col, Container, Row} from "react-bootstrap";
+import DateFormat from "../../../utils/DateFormat";
+import DirectionsIcon from "../../../components/DirectionsIcon";
+import PhoneIcon from "../../../components/PhoneIcon";
 
 type ShiftDetailPageProps = {
     id: number;
@@ -34,22 +38,45 @@ const ShiftDetailPage = (props: ShiftDetailPageProps) => {
         console.log("Shift", shift)
 
         return (
-            <div>
-                <h1>{moment(shift.start).format("DD MMMM")}</h1>
-                <p>{moment(shift.start).format("HH:mm")} - {moment(shift.end).format("HH:mm")}</p>
+            <Container>
+                <div className="body1">
+                    {DateFormat.toShortDateAndTime(shift.start)} - {DateFormat.toShortDateAndTime(shift.end)}</div>
+                <h1 className="header1">{shift.startingPositionName}</h1>
                 {shift.checkpoints.length > 0 && (
                     <>
                         {isLoaded && <Map checkpoints={shift.checkpoints}/>}
+                        <br/>
+                        <h2 className="header2">Checkpoints</h2>
                         {
                             shift.checkpoints.map(checkpoint => (
-                                <div key={checkpoint.id}>
-                                    {moment(checkpoint.time).format('HH:mm')}
-                                    {checkpoint.user.name} {checkpoint.user.surname}
-                                    {checkpoint.positionName}
-                                    {checkpoint.hopType === HopType.PICKUP && "Pickup"}
-                                    {checkpoint.hopType === HopType.DROPOUT && "Dropout"}
-                                    <a href={`tel:${checkpoint.user.phoneNumber}`}>Call</a>
-                                </div>
+                                <Row key={checkpoint.id} className="border-row align-items-center">
+                                    <Col xs="auto" className="text-center">
+                                        <div className="header3">{DateFormat.toShortDay(checkpoint.time)}
+                                            <br/> {DateFormat.toShortMonth(checkpoint.time)}</div>
+                                        <div className="body1"> {moment(checkpoint.time).format('HH:mm')}</div>
+                                    </Col>
+                                    <Col className="body1">{checkpoint.positionName}</Col>
+                                    <Col className="text-center">
+                                        <div className="caption">{checkpoint.hopType === HopType.PICKUP && "PICKUP"}
+                                            {checkpoint.hopType === HopType.DROPOUT && "DROPOUT"}</div>
+                                        <div className="body1">{checkpoint.user.name} {checkpoint.user.surname}
+                                        </div>
+                                    </Col>
+
+                                    <Col xs="6" md="auto" className="d-flex justify-content-center body1">
+
+                                        <a className="link-unstyled text-center"
+                                           href={`tel:${checkpoint.user.phoneNumber}`}>
+                                            <PhoneIcon/><br/>Call</a>
+                                    </Col>
+                                    <Col xs="6" md="auto" className=" d-flex justify-content-center body1">
+                                        <a className="link-unstyled text-center" target="_blank"
+                                           href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${checkpoint.position.lat},${checkpoint.position.lng}`)}&travelmode=driving`}>
+                                            <DirectionsIcon/><br/>
+                                            Directions
+                                        </a>
+                                    </Col>
+                                </Row>
                             ))
                         }
                     </>
@@ -61,7 +88,7 @@ const ShiftDetailPage = (props: ShiftDetailPageProps) => {
                         {isRetrieveError && <ErrorComponent error="Error while calculating path"/>}
                     </>
                 )}
-            </div>
+            </Container>
         );
 
     }
@@ -75,7 +102,7 @@ const Map = ({checkpoints}: { checkpoints: Checkpoint[] }) => {
             origin: {location: new google.maps.LatLng(checkpoints[0].position.lat, checkpoints[0].position.lng)},
             travelMode: google.maps.TravelMode.DRIVING,
             optimizeWaypoints: false,
-            waypoints: checkpoints.slice(1, checkpoints.length-1).map((checkpoint) => {
+            waypoints: checkpoints.slice(1, checkpoints.length - 1).map((checkpoint) => {
                 return {location: new google.maps.LatLng(checkpoint.position.lat, checkpoint.position.lng)}
             }),
         }
@@ -96,7 +123,7 @@ const Map = ({checkpoints}: { checkpoints: Checkpoint[] }) => {
         <GoogleMap zoom={7}
                    options={{styles: GoogleMapOption}}
                    center={new google.maps.LatLng(0, 0)}>
-            {directionResult && <DirectionsRenderer directions={directionResult} />}
+            {directionResult && <DirectionsRenderer directions={directionResult}/>}
         </GoogleMap>
     </div>);
 }
