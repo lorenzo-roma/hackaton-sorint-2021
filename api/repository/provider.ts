@@ -19,6 +19,7 @@ export default class RepositoryProvider {
     static async initTestData() {
         const firstUser = new User("lorenzo", "pippo", "lorenzo", "Romagnoni", "+39 3402192392", false, "0");
         const secondUser = new User("davide", "pluto", "Davide", "Campagnola", "+39 3402192392", false, "1");
+        const driver = new User("driver", "driver", "Davide", "Campagnola", "+39 3402192392", true, "2");
         const firstTrip = new Trip();
         firstTrip.fromName = "Canegrate, MI";
         firstTrip.toName = "Milano, MI";
@@ -46,9 +47,10 @@ export default class RepositoryProvider {
         shift.startingPosition = new Position(45.59435, 8.91758);
         shift.capacity = 5;
         shift.userId = "2";
-        shift.id = "1";
+        shift.id = "0";
         this.repository.insertUser(firstUser);
         this.repository.insertUser(secondUser);
+        this.repository.insertUser(driver);
         this.repository.insertTrip(firstTrip);
         this.repository.insertTrip(secondTrip);
         this.repository.insertShift(shift);

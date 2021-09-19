@@ -14,6 +14,7 @@ export default interface Checkpoint {
     id: string;
     shiftId: string;
     position: Position;
+    positionName: string;
     sortIndex: number;
     time: Date;
     tripId: string;

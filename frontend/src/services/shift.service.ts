@@ -8,7 +8,7 @@ import ToBeScheduledTrip, {
 import { RootState } from "../stores/store";
 import { prepareAuthentication } from "../stores/auth.store";
 import Config from "../config";
-import Checkpoint from "../classes/Checkpoint.class";
+import Checkpoint, {Position} from "../classes/Checkpoint.class";
 import AutoCompleteResponse from "../classes/autocomplete-response.class";
 
 interface ShiftListResult {
@@ -31,7 +31,8 @@ interface ShiftDetailResult {
     id: number;
     start: Date;
     end: Date;
-    startingPosition: string;
+    startingPosition: Position;
+    startingPositionName: string;
     capacity: number;
     userId: number;
     checkpoints: Checkpoint[];

@@ -3,6 +3,7 @@ import HomePage from "./pages/Home.page";
 import NavbarComponent from "./components/Navbar.component";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
+import './style/style.css';
 import LoginPage from "./pages/auth/Login.page";
 import {useAppDispatch, useAppSelector} from "./stores/store";
 import {AuthState, selectAuthState, setUser} from "./stores/auth.store";

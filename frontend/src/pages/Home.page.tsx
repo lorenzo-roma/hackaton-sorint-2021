@@ -1,13 +1,12 @@
-import { useSelector } from "react-redux";
-import { useAppSelector } from "../stores/store";
 import SlimTripWizard from "../components/SlimTripWizard.component";
-import React from "react";
-import SelectAddress from "../components/SelectAddress.component";
+import React, {useEffect, useState} from "react";
+import {GoogleMap, DirectionsRenderer, DirectionsService, useJsApiLoader} from "@react-google-maps/api";
+
 
 export default function HomePage() {
     return (
         <div>
-            <SlimTripWizard />
+            <SlimTripWizard/>
         </div>
     );
 }

@@ -70,7 +70,7 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
     }
 
     diffToMin(from: Date, to: Date) {
-        return moment(to).diff(moment(from), "s");
+        return moment(to).diff(moment(from), "minute");
     }
 
     async callTour(
@@ -79,12 +79,12 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
         startLocation: Position
     ): Promise<Tour> {
         const params = new URLSearchParams();
-        const diffFromStartShift = (to: Date) => this.diffToMin(to, startShift);
+        const diffFromStartShift = (to: Date) => this.diffToMin(startShift,to);
         const startEndLocation: LocationTourRequest = {
             name: "start",
             lat: startLocation.lat,
             lng: startLocation.lng,
-            restrictions: [],
+            restrictions: {},
         };
         const locations: LocationTourRequest[] = [startEndLocation];
         let index = 0;
@@ -93,22 +93,22 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
                 lat: trip.fromPosition.lat,
                 lng: trip.fromPosition.lng,
                 name: "s_" + trip.id,
-                restrictions: [
-                    diffFromStartShift(trip.initialAvailability), // ready
-                    diffFromStartShift(trip.endAvailability), // due
-                    index + 2, // Before starting
-                    0, // after
-                ],
+                restrictions: {
+                    ready: diffFromStartShift(trip.initialAvailability), // ready
+                    due: diffFromStartShift(trip.endAvailability), // due
+                    before: index + 2, // Before starting
+                    after: 0, // after
+                },
             });
             locations.push({
                 lat: trip.toPosition.lat,
                 lng: trip.toPosition.lng,
                 name: "e_" + trip.id,
-                restrictions: [
-                    1, // ready
-                    diffFromStartShift(trip.arrival), // due
-                    index + 1,
-                ],
+                restrictions: {
+                    ready: 1, // ready
+                    due: diffFromStartShift(trip.arrival), // due
+                    after: index + 1,
+                },
             });
             index += 2;
         }
@@ -139,14 +139,14 @@ export default class PathOptimizer implements PathOptimizerServiceInterface {
             const isPickup = point.name === `s_${trip.id}`;
             toReturn.position = {
                 lat: isPickup ? trip.fromPosition.lat : trip.toPosition.lat,
-                lng: isPickup ? trip.fromPosition.lat : trip.toPosition.lat,
+                lng: isPickup ? trip.fromPosition.lng : trip.toPosition.lng,
             };
             toReturn.hopType = isPickup ? HopType.PICKUP : HopType.DROPOUT;
             toReturn.userId = trip.userId;
             toReturn.tripId = trip.id;
             toReturn.sortIndex = index;
             toReturn.time = moment(startShift)
-                .add(point.arrival, "second")
+                .add(point.arrival, "minutes")
                 .toDate();
             return toReturn;
         });
@@ -219,5 +219,10 @@ interface LocationTourRequest {
     lng: number;
     lat: number;
     name: string;
-    restrictions: number[];
+    restrictions: {
+        "due"?: number,
+        "ready"?: number,
+        "before"?: number,
+        "after"?: number
+    };
 }
