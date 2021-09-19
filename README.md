@@ -89,6 +89,12 @@ In caso sia presente un percorso che permette di portare a destinazione tutti i 
 Se non si può si prova a calcolarlo con un passeggero in meno in auto, e così via.
 Una volta portati a destinazine ripetiamo fino a quando non ci sono pià utenti che è possibile soddisfare.
 
+### REST API Esterne utilizzate
+
+Per l'implementazione delle funzionalità presenti, sono state usate API esterne, in particolare:
+Google Map API
+RouteXL API
+
 # Istruzioni per installazione e avvio:
 
 ### API
@@ -102,6 +108,8 @@ npm run build && npm run start
 ```
 
 ### WebApp React
+
+Clonare il repo
 
 ```sh
 cd frontend
