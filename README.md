@@ -124,6 +124,13 @@ npm i
 npm run start
 ```
 
+## Deploy
+
+Abbiamo anche deployato il tutto su Heroku, sia webapp che api.
+La webapp è presente a questo indirizzo:
+
+https://hop-io-hackaton-sorint-app.herokuapp.com/
+
 ## Ringraziamenti
 
 Ci teniamo a ringraziare gli organizzatori dell'evento che ci hanno permesso di metterci alla prova e verificare quanto potessimo produrre in così poco tempo!
