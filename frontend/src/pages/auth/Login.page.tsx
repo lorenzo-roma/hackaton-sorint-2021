@@ -82,7 +82,6 @@ const LoginPage = (props: LoginPageProps) => {
                     </FormGroup>{" "}
                 </Card>
             </div>
-            <Footer />
         </div>
     );
 };
