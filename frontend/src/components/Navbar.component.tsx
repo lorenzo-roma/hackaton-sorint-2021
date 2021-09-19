@@ -113,7 +113,7 @@ const NavbarComponent = (props: NavbarComponentProps) => {
             <Nav className="mg-xl-l">
                 <Nav.Item>
                     <LinkContainer
-                        to={"/driver"}
+                        to={"/"}
                     >
                         <Button className="btn btn-primary mx-2">SCHEDULE TRIP</Button>
                     </LinkContainer>

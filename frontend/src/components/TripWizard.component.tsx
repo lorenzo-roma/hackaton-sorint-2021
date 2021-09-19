@@ -95,7 +95,7 @@ const TripWizard = ({
     return (
         <Col xs="12" md="6">
             <h1 className="header1">Schedule Now</h1>
-            <p className="body1">Schedule Now</p>
+            <p className="body1">Schedule a new trip</p>
             <Row className="my-1 align-items-center">
                 <Col>
                     <label>Departure</label>

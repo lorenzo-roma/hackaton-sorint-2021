@@ -30,7 +30,6 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
         doTrips();
     }, [doTrips]);
     if (isLoading) return <LoadingComponent />;
-    if (isSuccess) console.log(tripsResponse);
     return (
         <Container>
             <TripWizard

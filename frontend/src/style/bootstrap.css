@@ -5,6 +5,7 @@
 
 .btn {
     height: 2.8em;
+    border-radius: 0;
 }
 
 .nav-link {

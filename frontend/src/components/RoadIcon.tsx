@@ -12,7 +12,7 @@ const RoadIcon = () => {
                 x2="15.5"
                 y2="3.44056e-07"
                 stroke="#A3E5DB"
-                stroke-width="31"
+                strokeWidth="31"
             />
             <line
                 x1="16"
@@ -20,7 +20,7 @@ const RoadIcon = () => {
                 x2="16"
                 y2="6.65916e-08"
                 stroke="white"
-                stroke-width="6"
+                strokeWidth="6"
                 stroke-dasharray="30 30"
             />
             <rect

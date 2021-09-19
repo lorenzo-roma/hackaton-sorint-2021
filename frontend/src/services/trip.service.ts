@@ -43,7 +43,6 @@ export const apiSlice = createApi({
             }),
             transformResponse: (response: { data: TripResult[] }) => {
                 const trips = response.data;
-                console.log("TRIPS", trips);
                 return {
                     toBeScheduledTrips: trips.filter(trip => !trip.shiftId) as ToBeScheduledTrip[],
                     confirmedTrips: trips.filter(trip => trip.shiftId) as ConfirmedTrip[],

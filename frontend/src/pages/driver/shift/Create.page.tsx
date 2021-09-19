@@ -75,7 +75,6 @@ const CreateShiftPage = (props: any) => {
         });
     }
 
-    console.log("PROPS", props)
 
     return (
         <Container>

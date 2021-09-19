@@ -37,9 +37,9 @@ function App() {
                 .then((res) => dispatch(setUser(res)));
         }
     }, [doRetrieveMe, authStore, authState, dispatch]);
-    console.log("DRIVER?", authStore.user);
     return (
-            <Router>
+        <Router>
+            <div className="min-vh-100">
                 <Switch>
                     <Route path="/driver">
                         <NavbarComponent driver={true}/>
@@ -134,9 +134,9 @@ function App() {
                             return <ShiftDetailPage id={idNumber}/>;
                     }}
                 ></Route>
-
-                <Footer/>
-            </Router>
+            </div>
+            <Footer/>
+        </Router>
     );
 }
 

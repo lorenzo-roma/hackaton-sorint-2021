@@ -12,8 +12,8 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 export default function HomePage() {
     return (
         <>
-            <BackgroundImage />
-            <div className="row mb-2" style={{ minHeight: "60vh" }}>
+            <div className="row mb-2" style={{ minHeight: "60vh", position: 'relative'}}>
+                <BackgroundImage />
                 <div className="h-100 col-12 col-md-6 header1  align-self-center">
                     <div className="w-75 h-100 d-flex flex-column justify-content-center mx-auto">
                         <div className="h-50">

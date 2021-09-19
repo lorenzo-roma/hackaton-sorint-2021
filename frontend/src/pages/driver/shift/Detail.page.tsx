@@ -35,7 +35,6 @@ const ShiftDetailPage = (props: ShiftDetailPageProps) => {
             doCalculateShift(props.id).unwrap().then(() => doShiftRetrieve(props.id));
         }
 
-        console.log("Shift", shift)
 
         return (
             <Container>
@@ -113,7 +112,6 @@ const Map = ({checkpoints}: { checkpoints: Checkpoint[] }) => {
         const DirectionsService = new google.maps.DirectionsService();
 
         DirectionsService.route(directionOption, (result, status) => {
-            console.log("ROUTE DONE", result)
             if (status === google.maps.DirectionsStatus.OK) {
                 setDirectionResult(result,);
             } else {
@@ -122,7 +120,6 @@ const Map = ({checkpoints}: { checkpoints: Checkpoint[] }) => {
         });
     }, [])
     const [directionResult, setDirectionResult] = useState<google.maps.DirectionsResult | null>(null);
-    console.log("DIR", directionResult)
     return (<div className="map-container">
         <GoogleMap zoom={7}
                    options={{styles: GoogleMapOption}}
