@@ -49,7 +49,9 @@ const LoginPage = (props: LoginPageProps) => {
             </div>
             <div className="h-100 col-6 flex-column d-flex justify-content-center">
                 <Card className="p-4 w-75 bg-primary-light">
-                    <div className="header1">Login</div>
+                    <div className="header1">
+                        Login {props.driver ? "as a driver" : ""}
+                    </div>
                     <div className="body1 mt-2">
                         You don't have an account?{" "}
                         <span className="button-font">Sign up!</span>

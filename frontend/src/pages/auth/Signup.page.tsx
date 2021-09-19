@@ -80,7 +80,9 @@ const SignupPage = (props: SignupPageProps) => {
                 </div>
                 <div className="h-100 col-6 flex-column d-flex justify-content-center">
                     <Card className="p-4 w-75 bg-primary-light">
-                        <div className="header1">Signup</div>
+                        <div className="header1">
+                            Signup {props.driver ? "as a driver" : ""}
+                        </div>
                         <FormGroup>
                             <label className="body2 fs-6 mt-4 mb-1">
                                 Username

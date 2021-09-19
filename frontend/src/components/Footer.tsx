@@ -1,4 +1,5 @@
 import HorizontalBar from "./HorizontalBar";
+import { LinkContainer } from "react-router-bootstrap";
 
 const Footer = () => {
     return (
@@ -16,12 +17,20 @@ const Footer = () => {
                         <div className="small-font">Lorenzo Romagnoni</div>
                     </div>
                     <div>
-                        <div className="button-font mb-2">Home</div>
-                        <div className="button-font">Become a driver</div>
+                        <LinkContainer to="/">
+                            <div className="button-font mb-2">Home</div>
+                        </LinkContainer>
+                        <LinkContainer to="/driver">
+                            <div className="button-font">Become a driver</div>
+                        </LinkContainer>
                     </div>
                     <div>
-                        <div className="button-font mb-2">Login</div>
-                        <div className="button-font">Signup</div>
+                        <LinkContainer to="/login">
+                            <div className="button-font mb-2">Login</div>
+                        </LinkContainer>
+                        <LinkContainer to="/signup">
+                            <div className="button-font">Signup</div>
+                        </LinkContainer>
                     </div>
                 </div>
             </div>
