@@ -23,9 +23,10 @@ export const InputText = ({type, onBlur, onChange, placeholder, value, hasErrors
 );
 
 type ButtonType = {
-    onClick: () => void;
+    className?: string | undefined;
+    onClick?: () => void;
 }
 
-export const Button = ({onClick, children}: PropsWithChildren<ButtonType>) => (
-    <BootstrapButton onClick={onClick}>{children}</BootstrapButton>
+export const Button = ({onClick, children, className}: PropsWithChildren<ButtonType>) => (
+    <BootstrapButton className={className} onClick={onClick}>{children}</BootstrapButton>
 )

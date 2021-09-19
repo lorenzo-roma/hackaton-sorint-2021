@@ -8,18 +8,20 @@ import {
     Validator,
 } from "../../../utils/Validators";
 import moment from "moment";
-import { Button, InputText } from "../../../components/system/InputText";
+import {Button, InputText} from "../../../components/system/InputText";
 import InputDateTime from "../../../components/system/InputDateTime";
-import { useCreateShiftMutation } from "../../../services/shift.service";
+import {useCreateShiftMutation} from "../../../services/shift.service";
 import LoadingComponent from "../../../components/Loading.component";
 import ErrorComponent from "../../../components/Error.component";
-import { Redirect } from "react-router-dom";
-import { geocodeByPlaceId, getLatLng } from "react-google-places-autocomplete";
+import {Redirect} from "react-router-dom";
+import {geocodeByPlaceId, getLatLng} from "react-google-places-autocomplete";
 import AutoCompleteResponse from "../../../classes/autocomplete-response.class";
 import SelectAddress from "../../../components/SelectAddress.component";
+import {Container, Form, FormGroup} from "react-bootstrap";
+import Card from "../../../components/Card.component";
 
-const CreateShiftPage = () => {
-    const [doCreateShift, { isLoading, isError, isSuccess }] =
+const CreateShiftPage = (props: any) => {
+    const [doCreateShift, {isLoading, isError, isSuccess}] =
         useCreateShiftMutation();
     const startDefaultDate = moment(new Date()).add(25, "h").toDate();
     const endDefaultDate = moment(startDefaultDate).add(4, "h").toDate();
@@ -43,9 +45,9 @@ const CreateShiftPage = () => {
         LOWER_THAN(10).withPrintable("Capacity should be lower than 10"),
     ]);
 
-    if (isLoading) return <LoadingComponent />;
-    if (isError) return <ErrorComponent error="Cannot create shift" />;
-    if (isSuccess) return <Redirect to="/driver" />;
+    if (isLoading) return <LoadingComponent/>;
+    if (isError) return <ErrorComponent error="Cannot create shift"/>;
+    if (isSuccess) return <Redirect to="/driver"/>;
 
     function shiftFormHasError() {
         return (
@@ -73,18 +75,37 @@ const CreateShiftPage = () => {
         });
     }
 
+    console.log("PROPS", props)
+
     return (
-        <div>
-            <label>Starting date:</label>
-            <InputDateTime {...startInput} />
-            <label>Ending date:</label>
-            <InputDateTime {...endInput} />
-            <label>Capacity of the vehicle for passengers:</label>
-            <InputText type={"number"} {...capacityInput} />
-            <label>Starting position of the shift:</label>
-            <SelectAddress {...startingPositionInput} />
-            <Button onClick={createShift}>Create shift</Button>
-        </div>
+        <Container>
+            <div className="float-end">
+                <Button onClick={() => window.history.back()} className="m-2">CANCEL</Button>
+                <Button onClick={createShift} className="m-2">SAVE</Button>
+            </div>
+            <h1 className="header1">
+                Create Shift
+            </h1>
+            <p className="body1">Tell us when you are available for trips</p>
+            <Card>
+                <Form.Group className="my-2" style={{maxWidth: "300px"}}>
+                    <Form.Label className="caption">Starting from:</Form.Label>
+                    <SelectAddress {...startingPositionInput} />
+                </Form.Group>
+                <Form.Group className="my-2" style={{maxWidth: "300px"}}>
+                    <Form.Label className="caption">Starting date:</Form.Label>
+                    <InputDateTime {...startInput} />
+                </Form.Group>
+                <Form.Group className="my-2" style={{maxWidth: "300px"}}>
+                    <Form.Label className="caption">End date:</Form.Label>
+                    <InputDateTime {...endInput} />
+                </Form.Group>
+                <Form.Group className="my-2" style={{maxWidth: "300px"}}>
+                    <Form.Label className="caption">Capacity of the vehicle for passengers:</Form.Label>
+                    <InputText type={"number"} {...capacityInput} />
+                </Form.Group>
+            </Card>
+        </Container>
     );
 };
 export default CreateShiftPage;

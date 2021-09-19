@@ -48,3 +48,35 @@ body {
     padding: 24px;
     background: var(--light);
 }
+.custom-card {
+    background-color: var(--light);
+    padding: 1.2rem;
+    box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.13);
+}
+.link-unstyled,
+.link-unstyled:visited,
+.link-unstyled:hover,
+.link-unstyled:active,
+.link-unstyled:focus,
+.link-unstyled:active:hover {
+    font-style: inherit;
+    color: inherit;
+    background-color: transparent;
+    font-size: inherit;
+    text-decoration: none;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    border-radius: inherit;
+    border: inherit;
+    outline: inherit;
+    box-shadow: inherit;
+    padding: inherit;
+    vertical-align: inherit;
+}
+
+.border-row {
+    border-top: 1px rgba(0, 0, 0, 0.6) solid;
+    padding: 0.5rem 0.2rem;
+}
