@@ -123,7 +123,7 @@ const NavbarComponent = (props: NavbarComponentProps) => {
     }
 
     return (
-        <Navbar>
+        <Navbar className="mb-4">
             <Container>
                 <LinkContainer to="/">
                     <Navbar.Brand className=""><span className="header1">Hop.io</span>{props.driver &&

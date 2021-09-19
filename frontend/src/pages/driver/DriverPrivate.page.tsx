@@ -27,7 +27,6 @@ const DriverPrivatePage = () => {
 
     return (
         <Container>
-            <br/>
             <Button className="float-end" onClick={createShift}>ADD SHIFT</Button>
             <h1 className="header1">My Shifts</h1>
             <p className="body1">These are the periods when you are available</p>

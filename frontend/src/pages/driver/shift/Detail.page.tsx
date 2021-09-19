@@ -39,6 +39,7 @@ const ShiftDetailPage = (props: ShiftDetailPageProps) => {
 
         return (
             <Container>
+                {shift.checkpoints.length === 0 && !isCalculateLoading && <Button className="float-end" onClick={startCalculateShift}>CALCULATE PATH</Button>}
                 <div className="body1">
                     {DateFormat.toShortDateAndTime(shift.start)} - {DateFormat.toShortDateAndTime(shift.end)}</div>
                 <h1 className="header1">{shift.startingPositionName}</h1>
@@ -51,9 +52,8 @@ const ShiftDetailPage = (props: ShiftDetailPageProps) => {
                             shift.checkpoints.map(checkpoint => (
                                 <Row key={checkpoint.id} className="border-row align-items-center">
                                     <Col xs="auto" className="text-center">
-                                        <div className="header3">{DateFormat.toShortDay(checkpoint.time)}
-                                            <br/> {DateFormat.toShortMonth(checkpoint.time)}</div>
-                                        <div className="body1"> {moment(checkpoint.time).format('HH:mm')}</div>
+                                        <div className="header3"> {moment(checkpoint.time).format('HH:mm')}</div>
+                                        <div className="caption">{DateFormat.toShortDay(checkpoint.time)} {DateFormat.toShortMonth(checkpoint.time)}</div>
                                     </Col>
                                     <Col className="body1">{checkpoint.positionName}</Col>
                                     <Col className="text-center">
@@ -83,7 +83,6 @@ const ShiftDetailPage = (props: ShiftDetailPageProps) => {
                 )}
                 {shift.checkpoints.length === 0 && (
                     <>
-                        {!isCalculateLoading && <Button onClick={startCalculateShift}>Calculate Path</Button>}
                         {isCalculateLoading && <LoadingComponent/>}
                         {isRetrieveError && <ErrorComponent error="Error while calculating path"/>}
                     </>
