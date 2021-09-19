@@ -1,17 +1,18 @@
 import useInput from "../hooks/useInput.hook";
-import { GREATER_THAN, NOT_EMPTY, NOT_EMPTY_STRING } from "../utils/Validators";
-import { Button } from "./system/InputText";
+import {GREATER_THAN, NOT_EMPTY, NOT_EMPTY_STRING} from "../utils/Validators";
+import {Button} from "./system/InputText";
 import InputDateTime from "./system/InputDateTime";
 import ToBeScheduledTrip, {
     ToBeScheduledTripApiInterface,
 } from "../classes/ToBeScheduledTrip.class";
-import { useCreateTripMutation } from "../services/trip.service";
+import {useCreateTripMutation} from "../services/trip.service";
 import LoadingComponent from "./Loading.component";
 import ErrorComponent from "./Error.component";
 import moment from "moment";
 import AutoCompleteResponse from "../classes/autocomplete-response.class";
-import { geocodeByPlaceId, getLatLng } from "react-google-places-autocomplete";
+import {geocodeByPlaceId, getLatLng} from "react-google-places-autocomplete";
 import SelectAddress from "./SelectAddress.component";
+import {Col, Row} from "react-bootstrap";
 
 export interface TripWizardProps {
     initialFrom?: AutoCompleteResponse;
@@ -20,11 +21,11 @@ export interface TripWizardProps {
 }
 
 const TripWizard = ({
-    initialFrom,
-    initialTo,
-    onAddedTrip,
-}: TripWizardProps) => {
-    const [doCreateTrip, { isLoading, isError }] = useCreateTripMutation();
+                        initialFrom,
+                        initialTo,
+                        onAddedTrip,
+                    }: TripWizardProps) => {
+    const [doCreateTrip, {isLoading, isError}] = useCreateTripMutation();
     const fromInput = useInput<AutoCompleteResponse | undefined>(initialFrom, [
         NOT_EMPTY,
     ]);
@@ -90,28 +91,50 @@ const TripWizard = ({
         };
         doCreateTrip(tripToBeSchedule).unwrap().then(onAddedTrip);
     };
-    if (isLoading) return <LoadingComponent />;
+    if (isLoading) return <LoadingComponent/>;
     return (
-        <div>
-            <label>From</label>
-            <SelectAddress {...fromInput} />
-            <label>To</label>
-            <SelectAddress {...toInput} />
-            <label>Start availability date</label>
-            <InputDateTime {...initialAvailability} minDate={new Date()} />
-            <label>End availability date</label>
-            <InputDateTime
-                {...endAvailability}
-                minDate={initialAvailability.value}
-            />
-            <label>Arrival Date</label>
-            <InputDateTime
-                {...endDateTime}
-                minDate={initialAvailability.value}
-            />
-            {isError && <ErrorComponent error="Error during creation" />}
-            <Button onClick={createTrip}>Create trip</Button>
-        </div>
+        <Col xs="12" md="6">
+            <h1 className="header1">Schedule Now</h1>
+            <p className="body1">Schedule Now</p>
+            <Row className="my-1 align-items-center">
+                <Col>
+                    <label>Departure</label>
+                    <SelectAddress {...fromInput} />
+                </Col>
+                <Col>
+                    <label>Availability</label>
+                    <Row className="align-items-center">
+                        <Col>
+                            <InputDateTime {...initialAvailability} minDate={new Date()}/>
+                        </Col>
+                        <Col xs="auto">-</Col>
+                        <Col>
+                            <InputDateTime
+                                {...endAvailability}
+                                minDate={initialAvailability.value}
+                            />
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+            <Row className="my-1 align-items-center">
+                <Col>
+                    <label>Destination</label>
+                    <SelectAddress {...toInput} />
+                </Col>
+                <Col>
+                    <label>Arrival Date</label>
+                    <InputDateTime
+                        {...endDateTime}
+                        minDate={initialAvailability.value}
+                    />
+                </Col>
+            </Row>
+
+            {isError && <ErrorComponent error="Error during creation"/>}
+            <br/>
+            <Button onClick={createTrip}>SCHEDULE</Button>
+        </Col>
     );
 };
 

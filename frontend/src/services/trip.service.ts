@@ -6,6 +6,7 @@ import ToBeScheduledTrip, {ToBeScheduledTripApiInterface} from "../classes/ToBeS
 import {RootState} from "../stores/store";
 import {prepareAuthentication} from "../stores/auth.store";
 import Config from "../config";
+import {Position} from "../classes/Checkpoint.class";
 
 interface RetrieveDetail {
     id: number;
@@ -13,8 +14,10 @@ interface RetrieveDetail {
 
 export interface TripResult {
     id: number;
-    from: string;
-    to: string;
+    fromName: string;
+    fromPosition: Position;
+    toName: string;
+    toPosition: Position;
     initialAvailability?: Date;
     endAvailability?: Date;
     confirmedPickup?: Date;
@@ -40,6 +43,7 @@ export const apiSlice = createApi({
             }),
             transformResponse: (response: { data: TripResult[] }) => {
                 const trips = response.data;
+                console.log("TRIPS", trips);
                 return {
                     toBeScheduledTrips: trips.filter(trip => !trip.shiftId) as ToBeScheduledTrip[],
                     confirmedTrips: trips.filter(trip => trip.shiftId) as ConfirmedTrip[],

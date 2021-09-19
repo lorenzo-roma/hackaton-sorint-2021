@@ -18,7 +18,7 @@ export const InputDateTime = ({onBlur, onChange, value, hasErrors, touched,error
     return (
         <div>
             <DatePicker minDate={minDate} placeholderText={placeholder}
-                        dateFormat="Pp" showTimeSelect={true} onBlur={onBlur} onChange={onChange} selected={value} className={(touched && hasErrors) ? 'is-invalid' : ''}/>
+                        dateFormat="Pp" showTimeSelect={true} onBlur={onBlur} onChange={onChange} selected={value} className={((touched && hasErrors) ? 'is-invalid' : '') + ' w-100'}/>
             {errors && <div className="text-danger">
                 {errors.length > 0 ? errors[0].printable : ''}
             </div> }

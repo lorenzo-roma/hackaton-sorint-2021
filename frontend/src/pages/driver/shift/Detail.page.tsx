@@ -39,7 +39,8 @@ const ShiftDetailPage = (props: ShiftDetailPageProps) => {
 
         return (
             <Container>
-                {shift.checkpoints.length === 0 && !isCalculateLoading && <Button className="float-end" onClick={startCalculateShift}>CALCULATE PATH</Button>}
+                {shift.checkpoints.length === 0 && !isCalculateLoading &&
+                <Button className="float-end" onClick={startCalculateShift}>CALCULATE PATH</Button>}
                 <div className="body1">
                     {DateFormat.toShortDateAndTime(shift.start)} - {DateFormat.toShortDateAndTime(shift.end)}</div>
                 <h1 className="header1">{shift.startingPositionName}</h1>
@@ -50,33 +51,37 @@ const ShiftDetailPage = (props: ShiftDetailPageProps) => {
                         <h2 className="header2">Checkpoints</h2>
                         {
                             shift.checkpoints.map(checkpoint => (
-                                <Row key={checkpoint.id} className="border-row align-items-center">
-                                    <Col xs="auto" className="text-center">
-                                        <div className="header3"> {moment(checkpoint.time).format('HH:mm')}</div>
-                                        <div className="caption">{DateFormat.toShortDay(checkpoint.time)} {DateFormat.toShortMonth(checkpoint.time)}</div>
-                                    </Col>
-                                    <Col className="body1">{checkpoint.positionName}</Col>
-                                    <Col className="text-center">
-                                        <div className="caption">{checkpoint.hopType === HopType.PICKUP && "PICKUP"}
-                                            {checkpoint.hopType === HopType.DROPOUT && "DROPOUT"}</div>
-                                        <div className="body1">{checkpoint.user.name} {checkpoint.user.surname}
-                                        </div>
-                                    </Col>
+                                <div>
+                                    <hr/>
+                                    <Row key={checkpoint.id} className="align-items-center">
+                                        <Col xs="auto" className="text-center">
+                                            <div className="header3"> {moment(checkpoint.time).format('HH:mm')}</div>
+                                            <div
+                                                className="caption">{DateFormat.toShortDay(checkpoint.time)} {DateFormat.toShortMonth(checkpoint.time)}</div>
+                                        </Col>
+                                        <Col className="body1">{checkpoint.positionName}</Col>
+                                        <Col className="text-center">
+                                            <div className="caption">{checkpoint.hopType === HopType.PICKUP && "PICKUP"}
+                                                {checkpoint.hopType === HopType.DROPOUT && "DROPOUT"}</div>
+                                            <div className="body1">{checkpoint.user.name} {checkpoint.user.surname}
+                                            </div>
+                                        </Col>
 
-                                    <Col xs="6" md="auto" className="d-flex justify-content-center body1">
+                                        <Col xs="6" md="auto" className="d-flex justify-content-center body1">
 
-                                        <a className="link-unstyled text-center"
-                                           href={`tel:${checkpoint.user.phoneNumber}`}>
-                                            <PhoneIcon/><br/>Call</a>
-                                    </Col>
-                                    <Col xs="6" md="auto" className=" d-flex justify-content-center body1">
-                                        <a className="link-unstyled text-center" target="_blank"
-                                           href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${checkpoint.position.lat},${checkpoint.position.lng}`)}&travelmode=driving`}>
-                                            <DirectionsIcon/><br/>
-                                            Directions
-                                        </a>
-                                    </Col>
-                                </Row>
+                                            <a className="link-unstyled text-center"
+                                               href={`tel:${checkpoint.user.phoneNumber}`}>
+                                                <PhoneIcon/><br/>Call</a>
+                                        </Col>
+                                        <Col xs="6" md="auto" className=" d-flex justify-content-center body1">
+                                            <a className="link-unstyled text-center" target="_blank"
+                                               href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${checkpoint.position.lat},${checkpoint.position.lng}`)}&travelmode=driving`}>
+                                                <DirectionsIcon/><br/>
+                                                Directions
+                                            </a>
+                                        </Col>
+                                    </Row>
+                                </div>
                             ))
                         }
                     </>

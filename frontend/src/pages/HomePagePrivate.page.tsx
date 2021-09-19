@@ -1,5 +1,5 @@
 import { useTripListMutation } from "../services/trip.service";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import LoadingComponent from "../components/Loading.component";
 import ConfirmedTrip from "../classes/ConfirmedTrip.class";
 import ErrorComponent from "../components/Error.component";
@@ -11,6 +11,12 @@ import TripWizard, {
 import SelectAddress from "../components/SelectAddress.component";
 import AutoCompleteResponse from "../classes/autocomplete-response.class";
 import moment from "moment";
+import {Col, Container, Row} from "react-bootstrap";
+import DateFormat from "../utils/DateFormat";
+import {HopType} from "../classes/Checkpoint.class";
+import PhoneIcon from "../components/PhoneIcon";
+import DirectionsIcon from "../components/DirectionsIcon";
+import ArrowIcon from "../components/ArrowIcon";
 
 type HomePagePrivateProps = {
     initialFrom?: AutoCompleteResponse;
@@ -26,37 +32,68 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
     if (isLoading) return <LoadingComponent />;
     if (isSuccess) console.log(tripsResponse);
     return (
-        <div>
+        <Container>
             <TripWizard
                 initialFrom={props.initialFrom}
                 initialTo={props.initialTo}
                 onAddedTrip={doTrips}
             />
+            <br/>
             {isError && <ErrorComponent error={"Error while loading trips"} />}
             {isSuccess && (
                 <>
-                    {tripsResponse && tripsResponse.confirmedTrips.length > 0 && (
+                    {tripsResponse&& tripsResponse.confirmedTrips.length > 0 && (
                         <>
-                            <h1>Upcoming Trips</h1>
+                            <h1 className="header2">Upcoming Trips</h1>
+                            <p className="body1">Here are your scheduled trips</p>
                             {tripsResponse.confirmedTrips.map((trip) => (
                                 <div key={trip.id}>
-                                    {trip.confirmedPickedUp} {trip.from} to{" "}
-                                    {trip.to} {trip.arrival}
+                                    <hr/>
+                                    <Row key={trip.id} className="align-items-center">
+                                        <Col xs="auto" className="text-center">
+                                            <div className="header3"> {moment(trip.confirmedPickedUp).format('HH:mm')}</div>
+                                            <div className="caption">{DateFormat.toShortDay(trip.confirmedPickedUp)} {DateFormat.toShortMonth(trip.confirmedPickedUp)}</div>
+                                        </Col>
+                                        <Col className="body1 text-center">{trip.fromName}</Col>
+                                        <Col className="text-center">
+                                            <ArrowIcon/>
+                                        </Col>
+                                        <Col className="body1 text-center">{trip.toName}</Col>
+                                        <Col xs="auto" className="text-center">
+                                            <div className="header3"> {moment(trip.arrival).format('HH:mm')}</div>
+                                            <div className="caption">{DateFormat.toShortDay(trip.arrival)} {DateFormat.toShortMonth(trip.arrival)}</div>
+                                        </Col>
+                                    </Row>
                                 </div>
                             ))}
                         </>
-                    )}
+                    ) }
+
                     {tripsResponse &&
                         tripsResponse.toBeScheduledTrips.length > 0 && (
                             <>
-                                <h1>To Be Scheduled Trip</h1>
+
+                                <h1 className="header2">To Be Scheduled Trip</h1>
+                                <p className="body1">Here are your trips that needs to be schedule</p>
                                 {tripsResponse.toBeScheduledTrips.map(
                                     (trip) => (
                                         <div key={trip.id}>
-                                            {moment(trip.initialAvailability).format("hh:mm")}-
-                                            {moment(trip.endAvailability).format("hh:mm")}{" "}
-                                            {trip.fromName} to {trip.toName}{" "}
-                                            {moment(trip.arrival).format("hh:mm")}
+                                            <hr/>
+                                            <Row key={trip.id} className="align-items-center">
+                                                <Col xs="auto" className="text-center">
+                                                    <div className="header3"> {moment(trip.initialAvailability).format('HH:mm')} - {moment(trip.endAvailability).format('HH:mm')}</div>
+                                                    <div className="caption">{DateFormat.toShortDay(trip.initialAvailability)} {DateFormat.toShortMonth(trip.initialAvailability)}</div>
+                                                </Col>
+                                                <Col className="body1 text-center">{trip.fromName}</Col>
+                                                <Col className="text-center">
+                                                    <ArrowIcon/>
+                                                </Col>
+                                                <Col className="body1 text-center">{trip.toName}</Col>
+                                                <Col xs="auto" className="text-center">
+                                                    <div className="header3"> {moment(trip.arrival).format('HH:mm')}</div>
+                                                    <div className="caption">{DateFormat.toShortDay(trip.arrival)} {DateFormat.toShortMonth(trip.arrival)}</div>
+                                                </Col>
+                                            </Row>
                                         </div>
                                     )
                                 )}
@@ -64,7 +101,7 @@ const HomePagePrivate = (props: HomePagePrivateProps) => {
                         )}
                 </>
             )}
-        </div>
+        </Container>
     );
 };
 
