@@ -95,3 +95,19 @@ describe("Get checkpoints detail tests", () => {
         expect(response.data![0].user).toStrictEqual(user);
     });
 });
+
+describe("Retrieve by id tests", () => {
+    test("If shift is not present, it should return not found response", async () => {
+        mockShiftRepository.findShiftById = jest.fn(async () => undefined);
+        const result = await serviceTested.retrieveById("");
+        expect(result.status).toBe(ShiftResult.SHIFT_NOT_FOUND);
+    });
+
+    test("If shift is present, it should return success response and data", async () => {
+        const shift = getMockShift();
+        mockShiftRepository.findShiftById = jest.fn(async () => shift);
+        const result = await serviceTested.retrieveById("");
+        expect(result.status).toBe(ShiftResult.SUCCESS);
+        expect(result.data).toBe(shift);
+    });
+});

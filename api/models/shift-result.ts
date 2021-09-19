@@ -4,6 +4,7 @@ enum ShiftResult {
     ERROR_RETRIEVING_SHIFTS,
     ERROR_RETRIEVING_CHECKPOINTS,
     USER_NOT_FOUND,
+    SHIFT_NOT_FOUND,
 }
 
 export default ShiftResult;

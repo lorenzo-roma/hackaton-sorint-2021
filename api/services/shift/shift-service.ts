@@ -18,7 +18,7 @@ export default class ShiftService implements ShiftServiceInterface {
         id: string
     ): Promise<ServiceResponse<ShiftResult, Shift>> {
         const shift = await this.repository.findShiftById(id);
-        if (!shift) return { status: ShiftResult.ERROR_RETRIEVING_SHIFTS };
+        if (!shift) return { status: ShiftResult.SHIFT_NOT_FOUND };
         return { status: ShiftResult.SUCCESS, data: shift };
     }
 

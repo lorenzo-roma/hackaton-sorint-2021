@@ -159,13 +159,32 @@ describe("Perform retrieve detail tests", () => {
 
     test("If details are retrieved, return success response", async () => {
         const details: CheckpointDetail[] = [];
+        const shift = getMockShift();
         mockShiftService.getCheckpointsDetailByShiftId = jest.fn(async () => {
             return { status: ShiftResult.SUCCESS, data: details };
+        });
+        mockShiftService.retrieveById = jest.fn(async () => {
+            return { status: ShiftResult.SUCCESS, data: shift };
         });
         const mockReq = {} as express.Request;
         mockReq.params = { shiftId: "2" };
         let response = await controllerTested.retrieveShiftDetail(mockReq);
         expect(response.status).toBe(APIResponseStatus.SUCCESS);
-        expect(response.data).toBe(details);
+        expect(response.data.checkpoints).toBe(details);
+    });
+
+    test("If details are retrieved, but not shift, return error response", async () => {
+        const details: CheckpointDetail[] = [];
+        const shift = getMockShift();
+        mockShiftService.getCheckpointsDetailByShiftId = jest.fn(async () => {
+            return { status: ShiftResult.SUCCESS, data: details };
+        });
+        mockShiftService.retrieveById = jest.fn(async () => {
+            return { status: ShiftResult.ERROR_RETRIEVING_SHIFTS };
+        });
+        const mockReq = {} as express.Request;
+        mockReq.params = { shiftId: "2" };
+        let response = await controllerTested.retrieveShiftDetail(mockReq);
+        expect(response.status).toBe(APIResponseStatus.ERROR);
     });
 });
