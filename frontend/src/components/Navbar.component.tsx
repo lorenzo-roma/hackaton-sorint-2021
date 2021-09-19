@@ -5,6 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useAppDispatch, useAppSelector } from "../stores/store";
 import { AuthState, clearToken, selectAuthState } from "../stores/auth.store";
 import { useCookies } from "react-cookie";
+import {Button} from "./system/InputText";
 type NavbarComponentProps = {
     driver: boolean;
 };
@@ -20,14 +21,14 @@ const NavbarComponent = (props: NavbarComponentProps) => {
                     <LinkContainer
                         to={props.driver ? "/driver/login" : "/login"}
                     >
-                        <Nav.Link>Login</Nav.Link>
+                        <Button className="btn btn-transparent mx-2">Login</Button>
                     </LinkContainer>
                 </Nav.Item>
                 <Nav.Item>
                     <LinkContainer
                         to={props.driver ? "/driver/signup" : "/signup"}
                     >
-                        <Nav.Link>Signup</Nav.Link>
+                        <Button className="btn btn-primary mx-2">Signup</Button>
                     </LinkContainer>
                 </Nav.Item>
             </Nav>
@@ -66,10 +67,10 @@ const NavbarComponent = (props: NavbarComponentProps) => {
         <Navbar>
             <Container>
                 <LinkContainer to="/">
-                    <Navbar.Brand className="header2">Hop.io</Navbar.Brand>
+                    <Navbar.Brand className=""><span className="header1">Hop.io</span>{props.driver && <sub className="caption">Driver</sub> }</Navbar.Brand>
                 </LinkContainer>
                 <Navbar.Collapse className="button-font ">
-                    {driverSection()}
+                    {!props.driver && driverSection()}
                     <Nav className="me-auto" />
                     {authState == AuthState.LOGGED_OUT && loggedOutSection()}
                     {authState == AuthState.LOGGED_IN && loggedInSection()}

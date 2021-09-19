@@ -24,7 +24,7 @@ export const InputText = ({type, onBlur, onChange, placeholder, value, hasErrors
 
 type ButtonType = {
     className?: string | undefined;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 export const Button = ({onClick, children, className}: PropsWithChildren<ButtonType>) => (
