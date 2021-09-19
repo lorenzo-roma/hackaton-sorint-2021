@@ -1,9 +1,55 @@
-@import url("https://fonts.googleapis.com/css2?family=Glegoo:wght@700&family=Raleway&display=swap");
-
-.serif {
-    font-family: "Glegoo", serif;
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap");
+.header1 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 34px;
 }
 
-.sanserif {
-    font-family: "Raleway", sans-serif;
+.header2 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.header3 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+}
+
+.body1 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.body2 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.button-font {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.link {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+}
+
+.form-field {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+}
+
+.caption {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+}
+
+.main-header {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
 }

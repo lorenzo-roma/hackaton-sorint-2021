@@ -1,9 +1,20 @@
 :root {
     --primary: #84dccf;
     --accent: #fe386c;
+    --accent-hover: #ca073b !important;
     --light-primary: #effbf9;
     --light-accent: #fbeefb;
     --light: #ffffff;
 
+    --bs-primary: var(--primary) !important;
+
     --accent-hover: rgb(219, 9, 65), 99%, 61%;
+}
+
+.bg-primary-light {
+    background-color: var(--light-primary) !important;
+}
+
+.bg-accent {
+    background-color: var(--accent) !important;
 }

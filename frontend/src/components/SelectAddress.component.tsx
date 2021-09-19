@@ -8,7 +8,7 @@ const SelectAddress = (props: {
 }) => {
     const optionalOptions = props.value ? { value: props.value } : {};
     return (
-        <div className="sanserif">
+        <div className="form-field">
             <GooglePlacesAutocomplete
                 apiKey="AIzaSyAzxSHMke4V7MM3TfjToxzcSCVtQrTPe2g"
                 apiOptions={{

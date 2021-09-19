@@ -1,15 +1,10 @@
 .card {
-    border-radius: 0.8rem;
     background: #fcfcfc;
     border: none;
-    -webkit-box-shadow: 0px 0px 28px 0px rgba(50, 50, 50, 0.15);
-    -moz-box-shadow: 0px 0px 28px 0px rgba(50, 50, 50, 0.15);
-    box-shadow: 0px 0px 28px 0px rgba(50, 50, 50, 0.15);
 }
 
 .btn {
-    border-radius: 0.5em;
-    height: 2.5em;
+    height: 2.8em;
 }
 
 .nav-link {
@@ -32,4 +27,27 @@
 input {
     height: 2.5em;
     font-size: 1.1em;
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    text-decoration: none;
+}
+
+.btn-primary:focus {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    text-decoration: none;
+}
+
+.btn-primary:active {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    text-decoration: none;
 }

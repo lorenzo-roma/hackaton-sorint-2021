@@ -66,9 +66,9 @@ const NavbarComponent = (props: NavbarComponentProps) => {
         <Navbar>
             <Container>
                 <LinkContainer to="/">
-                    <Navbar.Brand className="serif fs-2">hop.io</Navbar.Brand>
+                    <Navbar.Brand className="header2">Hop.io</Navbar.Brand>
                 </LinkContainer>
-                <Navbar.Collapse className="sanserif ">
+                <Navbar.Collapse className="button-font ">
                     {driverSection()}
                     <Nav className="me-auto" />
                     {authState == AuthState.LOGGED_OUT && loggedOutSection()}
