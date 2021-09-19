@@ -137,7 +137,6 @@ const SignupPage = (props: SignupPageProps) => {
                         </FormGroup>
                     </Card>
                 </div>
-                <Footer />
             </div>
         </div>
     );

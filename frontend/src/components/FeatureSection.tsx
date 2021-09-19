@@ -9,8 +9,6 @@ const FeatureSection = () => {
     return (
         <div
             style={{
-                height: "80vh",
-                width: "100vw",
                 padding: "96px",
                 marginBottom: "64px",
                 textAlign: "center",
