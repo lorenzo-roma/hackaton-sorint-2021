@@ -9,8 +9,8 @@ const InfoCard = (props: Props) => {
         <div
             className="info-card d-flex flex-column justify-content-around"
             style={{
-                width: "30vw",
-                height: "20vw",
+                width: "330px",
+                height: "200px",
                 padding: "24px",
                 background: "var(--light)",
             }}
