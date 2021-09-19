@@ -1,0 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Glegoo:wght@700&family=Raleway&display=swap");
+
+.serif {
+    font-family: "Glegoo", serif;
+}
+
+.sanserif {
+    font-family: "Raleway", sans-serif;
+}

@@ -1,17 +1,17 @@
-import {Card, Container, FormGroup} from "react-bootstrap";
+import { Card, Container, FormGroup } from "react-bootstrap";
 import ErrorComponent from "../../components/Error.component";
 import LoadingComponent from "../../components/Loading.component";
-import {Button, InputText} from "../../components/system/InputText";
+import { Button, InputText } from "../../components/system/InputText";
 import useInput from "../../hooks/useInput.hook";
-import {useSignupMutation} from "../../services/auth.service";
-import {NOT_EMPTY_STRING, PHONE_NUMBER} from "../../utils/Validators";
-import {useCookies} from "react-cookie";
-import {setToken} from "../../stores/auth.store";
-import {useAppDispatch} from "../../stores/store";
+import { useSignupMutation } from "../../services/auth.service";
+import { NOT_EMPTY_STRING, PHONE_NUMBER } from "../../utils/Validators";
+import { useCookies } from "react-cookie";
+import { setToken } from "../../stores/auth.store";
+import { useAppDispatch } from "../../stores/store";
 
 type SignupPageProps = {
-    driver: boolean
-}
+    driver: boolean;
+};
 const SignupPage = (props: SignupPageProps) => {
     const dispatch = useAppDispatch();
     const [cookies, setCookie] = useCookies(["token"]);
@@ -33,12 +33,19 @@ const SignupPage = (props: SignupPageProps) => {
         PHONE_NUMBER.withPrintable("Insert a phone number with prefix"),
     ]);
 
-    const [doSignup, {isLoading, isError}] = useSignupMutation();
+    const [doSignup, { isLoading, isError }] = useSignupMutation();
 
-    const isFormValid = () => !(usernameInput.hasErrors || passwordInput.hasErrors || phoneNumberInput.hasErrors || surnameInput.hasErrors || nameInput.hasErrors)
+    const isFormValid = () =>
+        !(
+            usernameInput.hasErrors ||
+            passwordInput.hasErrors ||
+            phoneNumberInput.hasErrors ||
+            surnameInput.hasErrors ||
+            nameInput.hasErrors
+        );
 
     const onSignupClicked = async () => {
-        if(!isFormValid()) return;
+        if (!isFormValid()) return;
         try {
             const result = await doSignup({
                 username: usernameInput.value,
@@ -46,10 +53,10 @@ const SignupPage = (props: SignupPageProps) => {
                 name: nameInput.value,
                 surname: surnameInput.value,
                 phoneNumber: phoneNumberInput.value,
-                driver: props.driver
+                driver: props.driver,
             }).unwrap();
             const token: string = result.data.token;
-            setCookie("token", token, {path: "/"});
+            setCookie("token", token, { path: "/" });
             dispatch(setToken(token));
         } catch (e) {
             console.error(e);
@@ -57,51 +64,63 @@ const SignupPage = (props: SignupPageProps) => {
     };
 
     return (
-        <Container>
-            <Card>
-                <Card.Body>
-                    <FormGroup>
-                        <label>Username</label>
+        <div className="mx-4 h-75 row align-items-center">
+            <div className="col">
+                <Card className="p-4">
+                    <FormGroup className="sanserif">
+                        <label className="serif black fs-6 mb-1">
+                            Username
+                        </label>
                         <InputText
                             type="text"
                             placeholder="Username"
                             {...usernameInput}
                         />
-                        <label>Password</label>
+                        <label className="serif black fs-6 mt-3 mb-1">
+                            Password
+                        </label>
                         <InputText
                             type="password"
                             placeholder="Password"
                             {...passwordInput}
                         />
-                        <label>Name</label>
+                        <label className="serif black fs-6 mt-3 mb-1">
+                            Name
+                        </label>
                         <InputText
                             type="text"
                             placeholder="Name"
                             {...nameInput}
                         />
-                        <label>Surname</label>
+                        <label className="serif black fs-6 mt-3 mb-1">
+                            Surname
+                        </label>
 
                         <InputText
                             type="text"
                             placeholder="Surname"
                             {...surnameInput}
                         />
-                        <label>Phone Number</label>
+                        <label className="serif black fs-6 mt-3 mb-1">
+                            Phone Number
+                        </label>
 
                         <InputText
                             type="tel"
                             placeholder="Phone Number"
                             {...phoneNumberInput}
                         />
-                        {isLoading && <LoadingComponent/>}
+                        {isLoading && <LoadingComponent />}
                         {isError && (
-                            <ErrorComponent error="Error during signup"/>
+                            <ErrorComponent error="Error during signup" />
                         )}
-                        <Button onClick={onSignupClicked}>Signup</Button>
+                        <div className="mt-4">
+                            <Button onClick={onSignupClicked}>Signup</Button>
+                        </div>
                     </FormGroup>
-                </Card.Body>
-            </Card>
-        </Container>
+                </Card>
+            </div>
+        </div>
     );
 };
 

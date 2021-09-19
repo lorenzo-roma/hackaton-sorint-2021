@@ -1,0 +1,30 @@
+.card {
+    border-radius: 0.8rem;
+    background: #fcfcfc;
+    border: none;
+    -webkit-box-shadow: 0px 0px 28px 0px rgba(50, 50, 50, 0.15);
+    -moz-box-shadow: 0px 0px 28px 0px rgba(50, 50, 50, 0.15);
+    box-shadow: 0px 0px 28px 0px rgba(50, 50, 50, 0.15);
+}
+
+.btn {
+    border-radius: 0.5em;
+}
+
+.nav-link {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.navbar > .container {
+    align-items: baseline;
+}
+
+.alert {
+    margin: 1rem 0;
+}
+
+input {
+    height: 2.5em;
+    font-size: 1.1em;
+}

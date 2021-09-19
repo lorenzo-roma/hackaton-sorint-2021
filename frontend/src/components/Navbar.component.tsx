@@ -4,10 +4,10 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useAppDispatch, useAppSelector } from "../stores/store";
 import { AuthState, clearToken, selectAuthState } from "../stores/auth.store";
-import {useCookies} from "react-cookie";
+import { useCookies } from "react-cookie";
 type NavbarComponentProps = {
-    driver: boolean
-}
+    driver: boolean;
+};
 const NavbarComponent = (props: NavbarComponentProps) => {
     const authState = useAppSelector(selectAuthState);
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -17,12 +17,16 @@ const NavbarComponent = (props: NavbarComponentProps) => {
         return (
             <Nav>
                 <Nav.Item>
-                    <LinkContainer to={props.driver ? "/driver/login" : "/login"}>
+                    <LinkContainer
+                        to={props.driver ? "/driver/login" : "/login"}
+                    >
                         <Nav.Link>Login</Nav.Link>
                     </LinkContainer>
                 </Nav.Item>
                 <Nav.Item>
-                    <LinkContainer to={props.driver ? "/driver/signup" : "/signup"}>
+                    <LinkContainer
+                        to={props.driver ? "/driver/signup" : "/signup"}
+                    >
                         <Nav.Link>Signup</Nav.Link>
                     </LinkContainer>
                 </Nav.Item>
@@ -32,9 +36,9 @@ const NavbarComponent = (props: NavbarComponentProps) => {
 
     const loggedInSection = function () {
         const clearTokenCookie = () => {
-            dispatch(clearToken({}))
-            removeCookie('token')
-        }
+            dispatch(clearToken({}));
+            removeCookie("token");
+        };
         return (
             <Nav>
                 <Nav.Item>
@@ -47,25 +51,26 @@ const NavbarComponent = (props: NavbarComponentProps) => {
     };
 
     function driverSection() {
-        return <Nav>
-            <Nav.Item>
-                <LinkContainer to="/driver">
-                    <Nav.Link>Become a driver</Nav.Link>
-                </LinkContainer>
-            </Nav.Item>
-        </Nav>;
+        return (
+            <Nav className="mg-xl-l">
+                <Nav.Item>
+                    <LinkContainer to="/driver">
+                        <Nav.Link>Become a driver</Nav.Link>
+                    </LinkContainer>
+                </Nav.Item>
+            </Nav>
+        );
     }
 
     return (
         <Navbar>
             <Container>
                 <LinkContainer to="/">
-                    <Navbar.Brand>Home</Navbar.Brand>
-
+                    <Navbar.Brand className="serif fs-2">hop.io</Navbar.Brand>
                 </LinkContainer>
-                <Navbar.Collapse>
+                <Navbar.Collapse className="sanserif ">
                     {driverSection()}
-                    <Nav className="me-auto"/>
+                    <Nav className="me-auto" />
                     {authState == AuthState.LOGGED_OUT && loggedOutSection()}
                     {authState == AuthState.LOGGED_IN && loggedInSection()}
                 </Navbar.Collapse>

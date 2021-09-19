@@ -10,9 +10,7 @@ import AutoCompleteResponse from "../classes/autocomplete-response.class";
 
 const SlimTripWizard = () => {
     const [redirect, setRedirect] = useState(false);
-    const fromInput = useInput<AutoCompleteResponse | undefined>(
-        undefined
-    );
+    const fromInput = useInput<AutoCompleteResponse | undefined>(undefined);
     const toInput = useInput<AutoCompleteResponse | undefined>(undefined);
 
     const startCreationTrip = () => {
@@ -34,12 +32,14 @@ const SlimTripWizard = () => {
     }
 
     return (
-        <div>
-            <label>From</label>
+        <div className="sanserif">
+            <label className="serif black fs-6 mb-1">From</label>
             <SelectAddress {...fromInput} />
-            <label>To</label>
+            <label className="serif black fs-6 mt-3 mb-1">To</label>
             <SelectAddress {...toInput} />
-            <Button onClick={startCreationTrip}>Start trip</Button>
+            <div className="mt-4 fs-6">
+                <Button onClick={startCreationTrip}>Start trip</Button>
+            </div>
         </div>
     );
 };

@@ -9,8 +9,8 @@ import { useCookies } from "react-cookie";
 import { setToken } from "../../stores/auth.store";
 import { useLoginMutation } from "../../services/auth.service";
 type LoginPageProps = {
-    driver: boolean
-}
+    driver: boolean;
+};
 const LoginPage = (props: LoginPageProps) => {
     const [cookies, setCookie] = useCookies(["token"]);
     const dispatch = useAppDispatch();
@@ -34,29 +34,38 @@ const LoginPage = (props: LoginPageProps) => {
     };
 
     return (
-        <Container>
-            <Card>
-                <Card.Body>
-                    <FormGroup>
+        <div className="mx-4 h-75 row align-items-center">
+            <div className="col">
+                <Card className="p-4">
+                    <FormGroup className="sanserif">
+                        <label className="serif black fs-6 mb-1">
+                            Username
+                        </label>
                         <InputText
                             type="text"
                             placeholder="Username"
                             {...usernameInput}
                         />
+                        <label className="serif black fs-6 mt-3 mb-1">
+                            Password
+                        </label>
                         <InputText
                             type="password"
                             placeholder="Password"
                             {...passwordInput}
                         />
+
                         {isLoading && <LoadingComponent />}
                         {isError && (
                             <ErrorComponent error="Error during login" />
                         )}
-                        <Button onClick={onLoginClicked}>Login</Button>
+                        <div className="mt-4">
+                            <Button onClick={onLoginClicked}>Login</Button>
+                        </div>
                     </FormGroup>
-                </Card.Body>
-            </Card>
-        </Container>
+                </Card>
+            </div>
+        </div>
     );
 };
 export default LoginPage;
